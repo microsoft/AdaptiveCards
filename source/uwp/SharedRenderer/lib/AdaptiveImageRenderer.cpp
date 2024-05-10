@@ -36,15 +36,6 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
-    auto inline GetDispatcher(winrt::ImageSource const &imageSource)
-    {
-#ifdef USE_WINUI3
-        return imageSource.DispatcherQueue();
-#else
-        return imageSource.Dispatcher();
-#endif
-    }
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // IMPORTANT! Methods below here are actually XamlBuilder methods. They're defined here because they're only used
@@ -287,43 +278,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         return ActionHelpers::HandleSelectAction(
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
-    }
-
-    winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content)
-    {
-        // Parse the size from the XamlDocument as XML
-        winrt::XmlDocument xmlDoc;
-
-        xmlDoc.LoadXml(content);
-
-        if (xmlDoc)
-        {
-            auto rootElement = xmlDoc.DocumentElement();
-
-            // Root element must be an SVG
-            if (rootElement.NodeName() == L"svg")
-            {
-                auto heightAttribute = rootElement.GetAttribute(L"height");
-                auto widthAttribute = rootElement.GetAttribute(L"width");
-
-                double height{0.0}; 
-                double width{0.0}; 
-
-                if (!heightAttribute.empty())
-                {
-                    height = TryHStringToDouble(heightAttribute).value_or(0.0);
-                }
-
-                if (!widthAttribute.empty())
-                {
-                    width = TryHStringToDouble(widthAttribute).value_or(0.0);
-                }
-
-                return {static_cast<float>(width), static_cast<float>(height)};
-            }
-        }
-
-        return {};
     }
 
     winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream)

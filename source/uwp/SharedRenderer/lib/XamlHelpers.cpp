@@ -285,9 +285,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         }
     }
 
-    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri uri, winrt::SvgImageSource svgImageSource, winrt::TileControl tileControl)
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri const& uri,
+                                                        winrt::SvgImageSource svgImageSource,
+                                                        winrt::TileControl const& tileControl)
     {
         auto weakImageSource{winrt::make_weak(svgImageSource)};
+        auto weakTileControl{winrt::make_weak(tileControl)};
 
         winrt::HttpClient httpClient;
         auto getOperation = co_await httpClient.GetAsync(uri);
@@ -297,50 +300,15 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         if (auto strongImageSource = weakImageSource.get())
         {
             co_await wil::resume_foreground(GetDispatcher(strongImageSource));
-            svgImageSource = strongImageSource.as<winrt::SvgImageSource>();
-            svgImageSource.RasterizePixelHeight(size.Height);
-            svgImageSource.RasterizePixelWidth(size.Width);
+            strongImageSource.RasterizePixelHeight(size.Height);
+            strongImageSource.RasterizePixelWidth(size.Width);
             winrt::Image image; 
-            image.Source(svgImageSource);
-            tileControl.LoadImageBrush(image);
-        }
-    }
-
-    winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content)
-    {
-        // Parse the size from the XamlDocument as XML
-        winrt::XmlDocument xmlDoc;
-
-        xmlDoc.LoadXml(content);
-
-        if (xmlDoc)
-        {
-            auto rootElement = xmlDoc.DocumentElement();
-
-            // Root element must be an SVG
-            if (rootElement.NodeName() == L"svg")
+            image.Source(strongImageSource);
+            if (auto strongTileControl = weakTileControl.get())
             {
-                auto heightAttribute = rootElement.GetAttribute(L"height");
-                auto widthAttribute = rootElement.GetAttribute(L"width");
-
-                double height{0.0};
-                double width{0.0};
-
-                if (!heightAttribute.empty())
-                {
-                    height = TryHStringToDouble(heightAttribute).value_or(0.0);
-                }
-
-                if (!widthAttribute.empty())
-                {
-                    width = TryHStringToDouble(widthAttribute).value_or(0.0);
-                }
-
-                return {static_cast<float>(width), static_cast<float>(height)};
-            }
+                strongTileControl.LoadImageBrush(image);
+			}
         }
-
-        return {};
     }
 
     void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
@@ -357,7 +325,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
             tileControl.IsEnabled(false);
             tileControl.BackgroundImage(adaptiveBackgroundImage);
-            tileControl.LoadImageBrush(backgroundImage);
+            auto imageUrl = GetUrlFromString(renderContext.HostConfig(), adaptiveBackgroundImage.Url());
+            auto imagePath = HStringToUTF8(imageUrl.Path());
+            bool isImageSvg = imagePath.find("svg") != std::string::npos;
+
+            if (!isImageSvg)
+            {
+                tileControl.LoadImageBrush(backgroundImage);
+            }
 
             XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
 
@@ -1002,10 +977,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                 {
                     if (const auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>())
                     {
-                        stream.Seek(0);
+                stream.Seek(0);
                         image.Source(svgImageSource);
                         svgImageSource.SetSourceAsync(stream);
-                    }
+            }
                 });
 
             return image;

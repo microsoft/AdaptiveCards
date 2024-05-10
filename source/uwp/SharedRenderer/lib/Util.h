@@ -226,6 +226,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
 std::string ExtractSvgDataFromUri(winrt::Windows::Foundation::Uri const& imageUrl);
 
+winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content);
+
 auto inline GetDispatcher(winrt::ImageSource const& imageSource)
 {
 #ifdef USE_WINUI3

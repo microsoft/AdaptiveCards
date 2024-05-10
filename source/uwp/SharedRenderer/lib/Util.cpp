@@ -657,3 +657,40 @@ std::string ExtractSvgDataFromUri(winrt::Windows::Foundation::Uri const& imageUr
     }
     return data;
 }
+
+winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content)
+{
+    // Parse the size from the XamlDocument as XML
+    winrt::XmlDocument xmlDoc;
+
+    xmlDoc.LoadXml(content);
+
+    if (xmlDoc)
+    {
+        auto rootElement = xmlDoc.DocumentElement();
+
+        // Root element must be an SVG
+        if (rootElement.NodeName() == L"svg")
+        {
+            auto heightAttribute = rootElement.GetAttribute(L"height");
+            auto widthAttribute = rootElement.GetAttribute(L"width");
+
+            double height{0.0};
+            double width{0.0};
+
+            if (!heightAttribute.empty())
+            {
+                height = TryHStringToDouble(heightAttribute).value_or(0.0);
+            }
+
+            if (!widthAttribute.empty())
+            {
+                width = TryHStringToDouble(widthAttribute).value_or(0.0);
+            }
+
+            return {static_cast<float>(width), static_cast<float>(height)};
+        }
+    }
+
+    return {};
+}
