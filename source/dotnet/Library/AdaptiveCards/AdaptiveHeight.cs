@@ -227,11 +227,11 @@ namespace AdaptiveCards
         /// <inheritdoc />
         public Boolean Equals(AdaptiveHeight other)
         {
-            if (this.HeightType == other.HeightType)
+            if (this.HeightType == other?.HeightType)
             {
                 if (this.HeightType == AdaptiveHeightType.Pixel)
                 {
-                    return this.Unit == other.Unit;
+                    return this.Unit == other?.Unit;
                 }
                 return true;
             }
