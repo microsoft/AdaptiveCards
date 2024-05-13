@@ -11,14 +11,19 @@ using System.Threading.Tasks;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Converter for AdaptiveTargetElement
+    /// </summary>
     public class ToggleElementsConverter : JsonConverter
     {
 
+        /// <inheritdoc/>
         public override bool CanConvert(Type objectType)
         {
             return typeof(List<AdaptiveTargetElement>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
+        /// <inheritdoc/>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var array = JArray.Load(reader);
@@ -40,6 +45,7 @@ namespace AdaptiveCards
             return arrayList;
         }
 
+        /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             List<AdaptiveTargetElement> targetElements = (List<AdaptiveTargetElement>)value;

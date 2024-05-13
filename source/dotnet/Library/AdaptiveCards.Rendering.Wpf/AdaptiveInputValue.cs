@@ -327,8 +327,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public class AdaptiveChoiceSetInputValue : AdaptiveInputValueNonEmptyValidation
     {
-        private UIElement uIElement;
-
         public AdaptiveChoiceSetInputValue(AdaptiveChoiceSetInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
 
         public AdaptiveChoiceSetInputValue(AdaptiveChoiceSetInput inputElement, UIElement renderedElement, UIElement uIElement) : base(inputElement, renderedElement, uIElement) { }

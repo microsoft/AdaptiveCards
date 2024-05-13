@@ -11,18 +11,14 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the Container element.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveContainer.TypeName)]
-#endif
     public class AdaptiveContainer : AdaptiveCollectionElement
     {
         /// <inheritdoc />
         public const string TypeName = "Container";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -31,9 +27,7 @@ namespace AdaptiveCards
         [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         [DefaultValue(null)]
-#if !NETSTANDARD1_3
         [XmlElement(nameof(BackgroundImage))]
-#endif
         public AdaptiveBackgroundImage BackgroundImage { get; set; }
 
         /// <summary>
@@ -41,7 +35,6 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
-#if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveTextBlock))]
         [XmlElement(typeof(AdaptiveRichTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
@@ -59,20 +52,16 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveActionSet))]
         [XmlElement(typeof(AdaptiveTable))]
         [XmlElement(typeof(AdaptiveUnknownElement))]
-#endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
         /// <summary>
         /// Sets the text flow direction
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Controls XML serialization of style.
         /// </summary>
@@ -86,13 +75,14 @@ namespace AdaptiveCards
         /// Determines whether to serialize the style for XML.
         /// </summary>
         public bool ShouldSerializeRtlXml() => this.Rtl.HasValue;
-#endif
 
+        /// <inheritdoc/>
         public override IEnumerator<AdaptiveElement> GetEnumerator()
         {
             return Items.GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public override void Add(AdaptiveElement element)
         {
             Items.Add(element);

@@ -16,9 +16,7 @@ namespace AdaptiveCards
         /// Sets the input as required for triggering Submit actions.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool IsRequired { get; set; }
 
@@ -26,9 +24,7 @@ namespace AdaptiveCards
         /// Label to be shown next to input.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Label { get; set; }
 
@@ -36,9 +32,7 @@ namespace AdaptiveCards
         /// Error message to be shown when validation fails.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string ErrorMessage { get; set; }
 

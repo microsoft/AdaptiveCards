@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MarkedNet
 {
+    /// <summary>
+    /// Converter for Emoji - defines maps from symbol to Char and symbol to markup.
+    /// </summary>
     public static class EmojiConverter
     {
         private static Dictionary<string, string> markup2Emoji = new Dictionary<string, string>();
@@ -1298,6 +1301,14 @@ namespace Microsoft.MarkedNet
             Add("regional indicator symbol letters zw", ":flag-zw:", 0x1F1FF, 0x1F1FC);
         }
 
+        /// <summary>
+        /// Add a new definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="markup"></param>
+        /// <param name="code1"></param>
+        /// <param name="code2"></param>
+        /// <param name="code3"></param>
         public static void Add(string name, string markup, int code1, int? code2 = null, int? code3 = null)
         {
             string emoji = Char.ConvertFromUtf32(code1);
@@ -1310,7 +1321,7 @@ namespace Microsoft.MarkedNet
             {
                 markup2Emoji.Add(markup, emoji);
             }
-            catch (ArgumentException err)
+            catch (ArgumentException)
             {
 #if NET452
                 Trace.TraceError($"Failed to add {markup} because: {err.Message}");
@@ -1320,7 +1331,7 @@ namespace Microsoft.MarkedNet
             {
                 emoji2Markup.Add(emoji, markup);
             }
-            catch (ArgumentException err)
+            catch (ArgumentException)
             {
 #if NET452
                 Trace.TraceError($"Failed to add {emoji} because: {err.Message}");
@@ -1329,12 +1340,23 @@ namespace Microsoft.MarkedNet
 
         }
 
+        /// <summary>
+        /// Table of markup to emojii chars
+        /// </summary>
         public static Dictionary<string, string> Markup2Emoji { get { return markup2Emoji; } }
 
+        /// <summary>
+        /// Table of emoji to markup 
+        /// </summary>
         public static Dictionary<string, string> Emoji2Markup { get { return emoji2Markup; } }
 
         private static Regex MarkupRegex = new Regex(@"(:[^:\s]+:)", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Convert markup to emoji chars
+        /// </summary>
+        /// <param name="markup"></param>
+        /// <returns></returns>
         public static string ConvertMarkupToEmoji(string markup)
         {
             StringBuilder sb = new StringBuilder(markup);
@@ -1351,6 +1373,11 @@ namespace Microsoft.MarkedNet
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Converts emojichars to markup
+        /// </summary>
+        /// <param name="emojiText"></param>
+        /// <returns></returns>
         public static string ConvertEmojiToMarkup(string emojiText)
         {
             StringBuilder sb = new StringBuilder(emojiText);

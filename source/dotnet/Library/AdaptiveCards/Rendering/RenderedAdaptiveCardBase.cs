@@ -25,6 +25,12 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public RenderedAdaptiveCardInputs UserInputs { get; set; } = new RenderedAdaptiveCardInputs();
 
+        /// <summary>
+        /// Internal constructor
+        /// </summary>
+        /// <param name="originatingCard"></param>
+        /// <param name="warnings"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         protected RenderedAdaptiveCardBase(AdaptiveCard originatingCard, IList<AdaptiveWarning> warnings)
         {
             Warnings = warnings ?? throw new ArgumentNullException(nameof(warnings));

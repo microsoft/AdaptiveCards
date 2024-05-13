@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Microsoft.MarkedNet
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class MarkdownRenderer
     {
         #region Properties
@@ -233,4 +234,5 @@ namespace Microsoft.MarkedNet
 
         #endregion
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

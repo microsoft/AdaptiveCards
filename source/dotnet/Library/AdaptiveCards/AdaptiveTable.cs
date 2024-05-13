@@ -12,9 +12,7 @@ namespace AdaptiveCards
     /// Represents a table
     /// </summary>
 
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTable.TypeName)]
-#endif
     public class AdaptiveTable : AdaptiveCollectionWithContentAlignment
     {
         /// <inheritdoc />
@@ -28,17 +26,13 @@ namespace AdaptiveCards
         /// <summary>
         /// Collection of TableRows 
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlElement(Type = typeof(AdaptiveTableRow), ElementName = AdaptiveTableRow.TypeName)]
-#endif
         public List<AdaptiveTableRow> Rows{ get; set; } = new List<AdaptiveTableRow>();
 
         /// <summary>
         /// Collection of TableColumnDefinitions
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlElement(Type = typeof(AdaptiveTableColumnDefinition), ElementName = AdaptiveTableColumnDefinition.TypeName)]
-#endif
         public List<AdaptiveTableColumnDefinition> Columns{ get; set; } = new List<AdaptiveTableColumnDefinition>();
 
         /// <summary>
@@ -67,13 +61,10 @@ namespace AdaptiveCards
         /// </summary>
         [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         [DefaultValue(null)]
         public AdaptiveContainerStyle? GridStyle { get; set; }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Controls XML serialization of style.
         /// </summary>
@@ -86,16 +77,13 @@ namespace AdaptiveCards
         /// <summary>
         /// Determines whether to serialize the style for XML.
         /// </summary>
-        public bool ShouldSerializeStyleXml() => this.GridStyle.HasValue;
-#endif
+        public bool ShouldSerializeGridStyleXml() => this.GridStyle.HasValue;
 
         /// <summary>
         /// Specifies whether grid lines should be displayed.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(true)]
         public bool ShowGridLines { get; set; } = true;
 
@@ -103,9 +91,7 @@ namespace AdaptiveCards
         /// Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(true)]
         public bool FirstRowAsHeaders { get; set; } = true;
     }

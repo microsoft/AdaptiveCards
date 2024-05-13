@@ -5,6 +5,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
+    /// <summary>
+    /// Headings Config
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class HeadingsConfig
     {

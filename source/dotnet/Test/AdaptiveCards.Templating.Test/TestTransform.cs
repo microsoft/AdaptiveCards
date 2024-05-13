@@ -11446,7 +11446,7 @@ namespace AdaptiveCards.Templating.Test
             {
                 string cardJson = transformer.Expand(context);
             }
-            catch (AdaptiveTemplateException e)
+            catch (AdaptiveTemplateException)
             {
                 Assert.Fail("No exception should be thrown");
             }

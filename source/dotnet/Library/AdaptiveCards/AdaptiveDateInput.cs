@@ -9,27 +9,21 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the Input.Date element.
     /// </summary>
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveDateInput.TypeName)]
-#endif
     public class AdaptiveDateInput : AdaptiveInput
     {
         /// <inheritdoc />
         public const string TypeName = "Input.Date";
 
         /// <inheritdoc />
-#if !NETSTANDARD1_3
         [XmlIgnore]
-#endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         /// Placeholder text to display.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Placeholder { get; set; }
 
@@ -37,9 +31,7 @@ namespace AdaptiveCards
         /// The initial value for the field.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Value { get; set; }
 
@@ -47,9 +39,7 @@ namespace AdaptiveCards
         /// Hint of minimum value (note: may be ignored by some clients).
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Min { get; set; }
 
@@ -57,9 +47,7 @@ namespace AdaptiveCards
         /// Hint of maximum value (note: may be ignored by some clients).
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Max { get; set; }
 

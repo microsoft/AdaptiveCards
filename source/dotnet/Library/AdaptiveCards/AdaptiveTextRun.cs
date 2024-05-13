@@ -11,9 +11,7 @@ namespace AdaptiveCards
     /// Represents a TextRun.
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-#if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextRun.TypeName)]
-#endif
     public class AdaptiveTextRun : AdaptiveInline, IAdaptiveTextElement
     {
         /// <inheritdoc />
@@ -40,72 +38,54 @@ namespace AdaptiveCards
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveTextSize), "normal")]
         public AdaptiveTextSize Size { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveTextWeight), "normal")]
         public AdaptiveTextWeight Weight { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveTextColor), "default")]
         public AdaptiveTextColor Color { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool IsSubtle { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool Italic { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool Strikethrough { get; set; }
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool Highlight { get; set; }
 
         /// <inheritdoc />
         [JsonRequired]
-#if !NETSTANDARD1_3
         [XmlText]
-#endif
         public string Text { get; set; } = " ";
 
         /// <inheritdoc />
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(typeof(AdaptiveFontType), "default")]
         public AdaptiveFontType FontType { get; set; }
 
@@ -113,9 +93,7 @@ namespace AdaptiveCards
         ///     Action for this text run
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
         [XmlElement]
-#endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
 
@@ -123,9 +101,7 @@ namespace AdaptiveCards
         /// Display this text underlined.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(false)]
         public bool Underline { get; set; }
     }

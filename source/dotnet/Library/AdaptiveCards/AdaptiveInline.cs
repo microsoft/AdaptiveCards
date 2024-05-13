@@ -18,10 +18,8 @@ namespace AdaptiveCards
         /// The type name of the inline.
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
-#if !NETSTANDARD1_3
         // don't serialize type with xml, because we use element name or attribute for type
         [XmlIgnore]
-#endif
         public abstract string Type { get; set; }
 
         /// <inheritdoc />
