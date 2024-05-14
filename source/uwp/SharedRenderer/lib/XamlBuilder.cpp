@@ -213,7 +213,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             bodyElementHostImpl->SetAdaptiveHeight(true);
             winrt::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
 
-            XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
+            // Override the root styles
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.RootContainer", bodyElementHost);
+            // If a style was not applied, add margins from the host config
+            if (!bodyElementHost.Style())
+            {
+                XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
+            }
 
             winrt::HeightType adaptiveCardHeightType = adaptiveCard.Height();
 
