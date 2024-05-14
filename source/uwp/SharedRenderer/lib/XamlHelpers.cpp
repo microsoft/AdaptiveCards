@@ -295,19 +295,31 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 
         if (imageUrl.SchemeName() == L"data")
         {
-            std::string data = ExtractSvgDataFromUri(imageUrl);
+            auto imagePath = HStringToUTF8(imageUrl.Path());
+            auto foundBase64 = imagePath.find("base64");
             winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
-            dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
+
+            if (foundBase64 != std::string::npos)
+            {
+                // Decode base 64 string
+                std::string data = AdaptiveBase64Util::ExtractDataFromUri(imagePath);
+                std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+                dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
+            }
+            else
+            {
+                std::string data = ExtractSvgDataFromUri(imageUrl);
+                dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
+            }
+                
             co_await dataWriter.StoreAsync();
-            auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
-            stream.Seek(0);
-
-            auto sizeParseOp{ParseSizeOfSVGImageFromStreamAsync(stream)};
-            auto size = co_await sizeParseOp;
-
             if (auto strongImageSource = weakImageSource.get())
             {
+                auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
+                stream.Seek(0);
+                auto sizeParseOp{ParseSizeOfSVGImageFromStreamAsync(stream)};          
                 co_await wil::resume_foreground(GetDispatcher(strongImageSource));
+                auto size = co_await sizeParseOp;
                 strongImageSource.RasterizePixelHeight(size.Height);
                 strongImageSource.RasterizePixelWidth(size.Width);
                 co_await strongImageSource.SetSourceAsync(stream); 
