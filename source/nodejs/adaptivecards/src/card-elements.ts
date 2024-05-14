@@ -4525,14 +4525,20 @@ export class ChoiceSetInput extends Input {
             const labelIds: string[] = this.getAllLabelIds();
 
             for (let i = 0; i < this._toggleInputs.length; i++) {
-                let joinedLabelIds = labelIds.join(" ");
+                let joinedLabelIds = "";
+
+                // Only include the overall information for the first input
+                if (i === 0) {
+                    joinedLabelIds = labelIds.join(" ");
+                }
+
                 const label = this._labels[i];
 
                 if (label && label.id) {
                     joinedLabelIds += " " + label.id;
                 }
 
-                if (joinedLabelIds) {
+                if (joinedLabelIds !== "") {
                     this._toggleInputs[i].setAttribute("aria-labelledby", joinedLabelIds);
                 } else {
                     this._toggleInputs[i].removeAttribute("aria-labelledby");
