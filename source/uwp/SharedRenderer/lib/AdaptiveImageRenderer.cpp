@@ -457,14 +457,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                             svgImageSource.RasterizePixelHeight(size.Height);
                             svgImageSource.RasterizePixelWidth(size.Width);
                         }
-
-                        co_await svgImageSource.SetSourceAsync(stream);
+                        svgImageSource.SetSourceAsync(stream);
                     }
                     else
                     {
                         co_await wil::resume_foreground(GetDispatcher(strongImageSource));
                         auto bitmapImage = strongImageSource.as<winrt::BitmapImage>();
-                        co_await bitmapImage.SetSourceAsync(stream);
+                        bitmapImage.SetSourceAsync(stream);
                     }
                 }
                 else
