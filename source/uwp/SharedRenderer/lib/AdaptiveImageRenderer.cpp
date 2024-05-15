@@ -62,7 +62,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             return nullptr;
         }
 
-        auto isImageSvg = IsSvgImage(HStringToUTF8(url));
+        auto isImageSvg = IsSvgImage(imageUrl);
 
         uint32_t pixelWidth = adaptiveImage.PixelWidth();
         uint32_t pixelHeight = adaptiveImage.PixelHeight();
@@ -628,14 +628,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             }
         }
     }
-
-    boolean XamlBuilder::IsSvgImage(std::string url)
-    {
-        // Question: is this check sufficient?
-        auto foundSvg = url.find("svg");
-        return !(foundSvg == std::string::npos);
-    }
-    
+ 
     void XamlBuilder::SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize) {
         if (auto image = imageSource.try_as<winrt::SvgImageSource>())
         {

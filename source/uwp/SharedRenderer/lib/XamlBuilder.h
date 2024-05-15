@@ -112,8 +112,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             winrt::ImageSource imageSource,
             ImageProperties<TElement> const properties);
 
-        boolean IsSvgImage(std::string url);
-
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
 

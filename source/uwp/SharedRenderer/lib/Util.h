@@ -230,6 +230,8 @@ winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring
 
 winrt::IAsyncOperation<winrt::Windows::Foundation::Size> ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream);
 
+bool IsSvgImage(winrt::Windows::Foundation::Uri const& imageUrl);
+
 auto inline GetDispatcher(winrt::ImageSource const& imageSource)
 {
 #ifdef USE_WINUI3

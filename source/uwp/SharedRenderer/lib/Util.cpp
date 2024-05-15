@@ -708,3 +708,20 @@ winrt::IAsyncOperation<winrt::Windows::Foundation::Size> ParseSizeOfSVGImageFrom
 
     co_return ParseSizeOfSVGImageFromXmlString(svgString);
 }
+
+bool IsSvgImage(winrt::Windows::Foundation::Uri const& imageUrl)
+{
+    auto imagePath = HStringToUTF8(imageUrl.Path());
+
+    // Find the position of the first semicolon
+    size_t semicolonPos = imagePath.find(';');
+
+    // If there is no semicolon, check the entire string
+    if (semicolonPos == std::string::npos)
+    {
+        semicolonPos = imagePath.length();
+    }
+
+    // Check if "svg" is present in the substring from the start to the semicolon
+    return imagePath.substr(0, semicolonPos).find("svg") != std::string::npos;
+}

@@ -248,33 +248,37 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         try
         {
             auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
-            auto imagePath = HStringToUTF8(imageUrl.Path());
-            bool isImageSvg = imagePath.find("svg") != std::string::npos;
 
-            if (isImageSvg)
+            if (IsSvgImage(imageUrl))
             {
                 winrt::SvgImageSource svgImageSource{};
 
-                ConfigureSvgImageSourceAsync(renderContext, url, imageUrl, svgImageSource, tileControl);
+                ConfigureSvgImageSourceAsync(imageUrl, svgImageSource, tileControl);
 
                 winrt::Image backgroundImage;
                 backgroundImage.Source(svgImageSource);
 
                 return backgroundImage;
 			}
-
-            if (imageUrl.SchemeName() == L"data")
+            else
             {
-                return RenderImageFromDataUri(imageUrl);
+
+                if (imageUrl.SchemeName() == L"data")
+                {
+                    return RenderImageFromDataUri(imageUrl);
+                }
+                else
+                {
+
+                    winrt::BitmapImage bitmapImage{};
+                    bitmapImage.UriSource(imageUrl);
+
+                    winrt::Image backgroundImage;
+                    backgroundImage.Source(bitmapImage);
+
+                    return backgroundImage;
+                }
             }
-
-            winrt::BitmapImage bitmapImage{};
-            bitmapImage.UriSource(imageUrl);
-
-            winrt::Image backgroundImage;
-            backgroundImage.Source(bitmapImage);
-
-            return backgroundImage;
         }
         catch (winrt::hresult_error const& ex)
         {
@@ -283,13 +287,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         }
     }
 
-    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::AdaptiveRenderContext renderContext,
-                                                        winrt::hstring url,
-                                                        winrt::Uri uri,
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri imageUrl,
                                                         winrt::SvgImageSource svgImageSource,
                                                         winrt::TileControl tileControl)
     {
-        auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
         auto weakImageSource{winrt::make_weak(svgImageSource)};
         auto weakTileControl{winrt::make_weak(tileControl)};
 
@@ -334,7 +335,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         }
 
         winrt::HttpClient httpClient;
-        auto getOperation = co_await httpClient.GetAsync(uri);
+        auto getOperation = co_await httpClient.GetAsync(imageUrl);
         auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
         auto size{ParseSizeOfSVGImageFromXmlString(readOperation)};
 
@@ -368,10 +369,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
             tileControl.IsEnabled(false);
             tileControl.BackgroundImage(adaptiveBackgroundImage);
             auto imageUrl = GetUrlFromString(renderContext.HostConfig(), adaptiveBackgroundImage.Url());
-            auto imagePath = HStringToUTF8(imageUrl.Path());
-            bool isImageSvg = imagePath.find("svg") != std::string::npos;
 
-            if (!isImageSvg)
+            if (!IsSvgImage(imageUrl))
             {
                 tileControl.LoadImageBrush(backgroundImage);
             }
