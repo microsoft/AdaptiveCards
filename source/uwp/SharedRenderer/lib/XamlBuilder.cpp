@@ -105,15 +105,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             bool isInShowCard = renderArgs.IsInShowCard();
 
-            if (isInShowCard)
-            {
-                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", rootAsFrameworkElement);
-            }
-            else
-            {
-                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", rootAsFrameworkElement);
-            }
-
             xamlTreeRoot = rootAsFrameworkElement;
 
             if (!isInShowCard && xamlBuilder)
@@ -213,7 +204,21 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             bodyElementHostImpl->SetAdaptiveHeight(true);
             winrt::WholeItemsPanel bodyElementHost = *bodyElementHostImpl;
 
-            XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
+            // Override the root styles
+            if (renderArgs.IsInShowCard())
+            {
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", bodyElementHost);
+            }
+            else
+            {
+                XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", bodyElementHost);
+            }
+
+            // If a style was not applied, add margins from the host config
+            if (!bodyElementHost.Style())
+            {
+                XamlHelpers::ApplyMarginToXamlElement(hostConfig, bodyElementHost);
+            }
 
             winrt::HeightType adaptiveCardHeightType = adaptiveCard.Height();
 
