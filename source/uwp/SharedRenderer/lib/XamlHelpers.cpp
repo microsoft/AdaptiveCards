@@ -243,13 +243,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return content;
     }
 
-    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url, winrt::TileControl const& tileControl)
+    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::TileControl const& tileControl,
+                                       bool IsSvg,
+                                       winrt::Uri imageUrl)
     {
         try
         {
-            auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
-
-            if (IsSvgImage(imageUrl))
+            if (IsSvg)
             {
                 winrt::SvgImageSource svgImageSource{};
 
@@ -262,14 +263,12 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 			}
             else
             {
-
                 if (imageUrl.SchemeName() == L"data")
                 {
                     return RenderImageFromDataUri(imageUrl);
                 }
                 else
                 {
-
                     winrt::BitmapImage bitmapImage{};
                     bitmapImage.UriSource(imageUrl);
 
@@ -360,17 +359,17 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     {
         // Creates the background image for all fill modes
         auto tileControl = winrt::make<winrt::implementation::TileControl>();
+        auto imageUrl = GetUrlFromString(renderContext.HostConfig(), adaptiveBackgroundImage.Url());
+        bool IsSvg = IsSvgImage(imageUrl);
 
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
-        if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url(), tileControl))
+        if (const auto backgroundImage = CreateBackgroundImage(renderContext, tileControl, IsSvg, imageUrl))
         {
             // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
             tileControl.IsEnabled(false);
             tileControl.BackgroundImage(adaptiveBackgroundImage);
-            auto imageUrl = GetUrlFromString(renderContext.HostConfig(), adaptiveBackgroundImage.Url());
-
-            if (!IsSvgImage(imageUrl))
+            if (!IsSvg)
             {
                 tileControl.LoadImageBrush(backgroundImage);
             }
