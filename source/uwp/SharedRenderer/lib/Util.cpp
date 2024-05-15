@@ -713,15 +713,15 @@ bool IsSvgImage(winrt::Windows::Foundation::Uri const& imageUrl)
 {
     auto imagePath = HStringToUTF8(imageUrl.Path());
 
-    // Find the position of the first semicolon
-    size_t semicolonPos = imagePath.find(';');
-
-    // If there is no semicolon, check the entire string
-    if (semicolonPos == std::string::npos)
+    if (imageUrl.SchemeName() == L"data")
     {
-        semicolonPos = imagePath.length();
+        // Find the position of the first semicolon
+        size_t semicolonPos = imagePath.find(';');
+
+        // Check if "svg" is present in the substring from the start to the semicolon
+        return imagePath.substr(0, semicolonPos).find("svg") != std::string::npos;
     }
 
-    // Check if "svg" is present in the substring from the start to the semicolon
-    return imagePath.substr(0, semicolonPos).find("svg") != std::string::npos;
+	// Check if the file extension is ".svg"
+	return imagePath.substr(imagePath.find_last_of('.') + 1) == "svg";
 }
