@@ -5,16 +5,21 @@ using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Converter for integers only.
+    /// </summary>
     public class StrictIntConverter : JsonConverter
     {
         readonly JsonSerializer defaultSerializer = new JsonSerializer();
 
+        /// <inheritdoc/>
         public override bool CanConvert(Type objectType)
         {
             // Only use this converter for Integer types
             return objectType.IsIntegerType();
         }
 
+        /// <inheritdoc/>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             switch (reader.TokenType)
@@ -28,8 +33,10 @@ namespace AdaptiveCards
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanWrite { get { return false; } }
 
+        /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
@@ -38,6 +45,11 @@ namespace AdaptiveCards
 
     public static partial class JsonExtensions
     {
+        /// <summary>
+        /// Helper function to determine if type is a integer type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static bool IsIntegerType(this Type type)
         {
             type = Nullable.GetUnderlyingType(type) ?? type;

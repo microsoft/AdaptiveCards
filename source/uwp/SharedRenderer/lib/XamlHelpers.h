@@ -197,4 +197,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
     SeparatorParemeters GetSeparatorParameters(winrt::IAdaptiveCardElement const& element, winrt::AdaptiveHostConfig const& hostConfig);
 
     winrt::Image RenderImageFromDataUri(winrt::Uri const& imageUrl);
+
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri imageUrl,
+                                                        winrt::SvgImageSource svgImageSource,
+                                                        winrt::TileControl tileControl);
 }

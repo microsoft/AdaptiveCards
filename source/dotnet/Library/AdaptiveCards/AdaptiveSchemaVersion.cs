@@ -20,17 +20,13 @@ namespace AdaptiveCards
         /// <summary>
         /// Major version number.
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public int Major { get; set; }
 
         /// <summary>
         /// Minor version number.
         /// </summary>
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         public int Minor { get; set; }
 
         /// <summary>

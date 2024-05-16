@@ -29,7 +29,7 @@ namespace AdaptiveCards
             {
                 return AdaptiveWidth.Parse(value);
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 if (value.Length < 3)
                 {

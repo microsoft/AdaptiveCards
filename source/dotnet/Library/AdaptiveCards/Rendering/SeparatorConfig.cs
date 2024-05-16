@@ -6,6 +6,9 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards.Rendering
 {
 
+    /// <summary>
+    /// Config for seperator
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class SeparatorConfig
     {

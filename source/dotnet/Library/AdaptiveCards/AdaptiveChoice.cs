@@ -12,18 +12,14 @@ namespace AdaptiveCards
     ///     Choice as part of a Input.AdaptiveChoiceSetInput element
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-#if !NETSTANDARD1_3
     [XmlType(TypeName = "Choice")]
-#endif
     public class AdaptiveChoice
     {
         /// <summary>
         ///     Display text for the choice
         /// </summary>
         [JsonRequired]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Title { get; set; }
 
@@ -31,9 +27,7 @@ namespace AdaptiveCards
         ///     Internal value which will be collected as input if the choice is selected
         /// </summary>
         [JsonRequired]
-#if !NETSTANDARD1_3
         [XmlAttribute]
-#endif
         [DefaultValue(null)]
         public string Value { get; set; }
 

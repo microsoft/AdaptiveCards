@@ -11,9 +11,16 @@ namespace AdaptiveCards.Rendering
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class InputsConfig
     {
+
+        /// <summary>
+        /// LabelConfig config
+        /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public LabelConfig Label { get; set; } = new LabelConfig();
 
+        /// <summary>
+        /// ErrorMessage config
+        /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ErrorMessageConfig ErrorMessage { get; set; } = new ErrorMessageConfig();
     }

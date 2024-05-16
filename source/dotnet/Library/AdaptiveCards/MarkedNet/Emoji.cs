@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MarkedNet
 {
+    /// <summary>
+    /// Emoji to Char constants
+    /// </summary>
     public static class Emoji
     {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public readonly static string copyright = Char.ConvertFromUtf32(0x00A9);
         public readonly static string registered = Char.ConvertFromUtf32(0x00AE);
         public readonly static string bangbang = Char.ConvertFromUtf32(0x203C);
@@ -1289,5 +1293,6 @@ namespace Microsoft.MarkedNet
         public readonly static string flag_za = Char.ConvertFromUtf32(0x1F1FF) + Char.ConvertFromUtf32(0x1F1E6);
         public readonly static string flag_zm = Char.ConvertFromUtf32(0x1F1FF) + Char.ConvertFromUtf32(0x1F1F2);
         public readonly static string flag_zw = Char.ConvertFromUtf32(0x1F1FF) + Char.ConvertFromUtf32(0x1F1FC);
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     }
 }

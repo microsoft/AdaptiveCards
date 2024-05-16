@@ -27,7 +27,9 @@ namespace AdaptiveCards
             defaultValue = GetDefaultValueFromEnum(); 
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         public IgnoreDefaultStringEnumConverter(bool camelCaseText) : base(camelCaseText)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             defaultValue = GetDefaultValueFromEnum();
         }

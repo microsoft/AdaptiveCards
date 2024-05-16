@@ -5,18 +5,30 @@ using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
+    /// <summary>
+    /// ContainerStylesConfig
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ContainerStylesConfig
     {
+        /// <summary>
+        /// Default Style config
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Default { get; set; } = new ContainerStyleConfig();
 
+        /// <summary> 
+        /// Emphasis style config
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Emphasis { get; set; } = new ContainerStyleConfig()
         {
             BackgroundColor = "#08000000"
         };
 
+        /// <summary>
+        /// Good style confing
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Good { get; set; } = new ContainerStyleConfig()
         {
@@ -24,6 +36,10 @@ namespace AdaptiveCards.Rendering
             ForegroundColors = alternateForegroundColors
         };
 
+
+        /// <summary>
+        /// Warning style config
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Warning { get; set; } = new ContainerStyleConfig()
         {
@@ -31,6 +47,9 @@ namespace AdaptiveCards.Rendering
             ForegroundColors = alternateForegroundColors
         };
 
+        /// <summary>
+        /// Attention style config
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Attention { get; set; } = new ContainerStyleConfig()
         {
@@ -38,6 +57,9 @@ namespace AdaptiveCards.Rendering
             ForegroundColors = alternateForegroundColors
         };
 
+        /// <summary>
+        /// Accent style config
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Accent { get; set; } = new ContainerStyleConfig()
         {
@@ -50,6 +72,11 @@ namespace AdaptiveCards.Rendering
             Warning = new FontColorConfig("#ffa600", "#B2ffa600")
         };
 
+        /// <summary>
+        /// Given a style return the config for the style.
+        /// </summary>
+        /// <param name="style">style to lookup</param>
+        /// <returns>configuration for that style.</returns>
         public ContainerStyleConfig GetContainerStyleConfig(AdaptiveContainerStyle? style)
         {
             switch (style)
