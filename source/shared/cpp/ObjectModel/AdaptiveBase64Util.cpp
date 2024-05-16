@@ -249,6 +249,17 @@ std::string AdaptiveBase64Util::Encode(const std::vector<char>& decodedBase64)
 // Format for DataURI is data:[<MediaType>][;base64],data with MediaType and base64 being optional and data is composed of [A-Z a-z 0-9 + /] characters
 std::string AdaptiveBase64Util::ExtractDataFromUri(const std::string& dataUri)
 {
-    size_t comaPosition = dataUri.find_last_of(",");
-    return dataUri.substr(comaPosition + 1);
+    size_t commaPosition = dataUri.find_last_of(",");
+    if (commaPosition != std::string::npos)
+    {
+        size_t startPosition = std::find_if_not(
+            dataUri.begin() + commaPosition + 1, 
+            dataUri.end(), 
+            [](char c) { return std::isspace(c); }
+            ) - dataUri.begin();
+
+        return dataUri.substr(startPosition);
+    }
+
+    return {};
 }
