@@ -34,6 +34,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     private:
         void RefreshContainerTile();
         void ImageOpened(const IInspectable& sender, const winrt::RoutedEventArgs& args);
+        void SvgImageOpened(const IInspectable& sender, const winrt::SvgImageSourceOpenedEventArgs& args);
 
         // Fields
         /* winrt::FrameworkElement m_rootElement;*/
@@ -48,6 +49,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         // Revokers
         winrt::BitmapImage::ImageOpened_revoker m_imageOpenedRevoker;
+        winrt::SvgImageSource::Opened_revoker m_svgImageOpenedRevoker;
     };
 }
 

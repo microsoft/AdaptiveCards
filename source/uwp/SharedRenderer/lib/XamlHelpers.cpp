@@ -6,6 +6,7 @@
 #include "TileControl.h"
 #include "AdaptiveBase64Util.h"
 #include "WholeItemsPanel.h"
+#include "Util.h"
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
 {
@@ -242,24 +243,41 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         return content;
     }
 
-    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext, winrt::hstring const& url)
+    winrt::Image CreateBackgroundImage(winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::TileControl const& tileControl,
+                                       bool IsSvg,
+                                       winrt::Uri imageUrl)
     {
         try
         {
-            auto imageUrl = GetUrlFromString(renderContext.HostConfig(), url);
-
-            if (imageUrl.SchemeName() == L"data")
+            if (IsSvg)
             {
-                return RenderImageFromDataUri(imageUrl);
+                winrt::SvgImageSource svgImageSource{};
+
+                ConfigureSvgImageSourceAsync(imageUrl, svgImageSource, tileControl);
+
+                winrt::Image backgroundImage;
+                backgroundImage.Source(svgImageSource);
+
+                return backgroundImage;
+			}
+            else
+            {
+                if (imageUrl.SchemeName() == L"data")
+                {
+                    return RenderImageFromDataUri(imageUrl);
+                }
+                else
+                {
+                    winrt::BitmapImage bitmapImage{};
+                    bitmapImage.UriSource(imageUrl);
+
+                    winrt::Image backgroundImage;
+                    backgroundImage.Source(bitmapImage);
+
+                    return backgroundImage;
+                }
             }
-
-            winrt::BitmapImage bitmapImage{};
-            bitmapImage.UriSource(imageUrl);
-
-            winrt::Image backgroundImage;
-            backgroundImage.Source(bitmapImage);
-
-            return backgroundImage;
         }
         catch (winrt::hresult_error const& ex)
         {
@@ -268,21 +286,93 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
         }
     }
 
+    winrt::fire_and_forget ConfigureSvgImageSourceAsync(winrt::Uri imageUrl,
+                                                        winrt::SvgImageSource svgImageSource,
+                                                        winrt::TileControl tileControl)
+    {
+        auto weakImageSource{winrt::make_weak(svgImageSource)};
+        auto weakTileControl{winrt::make_weak(tileControl)};
+
+        if (imageUrl.SchemeName() == L"data")
+        {
+            auto imagePath = HStringToUTF8(imageUrl.Path());
+            auto foundBase64 = imagePath.find("base64");
+            winrt::DataWriter dataWriter{winrt::InMemoryRandomAccessStream{}};
+
+            if (foundBase64 != std::string::npos)
+            {
+                // Decode base 64 string
+                std::string data = AdaptiveBase64Util::ExtractDataFromUri(imagePath);
+                std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+                dataWriter.WriteBytes(std::vector<byte>{decodedData.begin(), decodedData.end()});
+            }
+            else
+            {
+                std::string data = ExtractSvgDataFromUri(imageUrl);
+                dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
+            }
+                
+            co_await dataWriter.StoreAsync();
+            if (auto strongImageSource = weakImageSource.get())
+            {
+                auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
+                stream.Seek(0);
+                auto sizeParseOp{ParseSizeOfSVGImageFromStreamAsync(stream)};          
+                co_await wil::resume_foreground(GetDispatcher(strongImageSource));
+                auto size = co_await sizeParseOp;
+                strongImageSource.RasterizePixelHeight(size.Height);
+                strongImageSource.RasterizePixelWidth(size.Width);
+                co_await strongImageSource.SetSourceAsync(stream); 
+                winrt::Image image;
+                image.Source(strongImageSource);
+                if (auto strongTileControl = weakTileControl.get())
+                {
+                    strongTileControl.LoadImageBrush(image);
+                }
+            }
+            co_return;
+        }
+
+        winrt::HttpClient httpClient;
+        auto getOperation = co_await httpClient.GetAsync(imageUrl);
+        auto readOperation = co_await getOperation.Content().ReadAsStringAsync();
+        auto size{ParseSizeOfSVGImageFromXmlString(readOperation)};
+
+        if (auto strongImageSource = weakImageSource.get())
+        {
+            co_await wil::resume_foreground(GetDispatcher(strongImageSource));
+            strongImageSource.RasterizePixelHeight(size.Height);
+            strongImageSource.RasterizePixelWidth(size.Width);
+            winrt::Image image; 
+            image.Source(strongImageSource);
+            strongImageSource.UriSource(imageUrl);
+            if (auto strongTileControl = weakTileControl.get())
+            {
+                strongTileControl.LoadImageBrush(image);
+			}
+        }
+    }
+
     void ApplyBackgroundToRoot(winrt::Panel const& rootPanel,
                                winrt::AdaptiveBackgroundImage const& adaptiveBackgroundImage,
                                winrt::AdaptiveRenderContext const& renderContext)
     {
+        // Creates the background image for all fill modes
+        auto tileControl = winrt::make<winrt::implementation::TileControl>();
+        auto imageUrl = GetUrlFromString(renderContext.HostConfig(), adaptiveBackgroundImage.Url());
+        bool IsSvg = IsSvgImage(imageUrl);
+
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
-        if (const auto backgroundImage = CreateBackgroundImage(renderContext, adaptiveBackgroundImage.Url()))
+        if (const auto backgroundImage = CreateBackgroundImage(renderContext, tileControl, IsSvg, imageUrl))
         {
-            // Creates the background image for all fill modes
-            auto tileControl = winrt::make<winrt::implementation::TileControl>();
-
             // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
             tileControl.IsEnabled(false);
             tileControl.BackgroundImage(adaptiveBackgroundImage);
-            tileControl.LoadImageBrush(backgroundImage);
+            if (!IsSvg)
+            {
+                tileControl.LoadImageBrush(backgroundImage);
+            }
 
             XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
 
