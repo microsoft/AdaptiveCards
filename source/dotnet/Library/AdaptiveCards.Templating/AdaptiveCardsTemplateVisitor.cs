@@ -63,7 +63,6 @@ namespace AdaptiveCards.Templating
             /// <param name="hostDataContext">optional host data context</param>
             public DataContext(string text, JsonNode rootDataContext, JsonNode hostDataContext = null)
             {
-                // TODO: Old code did 'disable date parsing handling', STJ has no replacement.
                 var jtoken = JsonNode.Parse(text);
                 Init(jtoken, rootDataContext, hostDataContext);
             }
@@ -76,14 +75,7 @@ namespace AdaptiveCards.Templating
             /// <param name="hostDataContext">optional host data context</param>
             private void Init(JsonNode jtoken, JsonNode rootDataContext, JsonNode hostDataContext)
             {
-                if (jtoken is JsonObject)
-                {
-                    AELMemory = new JsonNodeMemory(jtoken);
-                }
-                else
-                {
-                    AELMemory = new JsonNodeMemory(new JsonObject());
-                }
+                AELMemory = (jtoken is JsonObject) ? new JsonNodeMemory(jtoken) : new JsonNodeMemory(new JsonObject());
 
                 token = jtoken;
                 RootDataContext = rootDataContext;
