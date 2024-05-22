@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AdaptiveExpressionsSTJ" Version="0.0.3" />
+    <PackageReference Include="AdaptiveExpressionsSTJ" Version="0.0.8" />
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.3.1" />

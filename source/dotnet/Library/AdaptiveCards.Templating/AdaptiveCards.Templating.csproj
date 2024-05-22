@@ -16,7 +16,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
 
-    <LangVersion>latest</LangVersion>
+    <LangVersion>12</LangVersion>
 
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsAotCompatible>
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AdaptiveExpressionsSTJ" Version="0.0.3" />
+    <PackageReference Include="AdaptiveExpressionsSTJ" Version="0.0.8" />
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
     <PackageReference Include="PolySharp" Version="1.14.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />

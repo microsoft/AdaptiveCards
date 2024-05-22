@@ -74,8 +74,6 @@ namespace AdaptiveCards.Templating
         {
             if (jsonTemplate != null)
             {
-                jsonTemplateString = jsonTemplate.ToString();
-
                 AntlrInputStream stream = new AntlrInputStream(jsonTemplate);
                 ITokenSource lexer = new AdaptiveCardsTemplateLexer(stream);
                 ITokenStream tokens = new CommonTokenStream(lexer);
