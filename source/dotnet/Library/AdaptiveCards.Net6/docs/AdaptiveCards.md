@@ -67,6 +67,12 @@
   - [CanConvert(objectType)](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-CanConvert-System-Type- 'AdaptiveCards.AdaptiveBackgroundImageConverter.CanConvert(System.Type)')
   - [ReadJson(reader,objectType,existingValue,serializer)](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveBackgroundImageConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
   - [WriteJson(writer,backgroundImage,serializer)](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveBackgroundImageConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+- [AdaptiveCaptionSource](#T-AdaptiveCards-AdaptiveCaptionSource 'AdaptiveCards.AdaptiveCaptionSource')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveCaptionSource-#ctor 'AdaptiveCards.AdaptiveCaptionSource.#ctor')
+  - [#ctor(mimeType,url)](#M-AdaptiveCards-AdaptiveCaptionSource-#ctor-System-String,System-String- 'AdaptiveCards.AdaptiveCaptionSource.#ctor(System.String,System.String)')
+  - [Label](#P-AdaptiveCards-AdaptiveCaptionSource-Label 'AdaptiveCards.AdaptiveCaptionSource.Label')
+  - [MimeType](#P-AdaptiveCards-AdaptiveCaptionSource-MimeType 'AdaptiveCards.AdaptiveCaptionSource.MimeType')
+  - [Url](#P-AdaptiveCards-AdaptiveCaptionSource-Url 'AdaptiveCards.AdaptiveCaptionSource.Url')
 - [AdaptiveCard](#T-AdaptiveCards-AdaptiveCard 'AdaptiveCards.AdaptiveCard')
   - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveCard-#ctor-AdaptiveCards-AdaptiveSchemaVersion- 'AdaptiveCards.AdaptiveCard.#ctor(AdaptiveCards.AdaptiveSchemaVersion)')
   - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveCard-#ctor-System-String- 'AdaptiveCards.AdaptiveCard.#ctor(System.String)')
@@ -82,10 +88,14 @@
   - [Height](#P-AdaptiveCards-AdaptiveCard-Height 'AdaptiveCards.AdaptiveCard.Height')
   - [JsonSchema](#P-AdaptiveCards-AdaptiveCard-JsonSchema 'AdaptiveCards.AdaptiveCard.JsonSchema')
   - [Lang](#P-AdaptiveCards-AdaptiveCard-Lang 'AdaptiveCards.AdaptiveCard.Lang')
+  - [Metadata](#P-AdaptiveCards-AdaptiveCard-Metadata 'AdaptiveCards.AdaptiveCard.Metadata')
+  - [MinHeight](#P-AdaptiveCards-AdaptiveCard-MinHeight 'AdaptiveCards.AdaptiveCard.MinHeight')
   - [MinVersion](#P-AdaptiveCards-AdaptiveCard-MinVersion 'AdaptiveCards.AdaptiveCard.MinVersion')
   - [OnDeserializingMissingVersion](#P-AdaptiveCards-AdaptiveCard-OnDeserializingMissingVersion 'AdaptiveCards.AdaptiveCard.OnDeserializingMissingVersion')
   - [PixelMinHeight](#P-AdaptiveCards-AdaptiveCard-PixelMinHeight 'AdaptiveCards.AdaptiveCard.PixelMinHeight')
   - [Refresh](#P-AdaptiveCards-AdaptiveCard-Refresh 'AdaptiveCards.AdaptiveCard.Refresh')
+  - [Rtl](#P-AdaptiveCards-AdaptiveCard-Rtl 'AdaptiveCards.AdaptiveCard.Rtl')
+  - [RtlXml](#P-AdaptiveCards-AdaptiveCard-RtlXml 'AdaptiveCards.AdaptiveCard.RtlXml')
   - [SelectAction](#P-AdaptiveCards-AdaptiveCard-SelectAction 'AdaptiveCards.AdaptiveCard.SelectAction')
   - [Speak](#P-AdaptiveCards-AdaptiveCard-Speak 'AdaptiveCards.AdaptiveCard.Speak')
   - [Title](#P-AdaptiveCards-AdaptiveCard-Title 'AdaptiveCards.AdaptiveCard.Title')
@@ -98,6 +108,7 @@
   - [ShouldSerializeBody()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeBody 'AdaptiveCards.AdaptiveCard.ShouldSerializeBody')
   - [ShouldSerializeHeight()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeHeight 'AdaptiveCards.AdaptiveCard.ShouldSerializeHeight')
   - [ShouldSerializeJsonSchema()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeJsonSchema 'AdaptiveCards.AdaptiveCard.ShouldSerializeJsonSchema')
+  - [ShouldSerializeRtlXml()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeRtlXml 'AdaptiveCards.AdaptiveCard.ShouldSerializeRtlXml')
   - [ToJson()](#M-AdaptiveCards-AdaptiveCard-ToJson 'AdaptiveCards.AdaptiveCard.ToJson')
 - [AdaptiveCardConfig](#T-AdaptiveCards-Rendering-AdaptiveCardConfig 'AdaptiveCards.Rendering.AdaptiveCardConfig')
   - [AllowCustomStyle](#P-AdaptiveCards-Rendering-AdaptiveCardConfig-AllowCustomStyle 'AdaptiveCards.Rendering.AdaptiveCardConfig.AllowCustomStyle')
@@ -127,6 +138,7 @@
 - [AdaptiveChoiceSetInput](#T-AdaptiveCards-AdaptiveChoiceSetInput 'AdaptiveCards.AdaptiveChoiceSetInput')
   - [TypeName](#F-AdaptiveCards-AdaptiveChoiceSetInput-TypeName 'AdaptiveCards.AdaptiveChoiceSetInput.TypeName')
   - [Choices](#P-AdaptiveCards-AdaptiveChoiceSetInput-Choices 'AdaptiveCards.AdaptiveChoiceSetInput.Choices')
+  - [DataQuery](#P-AdaptiveCards-AdaptiveChoiceSetInput-DataQuery 'AdaptiveCards.AdaptiveChoiceSetInput.DataQuery')
   - [IsMultiSelect](#P-AdaptiveCards-AdaptiveChoiceSetInput-IsMultiSelect 'AdaptiveCards.AdaptiveChoiceSetInput.IsMultiSelect')
   - [Placeholder](#P-AdaptiveCards-AdaptiveChoiceSetInput-Placeholder 'AdaptiveCards.AdaptiveChoiceSetInput.Placeholder')
   - [Style](#P-AdaptiveCards-AdaptiveChoiceSetInput-Style 'AdaptiveCards.AdaptiveChoiceSetInput.Style')
@@ -136,19 +148,22 @@
   - [GetNonInteractiveValue()](#M-AdaptiveCards-AdaptiveChoiceSetInput-GetNonInteractiveValue 'AdaptiveCards.AdaptiveChoiceSetInput.GetNonInteractiveValue')
 - [AdaptiveCollectionElement](#T-AdaptiveCards-AdaptiveCollectionElement 'AdaptiveCards.AdaptiveCollectionElement')
   - [Bleed](#P-AdaptiveCards-AdaptiveCollectionElement-Bleed 'AdaptiveCards.AdaptiveCollectionElement.Bleed')
+  - [HorizontalAlignment](#P-AdaptiveCards-AdaptiveCollectionElement-HorizontalAlignment 'AdaptiveCards.AdaptiveCollectionElement.HorizontalAlignment')
+  - [MinHeight](#P-AdaptiveCards-AdaptiveCollectionElement-MinHeight 'AdaptiveCards.AdaptiveCollectionElement.MinHeight')
   - [PixelMinHeight](#P-AdaptiveCards-AdaptiveCollectionElement-PixelMinHeight 'AdaptiveCards.AdaptiveCollectionElement.PixelMinHeight')
   - [SelectAction](#P-AdaptiveCards-AdaptiveCollectionElement-SelectAction 'AdaptiveCards.AdaptiveCollectionElement.SelectAction')
   - [Style](#P-AdaptiveCards-AdaptiveCollectionElement-Style 'AdaptiveCards.AdaptiveCollectionElement.Style')
   - [StyleXml](#P-AdaptiveCards-AdaptiveCollectionElement-StyleXml 'AdaptiveCards.AdaptiveCollectionElement.StyleXml')
   - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionElement-VerticalContentAlignment 'AdaptiveCards.AdaptiveCollectionElement.VerticalContentAlignment')
+  - [Add()](#M-AdaptiveCards-AdaptiveCollectionElement-Add-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.AdaptiveCollectionElement.Add(AdaptiveCards.AdaptiveElement)')
+  - [GetEnumerator()](#M-AdaptiveCards-AdaptiveCollectionElement-GetEnumerator 'AdaptiveCards.AdaptiveCollectionElement.GetEnumerator')
   - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveCollectionElement.ShouldSerializeStyleXml')
+  - [System#Collections#IEnumerable#GetEnumerator()](#M-AdaptiveCards-AdaptiveCollectionElement-System#Collections#IEnumerable#GetEnumerator 'AdaptiveCards.AdaptiveCollectionElement.System#Collections#IEnumerable#GetEnumerator')
 - [AdaptiveCollectionWithContentAlignment](#T-AdaptiveCards-AdaptiveCollectionWithContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment')
-  - [HorizontalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-HorizontalContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.HorizontalContentAlignment')
-  - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-VerticalContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.VerticalContentAlignment')
-  - [GetEnumerator()](#M-AdaptiveCards-AdaptiveCollectionWithContentAlignment-GetEnumerator 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.GetEnumerator')
+  - [HorizontalCellContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-HorizontalCellContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.HorizontalCellContentAlignment')
+  - [VerticalCellContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-VerticalCellContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.VerticalCellContentAlignment')
 - [AdaptiveColumn](#T-AdaptiveCards-AdaptiveColumn 'AdaptiveCards.AdaptiveColumn')
   - [TypeName](#F-AdaptiveCards-AdaptiveColumn-TypeName 'AdaptiveCards.AdaptiveColumn.TypeName')
-  - [Rtl](#P-AdaptiveCards-AdaptiveColumn-Rtl 'AdaptiveCards.AdaptiveColumn.Rtl')
   - [Size](#P-AdaptiveCards-AdaptiveColumn-Size 'AdaptiveCards.AdaptiveColumn.Size')
   - [Type](#P-AdaptiveCards-AdaptiveColumn-Type 'AdaptiveCards.AdaptiveColumn.Type')
   - [Width](#P-AdaptiveCards-AdaptiveColumn-Width 'AdaptiveCards.AdaptiveColumn.Width')
@@ -156,6 +171,8 @@
   - [TypeName](#F-AdaptiveCards-AdaptiveColumnSet-TypeName 'AdaptiveCards.AdaptiveColumnSet.TypeName')
   - [Columns](#P-AdaptiveCards-AdaptiveColumnSet-Columns 'AdaptiveCards.AdaptiveColumnSet.Columns')
   - [Type](#P-AdaptiveCards-AdaptiveColumnSet-Type 'AdaptiveCards.AdaptiveColumnSet.Type')
+  - [Add()](#M-AdaptiveCards-AdaptiveColumnSet-Add-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.AdaptiveColumnSet.Add(AdaptiveCards.AdaptiveElement)')
+  - [GetEnumerator()](#M-AdaptiveCards-AdaptiveColumnSet-GetEnumerator 'AdaptiveCards.AdaptiveColumnSet.GetEnumerator')
 - [AdaptiveColumnSize](#T-AdaptiveCards-AdaptiveColumnSize 'AdaptiveCards.AdaptiveColumnSize')
   - [Auto](#F-AdaptiveCards-AdaptiveColumnSize-Auto 'AdaptiveCards.AdaptiveColumnSize.Auto')
   - [Stretch](#F-AdaptiveCards-AdaptiveColumnSize-Stretch 'AdaptiveCards.AdaptiveColumnSize.Stretch')
@@ -169,7 +186,11 @@
   - [BackgroundImage](#P-AdaptiveCards-AdaptiveContainer-BackgroundImage 'AdaptiveCards.AdaptiveContainer.BackgroundImage')
   - [Items](#P-AdaptiveCards-AdaptiveContainer-Items 'AdaptiveCards.AdaptiveContainer.Items')
   - [Rtl](#P-AdaptiveCards-AdaptiveContainer-Rtl 'AdaptiveCards.AdaptiveContainer.Rtl')
+  - [RtlXml](#P-AdaptiveCards-AdaptiveContainer-RtlXml 'AdaptiveCards.AdaptiveContainer.RtlXml')
   - [Type](#P-AdaptiveCards-AdaptiveContainer-Type 'AdaptiveCards.AdaptiveContainer.Type')
+  - [Add()](#M-AdaptiveCards-AdaptiveContainer-Add-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.AdaptiveContainer.Add(AdaptiveCards.AdaptiveElement)')
+  - [GetEnumerator()](#M-AdaptiveCards-AdaptiveContainer-GetEnumerator 'AdaptiveCards.AdaptiveContainer.GetEnumerator')
+  - [ShouldSerializeRtlXml()](#M-AdaptiveCards-AdaptiveContainer-ShouldSerializeRtlXml 'AdaptiveCards.AdaptiveContainer.ShouldSerializeRtlXml')
 - [AdaptiveContainerStyle](#T-AdaptiveCards-AdaptiveContainerStyle 'AdaptiveCards.AdaptiveContainerStyle')
   - [Accent](#F-AdaptiveCards-AdaptiveContainerStyle-Accent 'AdaptiveCards.AdaptiveContainerStyle.Accent')
   - [Attention](#F-AdaptiveCards-AdaptiveContainerStyle-Attention 'AdaptiveCards.AdaptiveContainerStyle.Attention')
@@ -178,6 +199,13 @@
   - [Good](#F-AdaptiveCards-AdaptiveContainerStyle-Good 'AdaptiveCards.AdaptiveContainerStyle.Good')
   - [Normal](#F-AdaptiveCards-AdaptiveContainerStyle-Normal 'AdaptiveCards.AdaptiveContainerStyle.Normal')
   - [Warning](#F-AdaptiveCards-AdaptiveContainerStyle-Warning 'AdaptiveCards.AdaptiveContainerStyle.Warning')
+- [AdaptiveDataQuery](#T-AdaptiveCards-AdaptiveDataQuery 'AdaptiveCards.AdaptiveDataQuery')
+  - [Separator](#F-AdaptiveCards-AdaptiveDataQuery-Separator 'AdaptiveCards.AdaptiveDataQuery.Separator')
+  - [Count](#P-AdaptiveCards-AdaptiveDataQuery-Count 'AdaptiveCards.AdaptiveDataQuery.Count')
+  - [Dataset](#P-AdaptiveCards-AdaptiveDataQuery-Dataset 'AdaptiveCards.AdaptiveDataQuery.Dataset')
+  - [Skip](#P-AdaptiveCards-AdaptiveDataQuery-Skip 'AdaptiveCards.AdaptiveDataQuery.Skip')
+  - [Type](#P-AdaptiveCards-AdaptiveDataQuery-Type 'AdaptiveCards.AdaptiveDataQuery.Type')
+  - [Value](#P-AdaptiveCards-AdaptiveDataQuery-Value 'AdaptiveCards.AdaptiveDataQuery.Value')
 - [AdaptiveDateInput](#T-AdaptiveCards-AdaptiveDateInput 'AdaptiveCards.AdaptiveDateInput')
   - [TypeName](#F-AdaptiveCards-AdaptiveDateInput-TypeName 'AdaptiveCards.AdaptiveDateInput.TypeName')
   - [Max](#P-AdaptiveCards-AdaptiveDateInput-Max 'AdaptiveCards.AdaptiveDateInput.Max')
@@ -253,6 +281,7 @@
   - [Monospace](#F-AdaptiveCards-AdaptiveFontType-Monospace 'AdaptiveCards.AdaptiveFontType.Monospace')
 - [AdaptiveHeight](#T-AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeight')
   - [#ctor()](#M-AdaptiveCards-AdaptiveHeight-#ctor 'AdaptiveCards.AdaptiveHeight.#ctor')
+  - [#ctor(value)](#M-AdaptiveCards-AdaptiveHeight-#ctor-System-String- 'AdaptiveCards.AdaptiveHeight.#ctor(System.String)')
   - [#ctor(px)](#M-AdaptiveCards-AdaptiveHeight-#ctor-System-UInt32- 'AdaptiveCards.AdaptiveHeight.#ctor(System.UInt32)')
   - [#ctor(heightType)](#M-AdaptiveCards-AdaptiveHeight-#ctor-AdaptiveCards-AdaptiveHeightType- 'AdaptiveCards.AdaptiveHeight.#ctor(AdaptiveCards.AdaptiveHeightType)')
   - [Auto](#P-AdaptiveCards-AdaptiveHeight-Auto 'AdaptiveCards.AdaptiveHeight.Auto')
@@ -264,9 +293,14 @@
   - [Equals()](#M-AdaptiveCards-AdaptiveHeight-Equals-AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.Equals(AdaptiveCards.AdaptiveHeight)')
   - [GetHashCode()](#M-AdaptiveCards-AdaptiveHeight-GetHashCode 'AdaptiveCards.AdaptiveHeight.GetHashCode')
   - [IsPixel()](#M-AdaptiveCards-AdaptiveHeight-IsPixel 'AdaptiveCards.AdaptiveHeight.IsPixel')
+  - [Parse(value)](#M-AdaptiveCards-AdaptiveHeight-Parse-System-String- 'AdaptiveCards.AdaptiveHeight.Parse(System.String)')
   - [ShouldSerializeAdaptiveHeight()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeAdaptiveHeight 'AdaptiveCards.AdaptiveHeight.ShouldSerializeAdaptiveHeight')
   - [ShouldSerializeUnitXml()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeUnitXml 'AdaptiveCards.AdaptiveHeight.ShouldSerializeUnitXml')
+  - [ToString()](#M-AdaptiveCards-AdaptiveHeight-ToString 'AdaptiveCards.AdaptiveHeight.ToString')
   - [op_Equality()](#M-AdaptiveCards-AdaptiveHeight-op_Equality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.op_Equality(AdaptiveCards.AdaptiveHeight,AdaptiveCards.AdaptiveHeight)')
+  - [op_Implicit(value)](#M-AdaptiveCards-AdaptiveHeight-op_Implicit-System-UInt32-~AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeight.op_Implicit(System.UInt32)~AdaptiveCards.AdaptiveHeight')
+  - [op_Implicit(value)](#M-AdaptiveCards-AdaptiveHeight-op_Implicit-AdaptiveCards-AdaptiveHeightType-~AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeight.op_Implicit(AdaptiveCards.AdaptiveHeightType)~AdaptiveCards.AdaptiveHeight')
+  - [op_Implicit(value)](#M-AdaptiveCards-AdaptiveHeight-op_Implicit-System-String-~AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeight.op_Implicit(System.String)~AdaptiveCards.AdaptiveHeight')
   - [op_Inequality()](#M-AdaptiveCards-AdaptiveHeight-op_Inequality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.op_Inequality(AdaptiveCards.AdaptiveHeight,AdaptiveCards.AdaptiveHeight)')
 - [AdaptiveHeightType](#T-AdaptiveCards-AdaptiveHeightType 'AdaptiveCards.AdaptiveHeightType')
   - [Auto](#F-AdaptiveCards-AdaptiveHeightType-Auto 'AdaptiveCards.AdaptiveHeightType.Auto')
@@ -364,14 +398,20 @@
 - [AdaptiveMedia](#T-AdaptiveCards-AdaptiveMedia 'AdaptiveCards.AdaptiveMedia')
   - [TypeName](#F-AdaptiveCards-AdaptiveMedia-TypeName 'AdaptiveCards.AdaptiveMedia.TypeName')
   - [AltText](#P-AdaptiveCards-AdaptiveMedia-AltText 'AdaptiveCards.AdaptiveMedia.AltText')
+  - [CaptionSources](#P-AdaptiveCards-AdaptiveMedia-CaptionSources 'AdaptiveCards.AdaptiveMedia.CaptionSources')
   - [Poster](#P-AdaptiveCards-AdaptiveMedia-Poster 'AdaptiveCards.AdaptiveMedia.Poster')
   - [Sources](#P-AdaptiveCards-AdaptiveMedia-Sources 'AdaptiveCards.AdaptiveMedia.Sources')
   - [Type](#P-AdaptiveCards-AdaptiveMedia-Type 'AdaptiveCards.AdaptiveMedia.Type')
+  - [ShouldSerializeCaptionSources()](#M-AdaptiveCards-AdaptiveMedia-ShouldSerializeCaptionSources 'AdaptiveCards.AdaptiveMedia.ShouldSerializeCaptionSources')
 - [AdaptiveMediaSource](#T-AdaptiveCards-AdaptiveMediaSource 'AdaptiveCards.AdaptiveMediaSource')
   - [#ctor()](#M-AdaptiveCards-AdaptiveMediaSource-#ctor 'AdaptiveCards.AdaptiveMediaSource.#ctor')
   - [#ctor(mimeType,url)](#M-AdaptiveCards-AdaptiveMediaSource-#ctor-System-String,System-String- 'AdaptiveCards.AdaptiveMediaSource.#ctor(System.String,System.String)')
   - [MimeType](#P-AdaptiveCards-AdaptiveMediaSource-MimeType 'AdaptiveCards.AdaptiveMediaSource.MimeType')
   - [Url](#P-AdaptiveCards-AdaptiveMediaSource-Url 'AdaptiveCards.AdaptiveMediaSource.Url')
+- [AdaptiveMetadata](#T-AdaptiveCards-AdaptiveMetadata 'AdaptiveCards.AdaptiveMetadata')
+  - [AdditionalProperties](#P-AdaptiveCards-AdaptiveMetadata-AdditionalProperties 'AdaptiveCards.AdaptiveMetadata.AdditionalProperties')
+  - [WebUrl](#P-AdaptiveCards-AdaptiveMetadata-WebUrl 'AdaptiveCards.AdaptiveMetadata.WebUrl')
+  - [ShouldSerializeAdditionalProperties()](#M-AdaptiveCards-AdaptiveMetadata-ShouldSerializeAdditionalProperties 'AdaptiveCards.AdaptiveMetadata.ShouldSerializeAdditionalProperties')
 - [AdaptiveNumberInput](#T-AdaptiveCards-AdaptiveNumberInput 'AdaptiveCards.AdaptiveNumberInput')
   - [TypeName](#F-AdaptiveCards-AdaptiveNumberInput-TypeName 'AdaptiveCards.AdaptiveNumberInput.TypeName')
   - [Max](#P-AdaptiveCards-AdaptiveNumberInput-Max 'AdaptiveCards.AdaptiveNumberInput.Max')
@@ -387,9 +427,26 @@
   - [UrlString](#P-AdaptiveCards-AdaptiveOpenUrlAction-UrlString 'AdaptiveCards.AdaptiveOpenUrlAction.UrlString')
 - [AdaptiveRefresh](#T-AdaptiveCards-AdaptiveRefresh 'AdaptiveCards.AdaptiveRefresh')
   - [Action](#P-AdaptiveCards-AdaptiveRefresh-Action 'AdaptiveCards.AdaptiveRefresh.Action')
+  - [Expires](#P-AdaptiveCards-AdaptiveRefresh-Expires 'AdaptiveCards.AdaptiveRefresh.Expires')
+  - [ExpiresXml](#P-AdaptiveCards-AdaptiveRefresh-ExpiresXml 'AdaptiveCards.AdaptiveRefresh.ExpiresXml')
   - [UserIds](#P-AdaptiveCards-AdaptiveRefresh-UserIds 'AdaptiveCards.AdaptiveRefresh.UserIds')
+- [AdaptiveRenderArgs](#T-AdaptiveCards-Rendering-AdaptiveRenderArgs 'AdaptiveCards.Rendering.AdaptiveRenderArgs')
+  - [#ctor()](#M-AdaptiveCards-Rendering-AdaptiveRenderArgs-#ctor 'AdaptiveCards.Rendering.AdaptiveRenderArgs.#ctor')
+  - [#ctor(previousRenderArgs)](#M-AdaptiveCards-Rendering-AdaptiveRenderArgs-#ctor-AdaptiveCards-Rendering-AdaptiveRenderArgs- 'AdaptiveCards.Rendering.AdaptiveRenderArgs.#ctor(AdaptiveCards.Rendering.AdaptiveRenderArgs)')
+  - [BleedDirection](#P-AdaptiveCards-Rendering-AdaptiveRenderArgs-BleedDirection 'AdaptiveCards.Rendering.AdaptiveRenderArgs.BleedDirection')
+  - [ContainerCardId](#P-AdaptiveCards-Rendering-AdaptiveRenderArgs-ContainerCardId 'AdaptiveCards.Rendering.AdaptiveRenderArgs.ContainerCardId')
+  - [ForegroundColors](#P-AdaptiveCards-Rendering-AdaptiveRenderArgs-ForegroundColors 'AdaptiveCards.Rendering.AdaptiveRenderArgs.ForegroundColors')
+  - [HasParentWithPadding](#P-AdaptiveCards-Rendering-AdaptiveRenderArgs-HasParentWithPadding 'AdaptiveCards.Rendering.AdaptiveRenderArgs.HasParentWithPadding')
+  - [ParentStyle](#P-AdaptiveCards-Rendering-AdaptiveRenderArgs-ParentStyle 'AdaptiveCards.Rendering.AdaptiveRenderArgs.ParentStyle')
 - [AdaptiveRenderException](#T-AdaptiveCards-Rendering-AdaptiveRenderException 'AdaptiveCards.Rendering.AdaptiveRenderException')
+  - [#ctor()](#M-AdaptiveCards-Rendering-AdaptiveRenderException-#ctor 'AdaptiveCards.Rendering.AdaptiveRenderException.#ctor')
+  - [#ctor(message)](#M-AdaptiveCards-Rendering-AdaptiveRenderException-#ctor-System-String- 'AdaptiveCards.Rendering.AdaptiveRenderException.#ctor(System.String)')
+  - [#ctor(message,innerException)](#M-AdaptiveCards-Rendering-AdaptiveRenderException-#ctor-System-String,System-Exception- 'AdaptiveCards.Rendering.AdaptiveRenderException.#ctor(System.String,System.Exception)')
   - [CardFallbackText](#P-AdaptiveCards-Rendering-AdaptiveRenderException-CardFallbackText 'AdaptiveCards.Rendering.AdaptiveRenderException.CardFallbackText')
+- [AdaptiveRenderTransformers\`2](#T-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2 'AdaptiveCards.Rendering.AdaptiveRenderTransformers`2')
+  - [Apply\`\`1(element,uiElement,context)](#M-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2-Apply``1-``0,`0,`1- 'AdaptiveCards.Rendering.AdaptiveRenderTransformers`2.Apply``1(``0,`0,`1)')
+  - [Register\`\`1(transformer)](#M-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2-Register``1-System-Action{``0,`0,`1}- 'AdaptiveCards.Rendering.AdaptiveRenderTransformers`2.Register``1(System.Action{``0,`0,`1})')
+  - [Remove\`\`1()](#M-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2-Remove``1 'AdaptiveCards.Rendering.AdaptiveRenderTransformers`2.Remove``1')
 - [AdaptiveRichTextBlock](#T-AdaptiveCards-AdaptiveRichTextBlock 'AdaptiveCards.AdaptiveRichTextBlock')
   - [#ctor()](#M-AdaptiveCards-AdaptiveRichTextBlock-#ctor 'AdaptiveCards.AdaptiveRichTextBlock.#ctor')
   - [TypeName](#F-AdaptiveCards-AdaptiveRichTextBlock-TypeName 'AdaptiveCards.AdaptiveRichTextBlock.TypeName')
@@ -446,22 +503,31 @@
   - [Type](#P-AdaptiveCards-AdaptiveTable-Type 'AdaptiveCards.AdaptiveTable.Type')
   - [Add(element)](#M-AdaptiveCards-AdaptiveTable-Add-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.AdaptiveTable.Add(AdaptiveCards.AdaptiveElement)')
   - [GetEnumerator()](#M-AdaptiveCards-AdaptiveTable-GetEnumerator 'AdaptiveCards.AdaptiveTable.GetEnumerator')
-  - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveTable-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveTable.ShouldSerializeStyleXml')
+  - [ShouldSerializeGridStyleXml()](#M-AdaptiveCards-AdaptiveTable-ShouldSerializeGridStyleXml 'AdaptiveCards.AdaptiveTable.ShouldSerializeGridStyleXml')
 - [AdaptiveTableCell](#T-AdaptiveCards-AdaptiveTableCell 'AdaptiveCards.AdaptiveTableCell')
   - [TypeName](#F-AdaptiveCards-AdaptiveTableCell-TypeName 'AdaptiveCards.AdaptiveTableCell.TypeName')
+  - [Items](#P-AdaptiveCards-AdaptiveTableCell-Items 'AdaptiveCards.AdaptiveTableCell.Items')
+  - [Rtl](#P-AdaptiveCards-AdaptiveTableCell-Rtl 'AdaptiveCards.AdaptiveTableCell.Rtl')
+  - [RtlXml](#P-AdaptiveCards-AdaptiveTableCell-RtlXml 'AdaptiveCards.AdaptiveTableCell.RtlXml')
+  - [Type](#P-AdaptiveCards-AdaptiveTableCell-Type 'AdaptiveCards.AdaptiveTableCell.Type')
+  - [Add()](#M-AdaptiveCards-AdaptiveTableCell-Add-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.AdaptiveTableCell.Add(AdaptiveCards.AdaptiveElement)')
+  - [GetEnumerator()](#M-AdaptiveCards-AdaptiveTableCell-GetEnumerator 'AdaptiveCards.AdaptiveTableCell.GetEnumerator')
+  - [ShouldSerializeRtlXml()](#M-AdaptiveCards-AdaptiveTableCell-ShouldSerializeRtlXml 'AdaptiveCards.AdaptiveTableCell.ShouldSerializeRtlXml')
 - [AdaptiveTableColumnDefinition](#T-AdaptiveCards-AdaptiveTableColumnDefinition 'AdaptiveCards.AdaptiveTableColumnDefinition')
   - [TypeName](#F-AdaptiveCards-AdaptiveTableColumnDefinition-TypeName 'AdaptiveCards.AdaptiveTableColumnDefinition.TypeName')
   - [HorizontalContentAlignment](#P-AdaptiveCards-AdaptiveTableColumnDefinition-HorizontalContentAlignment 'AdaptiveCards.AdaptiveTableColumnDefinition.HorizontalContentAlignment')
+  - [PixelWidth](#P-AdaptiveCards-AdaptiveTableColumnDefinition-PixelWidth 'AdaptiveCards.AdaptiveTableColumnDefinition.PixelWidth')
   - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveTableColumnDefinition-VerticalContentAlignment 'AdaptiveCards.AdaptiveTableColumnDefinition.VerticalContentAlignment')
+  - [Width](#P-AdaptiveCards-AdaptiveTableColumnDefinition-Width 'AdaptiveCards.AdaptiveTableColumnDefinition.Width')
 - [AdaptiveTableRow](#T-AdaptiveCards-AdaptiveTableRow 'AdaptiveCards.AdaptiveTableRow')
   - [TypeName](#F-AdaptiveCards-AdaptiveTableRow-TypeName 'AdaptiveCards.AdaptiveTableRow.TypeName')
   - [Cells](#P-AdaptiveCards-AdaptiveTableRow-Cells 'AdaptiveCards.AdaptiveTableRow.Cells')
   - [Rtl](#P-AdaptiveCards-AdaptiveTableRow-Rtl 'AdaptiveCards.AdaptiveTableRow.Rtl')
-  - [Style](#P-AdaptiveCards-AdaptiveTableRow-Style 'AdaptiveCards.AdaptiveTableRow.Style')
-  - [StyleXml](#P-AdaptiveCards-AdaptiveTableRow-StyleXml 'AdaptiveCards.AdaptiveTableRow.StyleXml')
+  - [RtlXml](#P-AdaptiveCards-AdaptiveTableRow-RtlXml 'AdaptiveCards.AdaptiveTableRow.RtlXml')
   - [Type](#P-AdaptiveCards-AdaptiveTableRow-Type 'AdaptiveCards.AdaptiveTableRow.Type')
+  - [Add()](#M-AdaptiveCards-AdaptiveTableRow-Add-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.AdaptiveTableRow.Add(AdaptiveCards.AdaptiveElement)')
   - [GetEnumerator()](#M-AdaptiveCards-AdaptiveTableRow-GetEnumerator 'AdaptiveCards.AdaptiveTableRow.GetEnumerator')
-  - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveTableRow-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveTableRow.ShouldSerializeStyleXml')
+  - [ShouldSerializeRtlXml()](#M-AdaptiveCards-AdaptiveTableRow-ShouldSerializeRtlXml 'AdaptiveCards.AdaptiveTableRow.ShouldSerializeRtlXml')
 - [AdaptiveTargetElement](#T-AdaptiveCards-AdaptiveTargetElement 'AdaptiveCards.AdaptiveTargetElement')
   - [#ctor()](#M-AdaptiveCards-AdaptiveTargetElement-#ctor 'AdaptiveCards.AdaptiveTargetElement.#ctor')
   - [#ctor(elementId)](#M-AdaptiveCards-AdaptiveTargetElement-#ctor-System-String- 'AdaptiveCards.AdaptiveTargetElement.#ctor(System.String)')
@@ -605,11 +671,79 @@
   - [Center](#F-AdaptiveCards-AdaptiveVerticalContentAlignment-Center 'AdaptiveCards.AdaptiveVerticalContentAlignment.Center')
   - [Top](#F-AdaptiveCards-AdaptiveVerticalContentAlignment-Top 'AdaptiveCards.AdaptiveVerticalContentAlignment.Top')
 - [AdaptiveVisitor](#T-AdaptiveCards-Rendering-AdaptiveVisitor 'AdaptiveCards.Rendering.AdaptiveVisitor')
+  - [Elements](#P-AdaptiveCards-Rendering-AdaptiveVisitor-Elements 'AdaptiveCards.Rendering.AdaptiveVisitor.Elements')
+  - [Visit(adaptiveElement)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveElement- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveElement)')
+  - [Visit(card)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveCard- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveCard)')
+  - [Visit(container)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveContainer- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveContainer)')
+  - [Visit(columnSet)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveColumnSet- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveColumnSet)')
+  - [Visit(factSet)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveFactSet- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveFactSet)')
+  - [Visit(imageSet)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveImageSet- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveImageSet)')
+  - [Visit(textBlock)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTextBlock- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTextBlock)')
+  - [Visit(image)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveImage- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveImage)')
+  - [Visit(fact)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveFact- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveFact)')
+  - [Visit(inputText)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTextInput- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTextInput)')
+  - [Visit(inputDate)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveDateInput- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveDateInput)')
+  - [Visit(inputNumber)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveNumberInput- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveNumberInput)')
+  - [Visit(inputTime)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTimeInput- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTimeInput)')
+  - [Visit(inputToggle)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveToggleInput- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveToggleInput)')
+  - [Visit(adaptiveChoiceSetInput)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveChoiceSetInput- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveChoiceSetInput)')
+  - [Visit(actionSet)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveActionSet- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveActionSet)')
+  - [Visit(action)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveAction- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveAction)')
+  - [Visit(action)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveSubmitAction- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveSubmitAction)')
+  - [Visit(action)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveOpenUrlAction- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveOpenUrlAction)')
+  - [Visit(action)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveShowCardAction- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveShowCardAction)')
+  - [Visit(action)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveToggleVisibilityAction- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveToggleVisibilityAction)')
+  - [Visit(targetElement)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTargetElement- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTargetElement)')
+  - [Visit(action)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveExecuteAction- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveExecuteAction)')
+  - [Visit(media)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveMedia- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveMedia)')
+  - [Visit(rtb)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveRichTextBlock- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveRichTextBlock)')
+  - [Visit(inline)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveInline- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveInline)')
+  - [Visit(run)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTextRun- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTextRun)')
+  - [Visit(refresh)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveRefresh- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveRefresh)')
+  - [Visit(table)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTable- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTable)')
+  - [Visit(row)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTableRow- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTableRow)')
+  - [Visit(col)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTableColumnDefinition- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTableColumnDefinition)')
+  - [Visit(cell)](#M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTableCell- 'AdaptiveCards.Rendering.AdaptiveVisitor.Visit(AdaptiveCards.AdaptiveTableCell)')
 - [AdaptiveWarning](#T-AdaptiveCards-AdaptiveWarning 'AdaptiveCards.AdaptiveWarning')
   - [#ctor(code,message)](#M-AdaptiveCards-AdaptiveWarning-#ctor-System-Int32,System-String- 'AdaptiveCards.AdaptiveWarning.#ctor(System.Int32,System.String)')
   - [Code](#P-AdaptiveCards-AdaptiveWarning-Code 'AdaptiveCards.AdaptiveWarning.Code')
   - [Message](#P-AdaptiveCards-AdaptiveWarning-Message 'AdaptiveCards.AdaptiveWarning.Message')
   - [ToString()](#M-AdaptiveCards-AdaptiveWarning-ToString 'AdaptiveCards.AdaptiveWarning.ToString')
+- [AdaptiveWidth](#T-AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidth')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveWidth-#ctor 'AdaptiveCards.AdaptiveWidth.#ctor')
+  - [#ctor(value)](#M-AdaptiveCards-AdaptiveWidth-#ctor-System-String- 'AdaptiveCards.AdaptiveWidth.#ctor(System.String)')
+  - [#ctor(px)](#M-AdaptiveCards-AdaptiveWidth-#ctor-System-UInt32- 'AdaptiveCards.AdaptiveWidth.#ctor(System.UInt32)')
+  - [#ctor(widthType)](#M-AdaptiveCards-AdaptiveWidth-#ctor-AdaptiveCards-AdaptiveWidthType- 'AdaptiveCards.AdaptiveWidth.#ctor(AdaptiveCards.AdaptiveWidthType)')
+  - [Auto](#P-AdaptiveCards-AdaptiveWidth-Auto 'AdaptiveCards.AdaptiveWidth.Auto')
+  - [Stretch](#P-AdaptiveCards-AdaptiveWidth-Stretch 'AdaptiveCards.AdaptiveWidth.Stretch')
+  - [Unit](#P-AdaptiveCards-AdaptiveWidth-Unit 'AdaptiveCards.AdaptiveWidth.Unit')
+  - [UnitXml](#P-AdaptiveCards-AdaptiveWidth-UnitXml 'AdaptiveCards.AdaptiveWidth.UnitXml')
+  - [WidthType](#P-AdaptiveCards-AdaptiveWidth-WidthType 'AdaptiveCards.AdaptiveWidth.WidthType')
+  - [Equals()](#M-AdaptiveCards-AdaptiveWidth-Equals-System-Object- 'AdaptiveCards.AdaptiveWidth.Equals(System.Object)')
+  - [Equals()](#M-AdaptiveCards-AdaptiveWidth-Equals-AdaptiveCards-AdaptiveWidth- 'AdaptiveCards.AdaptiveWidth.Equals(AdaptiveCards.AdaptiveWidth)')
+  - [GetHashCode()](#M-AdaptiveCards-AdaptiveWidth-GetHashCode 'AdaptiveCards.AdaptiveWidth.GetHashCode')
+  - [IsPixel()](#M-AdaptiveCards-AdaptiveWidth-IsPixel 'AdaptiveCards.AdaptiveWidth.IsPixel')
+  - [Parse(value)](#M-AdaptiveCards-AdaptiveWidth-Parse-System-String- 'AdaptiveCards.AdaptiveWidth.Parse(System.String)')
+  - [ShouldSerializeAdaptiveWidth()](#M-AdaptiveCards-AdaptiveWidth-ShouldSerializeAdaptiveWidth 'AdaptiveCards.AdaptiveWidth.ShouldSerializeAdaptiveWidth')
+  - [ShouldSerializeUnitXml()](#M-AdaptiveCards-AdaptiveWidth-ShouldSerializeUnitXml 'AdaptiveCards.AdaptiveWidth.ShouldSerializeUnitXml')
+  - [ToString()](#M-AdaptiveCards-AdaptiveWidth-ToString 'AdaptiveCards.AdaptiveWidth.ToString')
+  - [op_Equality()](#M-AdaptiveCards-AdaptiveWidth-op_Equality-AdaptiveCards-AdaptiveWidth,AdaptiveCards-AdaptiveWidth- 'AdaptiveCards.AdaptiveWidth.op_Equality(AdaptiveCards.AdaptiveWidth,AdaptiveCards.AdaptiveWidth)')
+  - [op_Implicit(value)](#M-AdaptiveCards-AdaptiveWidth-op_Implicit-System-UInt32-~AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidth.op_Implicit(System.UInt32)~AdaptiveCards.AdaptiveWidth')
+  - [op_Implicit(value)](#M-AdaptiveCards-AdaptiveWidth-op_Implicit-AdaptiveCards-AdaptiveWidthType-~AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidth.op_Implicit(AdaptiveCards.AdaptiveWidthType)~AdaptiveCards.AdaptiveWidth')
+  - [op_Implicit(value)](#M-AdaptiveCards-AdaptiveWidth-op_Implicit-System-String-~AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidth.op_Implicit(System.String)~AdaptiveCards.AdaptiveWidth')
+  - [op_Inequality()](#M-AdaptiveCards-AdaptiveWidth-op_Inequality-AdaptiveCards-AdaptiveWidth,AdaptiveCards-AdaptiveWidth- 'AdaptiveCards.AdaptiveWidth.op_Inequality(AdaptiveCards.AdaptiveWidth,AdaptiveCards.AdaptiveWidth)')
+- [AdaptiveWidthType](#T-AdaptiveCards-AdaptiveWidthType 'AdaptiveCards.AdaptiveWidthType')
+  - [Auto](#F-AdaptiveCards-AdaptiveWidthType-Auto 'AdaptiveCards.AdaptiveWidthType.Auto')
+  - [Pixel](#F-AdaptiveCards-AdaptiveWidthType-Pixel 'AdaptiveCards.AdaptiveWidthType.Pixel')
+  - [Stretch](#F-AdaptiveCards-AdaptiveWidthType-Stretch 'AdaptiveCards.AdaptiveWidthType.Stretch')
+  - [Weighted](#F-AdaptiveCards-AdaptiveWidthType-Weighted 'AdaptiveCards.AdaptiveWidthType.Weighted')
+- [BleedDirection](#T-AdaptiveCards-Rendering-BleedDirection 'AdaptiveCards.Rendering.BleedDirection')
+  - [BleedAll](#F-AdaptiveCards-Rendering-BleedDirection-BleedAll 'AdaptiveCards.Rendering.BleedDirection.BleedAll')
+  - [BleedDown](#F-AdaptiveCards-Rendering-BleedDirection-BleedDown 'AdaptiveCards.Rendering.BleedDirection.BleedDown')
+  - [BleedLeft](#F-AdaptiveCards-Rendering-BleedDirection-BleedLeft 'AdaptiveCards.Rendering.BleedDirection.BleedLeft')
+  - [BleedNone](#F-AdaptiveCards-Rendering-BleedDirection-BleedNone 'AdaptiveCards.Rendering.BleedDirection.BleedNone')
+  - [BleedRight](#F-AdaptiveCards-Rendering-BleedDirection-BleedRight 'AdaptiveCards.Rendering.BleedDirection.BleedRight')
+  - [BleedUp](#F-AdaptiveCards-Rendering-BleedDirection-BleedUp 'AdaptiveCards.Rendering.BleedDirection.BleedUp')
 - [BlockRules](#T-Microsoft-MarkedNet-BlockRules 'Microsoft.MarkedNet.BlockRules')
 - [BreaksInlineRules](#T-Microsoft-MarkedNet-BreaksInlineRules 'Microsoft.MarkedNet.BreaksInlineRules')
 - [ColorUtil](#T-AdaptiveCards-ColorUtil 'AdaptiveCards.ColorUtil')
@@ -621,10 +755,29 @@
 - [ContainerStyleConfig](#T-AdaptiveCards-Rendering-ContainerStyleConfig 'AdaptiveCards.Rendering.ContainerStyleConfig')
   - [BackgroundColor](#P-AdaptiveCards-Rendering-ContainerStyleConfig-BackgroundColor 'AdaptiveCards.Rendering.ContainerStyleConfig.BackgroundColor')
   - [ForegroundColors](#P-AdaptiveCards-Rendering-ContainerStyleConfig-ForegroundColors 'AdaptiveCards.Rendering.ContainerStyleConfig.ForegroundColors')
+- [ContainerStylesConfig](#T-AdaptiveCards-Rendering-ContainerStylesConfig 'AdaptiveCards.Rendering.ContainerStylesConfig')
+  - [Accent](#P-AdaptiveCards-Rendering-ContainerStylesConfig-Accent 'AdaptiveCards.Rendering.ContainerStylesConfig.Accent')
+  - [Attention](#P-AdaptiveCards-Rendering-ContainerStylesConfig-Attention 'AdaptiveCards.Rendering.ContainerStylesConfig.Attention')
+  - [Default](#P-AdaptiveCards-Rendering-ContainerStylesConfig-Default 'AdaptiveCards.Rendering.ContainerStylesConfig.Default')
+  - [Emphasis](#P-AdaptiveCards-Rendering-ContainerStylesConfig-Emphasis 'AdaptiveCards.Rendering.ContainerStylesConfig.Emphasis')
+  - [Good](#P-AdaptiveCards-Rendering-ContainerStylesConfig-Good 'AdaptiveCards.Rendering.ContainerStylesConfig.Good')
+  - [Warning](#P-AdaptiveCards-Rendering-ContainerStylesConfig-Warning 'AdaptiveCards.Rendering.ContainerStylesConfig.Warning')
+  - [GetContainerStyleConfig(style)](#M-AdaptiveCards-Rendering-ContainerStylesConfig-GetContainerStyleConfig-System-Nullable{AdaptiveCards-AdaptiveContainerStyle}- 'AdaptiveCards.Rendering.ContainerStylesConfig.GetContainerStyleConfig(System.Nullable{AdaptiveCards.AdaptiveContainerStyle})')
 - [ContextType](#T-AdaptiveCards-ParseContext-ContextType 'AdaptiveCards.ParseContext.ContextType')
   - [Action](#F-AdaptiveCards-ParseContext-ContextType-Action 'AdaptiveCards.ParseContext.ContextType.Action')
   - [Element](#F-AdaptiveCards-ParseContext-ContextType-Element 'AdaptiveCards.ParseContext.ContextType.Element')
+- [Emoji](#T-Microsoft-MarkedNet-Emoji 'Microsoft.MarkedNet.Emoji')
+- [EmojiConverter](#T-Microsoft-MarkedNet-EmojiConverter 'Microsoft.MarkedNet.EmojiConverter')
+  - [Emoji2Markup](#P-Microsoft-MarkedNet-EmojiConverter-Emoji2Markup 'Microsoft.MarkedNet.EmojiConverter.Emoji2Markup')
+  - [Markup2Emoji](#P-Microsoft-MarkedNet-EmojiConverter-Markup2Emoji 'Microsoft.MarkedNet.EmojiConverter.Markup2Emoji')
+  - [Add(name,markup,code1,code2,code3)](#M-Microsoft-MarkedNet-EmojiConverter-Add-System-String,System-String,System-Int32,System-Nullable{System-Int32},System-Nullable{System-Int32}- 'Microsoft.MarkedNet.EmojiConverter.Add(System.String,System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32})')
+  - [ConvertEmojiToMarkup(emojiText)](#M-Microsoft-MarkedNet-EmojiConverter-ConvertEmojiToMarkup-System-String- 'Microsoft.MarkedNet.EmojiConverter.ConvertEmojiToMarkup(System.String)')
+  - [ConvertMarkupToEmoji(markup)](#M-Microsoft-MarkedNet-EmojiConverter-ConvertMarkupToEmoji-System-String- 'Microsoft.MarkedNet.EmojiConverter.ConvertMarkupToEmoji(System.String)')
 - [EmojiMarkdownRenderer](#T-Microsoft-MarkedNet-EmojiMarkdownRenderer 'Microsoft.MarkedNet.EmojiMarkdownRenderer')
+  - [#ctor()](#M-Microsoft-MarkedNet-EmojiMarkdownRenderer-#ctor 'Microsoft.MarkedNet.EmojiMarkdownRenderer.#ctor')
+  - [#ctor(options)](#M-Microsoft-MarkedNet-EmojiMarkdownRenderer-#ctor-Microsoft-MarkedNet-Options- 'Microsoft.MarkedNet.EmojiMarkdownRenderer.#ctor(Microsoft.MarkedNet.Options)')
+  - [Preprocess(text)](#M-Microsoft-MarkedNet-EmojiMarkdownRenderer-Preprocess-System-String- 'Microsoft.MarkedNet.EmojiMarkdownRenderer.Preprocess(System.String)')
+- [EmojiMarkup](#T-Microsoft-MarkedNet-EmojiMarkup 'Microsoft.MarkedNet.EmojiMarkup')
 - [ErrorMessageConfig](#T-AdaptiveCards-Rendering-ErrorMessageConfig 'AdaptiveCards.Rendering.ErrorMessageConfig')
   - [Size](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Size 'AdaptiveCards.Rendering.ErrorMessageConfig.Size')
   - [Spacing](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Spacing 'AdaptiveCards.Rendering.ErrorMessageConfig.Spacing')
@@ -634,7 +787,40 @@
   - [Title](#P-AdaptiveCards-Rendering-FactSetConfig-Title 'AdaptiveCards.Rendering.FactSetConfig.Title')
   - [Value](#P-AdaptiveCards-Rendering-FactSetConfig-Value 'AdaptiveCards.Rendering.FactSetConfig.Value')
 - [FontColorConfig](#T-AdaptiveCards-Rendering-FontColorConfig 'AdaptiveCards.Rendering.FontColorConfig')
+  - [#ctor(defaultColor,subtle)](#M-AdaptiveCards-Rendering-FontColorConfig-#ctor-System-String,System-String- 'AdaptiveCards.Rendering.FontColorConfig.#ctor(System.String,System.String)')
   - [Default](#P-AdaptiveCards-Rendering-FontColorConfig-Default 'AdaptiveCards.Rendering.FontColorConfig.Default')
+  - [HighlightColors](#P-AdaptiveCards-Rendering-FontColorConfig-HighlightColors 'AdaptiveCards.Rendering.FontColorConfig.HighlightColors')
+  - [Subtle](#P-AdaptiveCards-Rendering-FontColorConfig-Subtle 'AdaptiveCards.Rendering.FontColorConfig.Subtle')
+- [FontSizesConfig](#T-AdaptiveCards-Rendering-FontSizesConfig 'AdaptiveCards.Rendering.FontSizesConfig')
+  - [Default](#P-AdaptiveCards-Rendering-FontSizesConfig-Default 'AdaptiveCards.Rendering.FontSizesConfig.Default')
+  - [ExtraLarge](#P-AdaptiveCards-Rendering-FontSizesConfig-ExtraLarge 'AdaptiveCards.Rendering.FontSizesConfig.ExtraLarge')
+  - [Large](#P-AdaptiveCards-Rendering-FontSizesConfig-Large 'AdaptiveCards.Rendering.FontSizesConfig.Large')
+  - [Medium](#P-AdaptiveCards-Rendering-FontSizesConfig-Medium 'AdaptiveCards.Rendering.FontSizesConfig.Medium')
+  - [Small](#P-AdaptiveCards-Rendering-FontSizesConfig-Small 'AdaptiveCards.Rendering.FontSizesConfig.Small')
+  - [GetDefaultFontSize(fontSize)](#M-AdaptiveCards-Rendering-FontSizesConfig-GetDefaultFontSize-AdaptiveCards-AdaptiveTextSize- 'AdaptiveCards.Rendering.FontSizesConfig.GetDefaultFontSize(AdaptiveCards.AdaptiveTextSize)')
+  - [GetFontSize(fontSize)](#M-AdaptiveCards-Rendering-FontSizesConfig-GetFontSize-AdaptiveCards-AdaptiveTextSize- 'AdaptiveCards.Rendering.FontSizesConfig.GetFontSize(AdaptiveCards.AdaptiveTextSize)')
+- [FontStyleConfig](#T-AdaptiveCards-Rendering-FontStyleConfig 'AdaptiveCards.Rendering.FontStyleConfig')
+  - [FontFamily](#P-AdaptiveCards-Rendering-FontStyleConfig-FontFamily 'AdaptiveCards.Rendering.FontStyleConfig.FontFamily')
+  - [FontSizes](#P-AdaptiveCards-Rendering-FontStyleConfig-FontSizes 'AdaptiveCards.Rendering.FontStyleConfig.FontSizes')
+  - [FontWeights](#P-AdaptiveCards-Rendering-FontStyleConfig-FontWeights 'AdaptiveCards.Rendering.FontStyleConfig.FontWeights')
+- [FontTypesConfig](#T-AdaptiveCards-Rendering-FontTypesConfig 'AdaptiveCards.Rendering.FontTypesConfig')
+  - [Default](#P-AdaptiveCards-Rendering-FontTypesConfig-Default 'AdaptiveCards.Rendering.FontTypesConfig.Default')
+  - [Monospace](#P-AdaptiveCards-Rendering-FontTypesConfig-Monospace 'AdaptiveCards.Rendering.FontTypesConfig.Monospace')
+  - [GetFontType(fontType)](#M-AdaptiveCards-Rendering-FontTypesConfig-GetFontType-AdaptiveCards-AdaptiveFontType- 'AdaptiveCards.Rendering.FontTypesConfig.GetFontType(AdaptiveCards.AdaptiveFontType)')
+- [FontWeightsConfig](#T-AdaptiveCards-Rendering-FontWeightsConfig 'AdaptiveCards.Rendering.FontWeightsConfig')
+  - [Bolder](#P-AdaptiveCards-Rendering-FontWeightsConfig-Bolder 'AdaptiveCards.Rendering.FontWeightsConfig.Bolder')
+  - [Default](#P-AdaptiveCards-Rendering-FontWeightsConfig-Default 'AdaptiveCards.Rendering.FontWeightsConfig.Default')
+  - [Lighter](#P-AdaptiveCards-Rendering-FontWeightsConfig-Lighter 'AdaptiveCards.Rendering.FontWeightsConfig.Lighter')
+  - [GetDefaultFontWeight(fontWeight)](#M-AdaptiveCards-Rendering-FontWeightsConfig-GetDefaultFontWeight-AdaptiveCards-AdaptiveTextWeight- 'AdaptiveCards.Rendering.FontWeightsConfig.GetDefaultFontWeight(AdaptiveCards.AdaptiveTextWeight)')
+  - [GetFontWeight(fontWeight)](#M-AdaptiveCards-Rendering-FontWeightsConfig-GetFontWeight-AdaptiveCards-AdaptiveTextWeight- 'AdaptiveCards.Rendering.FontWeightsConfig.GetFontWeight(AdaptiveCards.AdaptiveTextWeight)')
+- [ForegroundColorsConfig](#T-AdaptiveCards-Rendering-ForegroundColorsConfig 'AdaptiveCards.Rendering.ForegroundColorsConfig')
+  - [Accent](#P-AdaptiveCards-Rendering-ForegroundColorsConfig-Accent 'AdaptiveCards.Rendering.ForegroundColorsConfig.Accent')
+  - [Attention](#P-AdaptiveCards-Rendering-ForegroundColorsConfig-Attention 'AdaptiveCards.Rendering.ForegroundColorsConfig.Attention')
+  - [Dark](#P-AdaptiveCards-Rendering-ForegroundColorsConfig-Dark 'AdaptiveCards.Rendering.ForegroundColorsConfig.Dark')
+  - [Default](#P-AdaptiveCards-Rendering-ForegroundColorsConfig-Default 'AdaptiveCards.Rendering.ForegroundColorsConfig.Default')
+  - [Good](#P-AdaptiveCards-Rendering-ForegroundColorsConfig-Good 'AdaptiveCards.Rendering.ForegroundColorsConfig.Good')
+  - [Light](#P-AdaptiveCards-Rendering-ForegroundColorsConfig-Light 'AdaptiveCards.Rendering.ForegroundColorsConfig.Light')
+  - [Warning](#P-AdaptiveCards-Rendering-ForegroundColorsConfig-Warning 'AdaptiveCards.Rendering.ForegroundColorsConfig.Warning')
 - [GfmBlockRules](#T-Microsoft-MarkedNet-GfmBlockRules 'Microsoft.MarkedNet.GfmBlockRules')
 - [GfmInlineRules](#T-Microsoft-MarkedNet-GfmInlineRules 'Microsoft.MarkedNet.GfmInlineRules')
 - [HashColorConverter](#T-AdaptiveCards-HashColorConverter 'AdaptiveCards.HashColorConverter')
@@ -646,8 +832,12 @@
 - [HeadingsConfig](#T-AdaptiveCards-Rendering-HeadingsConfig 'AdaptiveCards.Rendering.HeadingsConfig')
   - [Level](#P-AdaptiveCards-Rendering-HeadingsConfig-Level 'AdaptiveCards.Rendering.HeadingsConfig.Level')
 - [HighlightColorConfig](#T-AdaptiveCards-Rendering-HighlightColorConfig 'AdaptiveCards.Rendering.HighlightColorConfig')
+  - [#ctor()](#M-AdaptiveCards-Rendering-HighlightColorConfig-#ctor 'AdaptiveCards.Rendering.HighlightColorConfig.#ctor')
   - [Default](#P-AdaptiveCards-Rendering-HighlightColorConfig-Default 'AdaptiveCards.Rendering.HighlightColorConfig.Default')
+  - [Subtle](#P-AdaptiveCards-Rendering-HighlightColorConfig-Subtle 'AdaptiveCards.Rendering.HighlightColorConfig.Subtle')
 - [HtmlRenderer](#T-Microsoft-MarkedNet-HtmlRenderer 'Microsoft.MarkedNet.HtmlRenderer')
+  - [#ctor()](#M-Microsoft-MarkedNet-HtmlRenderer-#ctor 'Microsoft.MarkedNet.HtmlRenderer.#ctor')
+  - [#ctor(options)](#M-Microsoft-MarkedNet-HtmlRenderer-#ctor-Microsoft-MarkedNet-Options- 'Microsoft.MarkedNet.HtmlRenderer.#ctor(Microsoft.MarkedNet.Options)')
 - [IAdaptiveTextElement](#T-AdaptiveCards-IAdaptiveTextElement 'AdaptiveCards.IAdaptiveTextElement')
   - [Color](#P-AdaptiveCards-IAdaptiveTextElement-Color 'AdaptiveCards.IAdaptiveTextElement.Color')
   - [FontType](#P-AdaptiveCards-IAdaptiveTextElement-FontType 'AdaptiveCards.IAdaptiveTextElement.FontType')
@@ -671,6 +861,12 @@
   - [Warnings](#P-AdaptiveCards-IgnoreNullEnumConverter`1-Warnings 'AdaptiveCards.IgnoreNullEnumConverter`1.Warnings')
   - [ReadJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
   - [WriteJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+- [ImageSetConfig](#T-AdaptiveCards-Rendering-ImageSetConfig 'AdaptiveCards.Rendering.ImageSetConfig')
+  - [ImageSize](#P-AdaptiveCards-Rendering-ImageSetConfig-ImageSize 'AdaptiveCards.Rendering.ImageSetConfig.ImageSize')
+- [ImageSizesConfig](#T-AdaptiveCards-Rendering-ImageSizesConfig 'AdaptiveCards.Rendering.ImageSizesConfig')
+  - [Large](#P-AdaptiveCards-Rendering-ImageSizesConfig-Large 'AdaptiveCards.Rendering.ImageSizesConfig.Large')
+  - [Medium](#P-AdaptiveCards-Rendering-ImageSizesConfig-Medium 'AdaptiveCards.Rendering.ImageSizesConfig.Medium')
+  - [Small](#P-AdaptiveCards-Rendering-ImageSizesConfig-Small 'AdaptiveCards.Rendering.ImageSizesConfig.Small')
 - [InlineLexer](#T-Microsoft-MarkedNet-InlineLexer 'Microsoft.MarkedNet.InlineLexer')
   - [Mangle()](#M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String- 'Microsoft.MarkedNet.InlineLexer.Mangle(System.String)')
   - [Output()](#M-Microsoft-MarkedNet-InlineLexer-Output-System-String- 'Microsoft.MarkedNet.InlineLexer.Output(System.String)')
@@ -684,10 +880,17 @@
   - [Suffix](#P-AdaptiveCards-Rendering-InputLabelConfig-Suffix 'AdaptiveCards.Rendering.InputLabelConfig.Suffix')
   - [Weight](#P-AdaptiveCards-Rendering-InputLabelConfig-Weight 'AdaptiveCards.Rendering.InputLabelConfig.Weight')
 - [InputsConfig](#T-AdaptiveCards-Rendering-InputsConfig 'AdaptiveCards.Rendering.InputsConfig')
+  - [ErrorMessage](#P-AdaptiveCards-Rendering-InputsConfig-ErrorMessage 'AdaptiveCards.Rendering.InputsConfig.ErrorMessage')
+  - [Label](#P-AdaptiveCards-Rendering-InputsConfig-Label 'AdaptiveCards.Rendering.InputsConfig.Label')
+- [Iso8601DateTimeConverter](#T-AdaptiveCards-Iso8601DateTimeConverter 'AdaptiveCards.Iso8601DateTimeConverter')
+  - [#ctor()](#M-AdaptiveCards-Iso8601DateTimeConverter-#ctor 'AdaptiveCards.Iso8601DateTimeConverter.#ctor')
 - [JsonExtensions](#T-AdaptiveCards-JsonExtensions 'AdaptiveCards.JsonExtensions')
   - [IsHexDigit(c)](#M-AdaptiveCards-JsonExtensions-IsHexDigit-System-Char- 'AdaptiveCards.JsonExtensions.IsHexDigit(System.Char)')
+  - [IsIntegerType(type)](#M-AdaptiveCards-JsonExtensions-IsIntegerType-System-Type- 'AdaptiveCards.JsonExtensions.IsIntegerType(System.Type)')
 - [LabelConfig](#T-AdaptiveCards-Rendering-LabelConfig 'AdaptiveCards.Rendering.LabelConfig')
   - [InputSpacing](#P-AdaptiveCards-Rendering-LabelConfig-InputSpacing 'AdaptiveCards.Rendering.LabelConfig.InputSpacing')
+  - [OptionalInputs](#P-AdaptiveCards-Rendering-LabelConfig-OptionalInputs 'AdaptiveCards.Rendering.LabelConfig.OptionalInputs')
+  - [RequiredInputs](#P-AdaptiveCards-Rendering-LabelConfig-RequiredInputs 'AdaptiveCards.Rendering.LabelConfig.RequiredInputs')
 - [Lexer](#T-Microsoft-MarkedNet-Lexer 'Microsoft.MarkedNet.Lexer')
   - [Lex()](#M-Microsoft-MarkedNet-Lexer-Lex-System-String,Microsoft-MarkedNet-Options- 'Microsoft.MarkedNet.Lexer.Lex(System.String,Microsoft.MarkedNet.Options)')
   - [Lex()](#M-Microsoft-MarkedNet-Lexer-Lex-System-String- 'Microsoft.MarkedNet.Lexer.Lex(System.String)')
@@ -717,14 +920,21 @@
 - [RemoteResourceInformation](#T-AdaptiveCards-RemoteResourceInformation 'AdaptiveCards.RemoteResourceInformation')
   - [#ctor(url,mimeType)](#M-AdaptiveCards-RemoteResourceInformation-#ctor-System-String,System-String- 'AdaptiveCards.RemoteResourceInformation.#ctor(System.String,System.String)')
 - [RenderedAdaptiveCardBase](#T-AdaptiveCards-Rendering-RenderedAdaptiveCardBase 'AdaptiveCards.Rendering.RenderedAdaptiveCardBase')
+  - [#ctor(originatingCard,warnings)](#M-AdaptiveCards-Rendering-RenderedAdaptiveCardBase-#ctor-AdaptiveCards-AdaptiveCard,System-Collections-Generic-IList{AdaptiveCards-AdaptiveWarning}- 'AdaptiveCards.Rendering.RenderedAdaptiveCardBase.#ctor(AdaptiveCards.AdaptiveCard,System.Collections.Generic.IList{AdaptiveCards.AdaptiveWarning})')
   - [OriginatingCard](#P-AdaptiveCards-Rendering-RenderedAdaptiveCardBase-OriginatingCard 'AdaptiveCards.Rendering.RenderedAdaptiveCardBase.OriginatingCard')
   - [UserInputs](#P-AdaptiveCards-Rendering-RenderedAdaptiveCardBase-UserInputs 'AdaptiveCards.Rendering.RenderedAdaptiveCardBase.UserInputs')
   - [Warnings](#P-AdaptiveCards-Rendering-RenderedAdaptiveCardBase-Warnings 'AdaptiveCards.Rendering.RenderedAdaptiveCardBase.Warnings')
 - [RenderedAdaptiveCardInputs](#T-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs 'AdaptiveCards.Rendering.RenderedAdaptiveCardInputs')
+  - [#ctor()](#M-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs-#ctor 'AdaptiveCards.Rendering.RenderedAdaptiveCardInputs.#ctor')
+  - [#ctor(inputBindings)](#M-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs-#ctor-System-Collections-Generic-IDictionary{System-String,System-Func{System-String}}@- 'AdaptiveCards.Rendering.RenderedAdaptiveCardInputs.#ctor(System.Collections.Generic.IDictionary{System.String,System.Func{System.String}}@)')
   - [AsDictionary()](#M-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs-AsDictionary 'AdaptiveCards.Rendering.RenderedAdaptiveCardInputs.AsDictionary')
   - [AsJson()](#M-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs-AsJson 'AdaptiveCards.Rendering.RenderedAdaptiveCardInputs.AsJson')
 - [RendererUtilities](#T-AdaptiveCards-Rendering-RendererUtilities 'AdaptiveCards.Rendering.RendererUtilities')
-  - [ApplyTextFunctions(text)](#M-AdaptiveCards-Rendering-RendererUtilities-ApplyTextFunctions-System-String,System-String- 'AdaptiveCards.Rendering.RendererUtilities.ApplyTextFunctions(System.String,System.String)')
+  - [ApplyTextFunctions(text,lang)](#M-AdaptiveCards-Rendering-RendererUtilities-ApplyTextFunctions-System-String,System-String- 'AdaptiveCards.Rendering.RendererUtilities.ApplyTextFunctions(System.String,System.String)')
+  - [HandleHtmlSpaces(text)](#M-AdaptiveCards-Rendering-RendererUtilities-HandleHtmlSpaces-System-String- 'AdaptiveCards.Rendering.RendererUtilities.HandleHtmlSpaces(System.String)')
+  - [JoinString(choices,sep,last)](#M-AdaptiveCards-Rendering-RendererUtilities-JoinString-System-Collections-Generic-List{System-String},System-String,System-String- 'AdaptiveCards.Rendering.RendererUtilities.JoinString(System.Collections.Generic.List{System.String},System.String,System.String)')
+  - [TryGetValue\`\`1(dictionary,key)](#M-AdaptiveCards-Rendering-RendererUtilities-TryGetValue``1-System-Collections-IDictionary,System-String- 'AdaptiveCards.Rendering.RendererUtilities.TryGetValue``1(System.Collections.IDictionary,System.String)')
+  - [TryGetValue\`\`1(dictionary,key)](#M-AdaptiveCards-Rendering-RendererUtilities-TryGetValue``1-System-Collections-Generic-IDictionary{System-String,System-Object},System-String- 'AdaptiveCards.Rendering.RendererUtilities.TryGetValue``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)')
 - [SeparatorConfig](#T-AdaptiveCards-Rendering-SeparatorConfig 'AdaptiveCards.Rendering.SeparatorConfig')
   - [LineColor](#P-AdaptiveCards-Rendering-SeparatorConfig-LineColor 'AdaptiveCards.Rendering.SeparatorConfig.LineColor')
   - [LineThickness](#P-AdaptiveCards-Rendering-SeparatorConfig-LineThickness 'AdaptiveCards.Rendering.SeparatorConfig.LineThickness')
@@ -737,6 +947,17 @@
   - [InlineTopMargin](#P-AdaptiveCards-Rendering-ShowCardConfig-InlineTopMargin 'AdaptiveCards.Rendering.ShowCardConfig.InlineTopMargin')
   - [Style](#P-AdaptiveCards-Rendering-ShowCardConfig-Style 'AdaptiveCards.Rendering.ShowCardConfig.Style')
 - [SpacingsConfig](#T-AdaptiveCards-Rendering-SpacingsConfig 'AdaptiveCards.Rendering.SpacingsConfig')
+  - [Default](#P-AdaptiveCards-Rendering-SpacingsConfig-Default 'AdaptiveCards.Rendering.SpacingsConfig.Default')
+  - [ExtraLarge](#P-AdaptiveCards-Rendering-SpacingsConfig-ExtraLarge 'AdaptiveCards.Rendering.SpacingsConfig.ExtraLarge')
+  - [Large](#P-AdaptiveCards-Rendering-SpacingsConfig-Large 'AdaptiveCards.Rendering.SpacingsConfig.Large')
+  - [Medium](#P-AdaptiveCards-Rendering-SpacingsConfig-Medium 'AdaptiveCards.Rendering.SpacingsConfig.Medium')
+  - [Padding](#P-AdaptiveCards-Rendering-SpacingsConfig-Padding 'AdaptiveCards.Rendering.SpacingsConfig.Padding')
+  - [Small](#P-AdaptiveCards-Rendering-SpacingsConfig-Small 'AdaptiveCards.Rendering.SpacingsConfig.Small')
+- [StrictIntConverter](#T-AdaptiveCards-StrictIntConverter 'AdaptiveCards.StrictIntConverter')
+  - [CanWrite](#P-AdaptiveCards-StrictIntConverter-CanWrite 'AdaptiveCards.StrictIntConverter.CanWrite')
+  - [CanConvert()](#M-AdaptiveCards-StrictIntConverter-CanConvert-System-Type- 'AdaptiveCards.StrictIntConverter.CanConvert(System.Type)')
+  - [ReadJson()](#M-AdaptiveCards-StrictIntConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.StrictIntConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [WriteJson()](#M-AdaptiveCards-StrictIntConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.StrictIntConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
 - [TablesBlockRules](#T-Microsoft-MarkedNet-TablesBlockRules 'Microsoft.MarkedNet.TablesBlockRules')
 - [TextBlockConfig](#T-AdaptiveCards-Rendering-TextBlockConfig 'AdaptiveCards.Rendering.TextBlockConfig')
   - [Color](#P-AdaptiveCards-Rendering-TextBlockConfig-Color 'AdaptiveCards.Rendering.TextBlockConfig.Color')
@@ -746,6 +967,11 @@
   - [Weight](#P-AdaptiveCards-Rendering-TextBlockConfig-Weight 'AdaptiveCards.Rendering.TextBlockConfig.Weight')
   - [Wrap](#P-AdaptiveCards-Rendering-TextBlockConfig-Wrap 'AdaptiveCards.Rendering.TextBlockConfig.Wrap')
 - [TextMarkdownRenderer](#T-Microsoft-MarkedNet-TextMarkdownRenderer 'Microsoft.MarkedNet.TextMarkdownRenderer')
+- [ToggleElementsConverter](#T-AdaptiveCards-ToggleElementsConverter 'AdaptiveCards.ToggleElementsConverter')
+  - [CanConvert()](#M-AdaptiveCards-ToggleElementsConverter-CanConvert-System-Type- 'AdaptiveCards.ToggleElementsConverter.CanConvert(System.Type)')
+  - [ReadJson()](#M-AdaptiveCards-ToggleElementsConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.ToggleElementsConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [WriteJson()](#M-AdaptiveCards-ToggleElementsConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.ToggleElementsConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+- [TypedEventHandler\`2](#T-AdaptiveCards-TypedEventHandler`2 'AdaptiveCards.TypedEventHandler`2')
 - [WarningLoggingContractResolver](#T-AdaptiveCards-WarningLoggingContractResolver 'AdaptiveCards.WarningLoggingContractResolver')
   - [CreateProperty(member,memberSerialization)](#M-AdaptiveCards-WarningLoggingContractResolver-CreateProperty-System-Reflection-MemberInfo,Newtonsoft-Json-MemberSerialization- 'AdaptiveCards.WarningLoggingContractResolver.CreateProperty(System.Reflection.MemberInfo,Newtonsoft.Json.MemberSerialization)')
 - [WarningStatusCode](#T-AdaptiveCards-AdaptiveWarning-WarningStatusCode 'AdaptiveCards.AdaptiveWarning.WarningStatusCode')
@@ -755,6 +981,8 @@
   - [NoErrorMessageForValidatedInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-NoErrorMessageForValidatedInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput')
   - [UnsupportedSchemaVersion](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-UnsupportedSchemaVersion 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.UnsupportedSchemaVersion')
 - [XamlRenderer](#T-Microsoft-MarkedNet-XamlRenderer 'Microsoft.MarkedNet.XamlRenderer')
+  - [#ctor()](#M-Microsoft-MarkedNet-XamlRenderer-#ctor 'Microsoft.MarkedNet.XamlRenderer.#ctor')
+  - [#ctor(options)](#M-Microsoft-MarkedNet-XamlRenderer-#ctor-Microsoft-MarkedNet-Options- 'Microsoft.MarkedNet.XamlRenderer.#ctor(Microsoft.MarkedNet.Options)')
   - [BlockQuoteStyle](#P-Microsoft-MarkedNet-XamlRenderer-BlockQuoteStyle 'Microsoft.MarkedNet.XamlRenderer.BlockQuoteStyle')
   - [CellHeaderStyle](#P-Microsoft-MarkedNet-XamlRenderer-CellHeaderStyle 'Microsoft.MarkedNet.XamlRenderer.CellHeaderStyle')
   - [CellStyle](#P-Microsoft-MarkedNet-XamlRenderer-CellStyle 'Microsoft.MarkedNet.XamlRenderer.CellStyle')
@@ -768,6 +996,24 @@
   - [OrderedListStyle](#P-Microsoft-MarkedNet-XamlRenderer-OrderedListStyle 'Microsoft.MarkedNet.XamlRenderer.OrderedListStyle')
   - [ParagraphStyle](#P-Microsoft-MarkedNet-XamlRenderer-ParagraphStyle 'Microsoft.MarkedNet.XamlRenderer.ParagraphStyle')
   - [UnorderedListStyle](#P-Microsoft-MarkedNet-XamlRenderer-UnorderedListStyle 'Microsoft.MarkedNet.XamlRenderer.UnorderedListStyle')
+  - [Blockquote()](#M-Microsoft-MarkedNet-XamlRenderer-Blockquote-System-String- 'Microsoft.MarkedNet.XamlRenderer.Blockquote(System.String)')
+  - [Br()](#M-Microsoft-MarkedNet-XamlRenderer-Br 'Microsoft.MarkedNet.XamlRenderer.Br')
+  - [Code()](#M-Microsoft-MarkedNet-XamlRenderer-Code-System-String,System-String,System-Boolean- 'Microsoft.MarkedNet.XamlRenderer.Code(System.String,System.String,System.Boolean)')
+  - [Codespan()](#M-Microsoft-MarkedNet-XamlRenderer-Codespan-System-String- 'Microsoft.MarkedNet.XamlRenderer.Codespan(System.String)')
+  - [Del()](#M-Microsoft-MarkedNet-XamlRenderer-Del-System-String- 'Microsoft.MarkedNet.XamlRenderer.Del(System.String)')
+  - [Em()](#M-Microsoft-MarkedNet-XamlRenderer-Em-System-String- 'Microsoft.MarkedNet.XamlRenderer.Em(System.String)')
+  - [Heading()](#M-Microsoft-MarkedNet-XamlRenderer-Heading-System-String,System-Int32,System-String- 'Microsoft.MarkedNet.XamlRenderer.Heading(System.String,System.Int32,System.String)')
+  - [Hr()](#M-Microsoft-MarkedNet-XamlRenderer-Hr 'Microsoft.MarkedNet.XamlRenderer.Hr')
+  - [Html()](#M-Microsoft-MarkedNet-XamlRenderer-Html-System-String- 'Microsoft.MarkedNet.XamlRenderer.Html(System.String)')
+  - [Image()](#M-Microsoft-MarkedNet-XamlRenderer-Image-System-String,System-String,System-String- 'Microsoft.MarkedNet.XamlRenderer.Image(System.String,System.String,System.String)')
+  - [Link()](#M-Microsoft-MarkedNet-XamlRenderer-Link-System-String,System-String,System-String- 'Microsoft.MarkedNet.XamlRenderer.Link(System.String,System.String,System.String)')
+  - [List()](#M-Microsoft-MarkedNet-XamlRenderer-List-System-String,System-Boolean,System-Int32- 'Microsoft.MarkedNet.XamlRenderer.List(System.String,System.Boolean,System.Int32)')
+  - [ListItem()](#M-Microsoft-MarkedNet-XamlRenderer-ListItem-System-String- 'Microsoft.MarkedNet.XamlRenderer.ListItem(System.String)')
+  - [Paragraph()](#M-Microsoft-MarkedNet-XamlRenderer-Paragraph-System-String- 'Microsoft.MarkedNet.XamlRenderer.Paragraph(System.String)')
+  - [Strong()](#M-Microsoft-MarkedNet-XamlRenderer-Strong-System-String- 'Microsoft.MarkedNet.XamlRenderer.Strong(System.String)')
+  - [Table()](#M-Microsoft-MarkedNet-XamlRenderer-Table-System-String,System-String- 'Microsoft.MarkedNet.XamlRenderer.Table(System.String,System.String)')
+  - [TableCell()](#M-Microsoft-MarkedNet-XamlRenderer-TableCell-System-String,Microsoft-MarkedNet-TableCellFlags- 'Microsoft.MarkedNet.XamlRenderer.TableCell(System.String,Microsoft.MarkedNet.TableCellFlags)')
+  - [TableRow()](#M-Microsoft-MarkedNet-XamlRenderer-TableRow-System-String- 'Microsoft.MarkedNet.XamlRenderer.TableRow(System.String)')
 
 <a name='T-AdaptiveCards-Rendering-ActionsConfig'></a>
 ## ActionsConfig `type`
@@ -1072,6 +1318,10 @@ Does not gather or validate any inputs on submit
 
 AdaptiveCards
 
+##### Summary
+
+Class for AuthCardButton
+
 <a name='P-AdaptiveCards-AdaptiveAuthCardButton-Image'></a>
 ### Image `property`
 
@@ -1106,6 +1356,10 @@ The value associated with the button. The meaning of value depends on the button
 ##### Namespace
 
 AdaptiveCards
+
+##### Summary
+
+Class to for authentication data.
 
 <a name='P-AdaptiveCards-AdaptiveAuthentication-Buttons'></a>
 ### Buttons `property`
@@ -1362,6 +1616,63 @@ Writes the object to JSON. If the supplied `backgroundImage` is all default valu
 | backgroundImage | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | The AdaptiveBackgroundImage object to write. |
 | serializer | [Newtonsoft.Json.JsonSerializer](#T-Newtonsoft-Json-JsonSerializer 'Newtonsoft.Json.JsonSerializer') | JsonSerializer to use for serialization. |
 
+<a name='T-AdaptiveCards-AdaptiveCaptionSource'></a>
+## AdaptiveCaptionSource `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Represents a "media source" for a Media element.
+
+<a name='M-AdaptiveCards-AdaptiveCaptionSource-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes an empty [AdaptiveMediaSource](#T-AdaptiveCards-AdaptiveMediaSource 'AdaptiveCards.AdaptiveMediaSource').
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveCaptionSource-#ctor-System-String,System-String-'></a>
+### #ctor(mimeType,url) `constructor`
+
+##### Summary
+
+Initializes an [AdaptiveMediaSource](#T-AdaptiveCards-AdaptiveMediaSource 'AdaptiveCards.AdaptiveMediaSource') instance with the given properties.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| mimeType | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The mime type of the media. |
+| url | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The url from which to load the media. |
+
+<a name='P-AdaptiveCards-AdaptiveCaptionSource-Label'></a>
+### Label `property`
+
+##### Summary
+
+The caption label for the caption
+
+<a name='P-AdaptiveCards-AdaptiveCaptionSource-MimeType'></a>
+### MimeType `property`
+
+##### Summary
+
+The mime type of this media source.
+
+<a name='P-AdaptiveCards-AdaptiveCaptionSource-Url'></a>
+### Url `property`
+
+##### Summary
+
+The URL of this media source.
+
 <a name='T-AdaptiveCards-AdaptiveCard'></a>
 ## AdaptiveCard `type`
 
@@ -1491,6 +1802,20 @@ This makes sure the $schema property doesn't show up in AdditionalProperties
 
 The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.
 
+<a name='P-AdaptiveCards-AdaptiveCard-Metadata'></a>
+### Metadata `property`
+
+##### Summary
+
+Defines various metadata properties typically not used for rendering the card
+
+<a name='P-AdaptiveCards-AdaptiveCard-MinHeight'></a>
+### MinHeight `property`
+
+##### Summary
+
+Explicit card minimum height with 'px'. (100px, 200px)
+
 <a name='P-AdaptiveCards-AdaptiveCard-MinVersion'></a>
 ### MinVersion `property`
 
@@ -1514,7 +1839,7 @@ AdaptiveCard.OnDeserializingMissingVersion = () => new AdaptiveSchemaVersion(0, 
 
 ##### Summary
 
-Explicit card minimum height in pixels.
+PixelMinHeight if height is not auto/stretch
 
 <a name='P-AdaptiveCards-AdaptiveCard-Refresh'></a>
 ### Refresh `property`
@@ -1522,6 +1847,20 @@ Explicit card minimum height in pixels.
 ##### Summary
 
 Defines how the card can be refreshed by making a request to the target Bot.
+
+<a name='P-AdaptiveCards-AdaptiveCard-Rtl'></a>
+### Rtl `property`
+
+##### Summary
+
+Sets the text flow direction
+
+<a name='P-AdaptiveCards-AdaptiveCard-RtlXml'></a>
+### RtlXml `property`
+
+##### Summary
+
+Controls XML serialization of style.
 
 <a name='P-AdaptiveCards-AdaptiveCard-SelectAction'></a>
 ### SelectAction `property`
@@ -1652,6 +1991,17 @@ Determines whether the schema entry in an AdaptiveCard should be serialized.
 ##### Returns
 
 false
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveCard-ShouldSerializeRtlXml'></a>
+### ShouldSerializeRtlXml() `method`
+
+##### Summary
+
+Determines whether to serialize the style for XML.
 
 ##### Parameters
 
@@ -1929,6 +2279,13 @@ The AdaptiveCard element that this class implements.
 
 A collection of available choices.
 
+<a name='P-AdaptiveCards-AdaptiveChoiceSetInput-DataQuery'></a>
+### DataQuery `property`
+
+##### Summary
+
+A dataQuery
+
 <a name='P-AdaptiveCards-AdaptiveChoiceSetInput-IsMultiSelect'></a>
 ### IsMultiSelect `property`
 
@@ -2000,6 +2357,20 @@ Base class for all elements that contain other elements.
 
 Defines if the element can bleed through its parent's padding.
 
+<a name='P-AdaptiveCards-AdaptiveCollectionElement-HorizontalAlignment'></a>
+### HorizontalAlignment `property`
+
+##### Summary
+
+Horizontal alignment for element.
+
+<a name='P-AdaptiveCards-AdaptiveCollectionElement-MinHeight'></a>
+### MinHeight `property`
+
+##### Summary
+
+Explicit card minimum height with 'px'. (100px, 200px)
+
 <a name='P-AdaptiveCards-AdaptiveCollectionElement-PixelMinHeight'></a>
 ### PixelMinHeight `property`
 
@@ -2035,12 +2406,45 @@ Controls XML serialization of style.
 
 The content alignment for the element inside the container.
 
+<a name='M-AdaptiveCards-AdaptiveCollectionElement-Add-AdaptiveCards-AdaptiveElement-'></a>
+### Add() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveCollectionElement-GetEnumerator'></a>
+### GetEnumerator() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml'></a>
 ### ShouldSerializeStyleXml() `method`
 
 ##### Summary
 
 Determines whether to serialize the style for XML.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveCollectionElement-System#Collections#IEnumerable#GetEnumerator'></a>
+### System#Collections#IEnumerable#GetEnumerator() `method`
+
+##### Summary
+
+*Inherit from parent.*
 
 ##### Parameters
 
@@ -2057,34 +2461,19 @@ AdaptiveCards
 
 AdaptiveCard element with content alignment properties
 
-<a name='P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-HorizontalContentAlignment'></a>
-### HorizontalContentAlignment `property`
+<a name='P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-HorizontalCellContentAlignment'></a>
+### HorizontalCellContentAlignment `property`
 
 ##### Summary
 
 The content alignment for the TableCells inside the TableRow.
 
-<a name='P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-VerticalContentAlignment'></a>
-### VerticalContentAlignment `property`
+<a name='P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-VerticalCellContentAlignment'></a>
+### VerticalCellContentAlignment `property`
 
 ##### Summary
 
 The content alignment for the TableCells inside the TableRow.
-
-<a name='M-AdaptiveCards-AdaptiveCollectionWithContentAlignment-GetEnumerator'></a>
-### GetEnumerator() `method`
-
-##### Summary
-
-Returns enumerator
-
-##### Returns
-
-
-
-##### Parameters
-
-This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveColumn'></a>
 ## AdaptiveColumn `type`
@@ -2103,13 +2492,6 @@ Represents the Column element.
 ##### Summary
 
 *Inherit from parent.*
-
-<a name='P-AdaptiveCards-AdaptiveColumn-Rtl'></a>
-### Rtl `property`
-
-##### Summary
-
-Sets the text flow direction
 
 <a name='P-AdaptiveCards-AdaptiveColumn-Size'></a>
 ### Size `property`
@@ -2163,6 +2545,28 @@ Collection of Columns that this ColumnSet contains.
 ##### Summary
 
 *Inherit from parent.*
+
+<a name='M-AdaptiveCards-AdaptiveColumnSet-Add-AdaptiveCards-AdaptiveElement-'></a>
+### Add() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveColumnSet-GetEnumerator'></a>
+### GetEnumerator() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveColumnSize'></a>
 ## AdaptiveColumnSize `type`
@@ -2271,12 +2675,52 @@ Elements within this container.
 
 Sets the text flow direction
 
+<a name='P-AdaptiveCards-AdaptiveContainer-RtlXml'></a>
+### RtlXml `property`
+
+##### Summary
+
+Controls XML serialization of style.
+
 <a name='P-AdaptiveCards-AdaptiveContainer-Type'></a>
 ### Type `property`
 
 ##### Summary
 
 *Inherit from parent.*
+
+<a name='M-AdaptiveCards-AdaptiveContainer-Add-AdaptiveCards-AdaptiveElement-'></a>
+### Add() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveContainer-GetEnumerator'></a>
+### GetEnumerator() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveContainer-ShouldSerializeRtlXml'></a>
+### ShouldSerializeRtlXml() `method`
+
+##### Summary
+
+Determines whether to serialize the style for XML.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveContainerStyle'></a>
 ## AdaptiveContainerStyle `type`
@@ -2337,6 +2781,59 @@ The container is a normal container
 ##### Summary
 
 The container should be displayed using the warning style
+
+<a name='T-AdaptiveCards-AdaptiveDataQuery'></a>
+## AdaptiveDataQuery `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Data.Query data structure for filtered choicesets.
+
+<a name='F-AdaptiveCards-AdaptiveDataQuery-Separator'></a>
+### Separator `constants`
+
+##### Summary
+
+separator
+
+<a name='P-AdaptiveCards-AdaptiveDataQuery-Count'></a>
+### Count `property`
+
+##### Summary
+
+Populates the suggested page size or number of items to request
+
+<a name='P-AdaptiveCards-AdaptiveDataQuery-Dataset'></a>
+### Dataset `property`
+
+##### Summary
+
+Specifies the name of dataset that is fetched dynamically.
+
+<a name='P-AdaptiveCards-AdaptiveDataQuery-Skip'></a>
+### Skip `property`
+
+##### Summary
+
+Populates the skip value for paging
+
+<a name='P-AdaptiveCards-AdaptiveDataQuery-Type'></a>
+### Type `property`
+
+##### Summary
+
+Specifies that it's a Data.Query object.
+
+<a name='P-AdaptiveCards-AdaptiveDataQuery-Value'></a>
+### Value `property`
+
+##### Summary
+
+Populates the input
 
 <a name='T-AdaptiveCards-AdaptiveDateInput'></a>
 ## AdaptiveDateInput `type`
@@ -3092,6 +3589,19 @@ Initializes an empty AdaptiveHeight instance.
 
 This constructor has no parameters.
 
+<a name='M-AdaptiveCards-AdaptiveHeight-#ctor-System-String-'></a>
+### #ctor(value) `constructor`
+
+##### Summary
+
+Initializes an AdaptiveHeight instance with the given string "auto"|"stretch"|"100px"
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | enumeration value or pixel . |
+
 <a name='M-AdaptiveCards-AdaptiveHeight-#ctor-System-UInt32-'></a>
 ### #ctor(px) `constructor`
 
@@ -3197,6 +3707,23 @@ Returns true if this [AdaptiveHeight](#T-AdaptiveCards-AdaptiveHeight 'AdaptiveC
 
 This method has no parameters.
 
+<a name='M-AdaptiveCards-AdaptiveHeight-Parse-System-String-'></a>
+### Parse(value) `method`
+
+##### Summary
+
+Parse string to adaptive height
+
+##### Returns
+
+AdaptiveHeight
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | string value |
+
 <a name='M-AdaptiveCards-AdaptiveHeight-ShouldSerializeAdaptiveHeight'></a>
 ### ShouldSerializeAdaptiveHeight() `method`
 
@@ -3219,6 +3746,17 @@ Determines whether to serialize the [UnitXml](#P-AdaptiveCards-AdaptiveHeight-Un
 
 This method has no parameters.
 
+<a name='M-AdaptiveCards-AdaptiveHeight-ToString'></a>
+### ToString() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='M-AdaptiveCards-AdaptiveHeight-op_Equality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight-'></a>
 ### op_Equality() `method`
 
@@ -3229,6 +3767,45 @@ This method has no parameters.
 ##### Parameters
 
 This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveHeight-op_Implicit-System-UInt32-~AdaptiveCards-AdaptiveHeight'></a>
+### op_Implicit(value) `method`
+
+##### Summary
+
+Assignment operator with uint pixels
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.UInt32)~AdaptiveCards.AdaptiveHeight](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.UInt32)~AdaptiveCards.AdaptiveHeight 'System.UInt32)~AdaptiveCards.AdaptiveHeight') |  |
+
+<a name='M-AdaptiveCards-AdaptiveHeight-op_Implicit-AdaptiveCards-AdaptiveHeightType-~AdaptiveCards-AdaptiveHeight'></a>
+### op_Implicit(value) `method`
+
+##### Summary
+
+Assignment operator with type
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [AdaptiveCards.AdaptiveHeightType)~AdaptiveCards.AdaptiveHeight](#T-AdaptiveCards-AdaptiveHeightType-~AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeightType)~AdaptiveCards.AdaptiveHeight') |  |
+
+<a name='M-AdaptiveCards-AdaptiveHeight-op_Implicit-System-String-~AdaptiveCards-AdaptiveHeight'></a>
+### op_Implicit(value) `method`
+
+##### Summary
+
+Assignment operator with string (100x)
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.String)~AdaptiveCards.AdaptiveHeight](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String)~AdaptiveCards.AdaptiveHeight 'System.String)~AdaptiveCards.AdaptiveHeight') |  |
 
 <a name='M-AdaptiveCards-AdaptiveHeight-op_Inequality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight-'></a>
 ### op_Inequality() `method`
@@ -4082,6 +4659,13 @@ Represents the Media element.
 
 Alternate text to display for this media element.
 
+<a name='P-AdaptiveCards-AdaptiveMedia-CaptionSources'></a>
+### CaptionSources `property`
+
+##### Summary
+
+A collection of captions.
+
 <a name='P-AdaptiveCards-AdaptiveMedia-Poster'></a>
 ### Poster `property`
 
@@ -4102,6 +4686,21 @@ A collection of source from which to retrieve the media.
 ##### Summary
 
 *Inherit from parent.*
+
+<a name='M-AdaptiveCards-AdaptiveMedia-ShouldSerializeCaptionSources'></a>
+### ShouldSerializeCaptionSources() `method`
+
+##### Summary
+
+XmlSerializer method
+
+##### Returns
+
+
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveMediaSource'></a>
 ## AdaptiveMediaSource `type`
@@ -4152,6 +4751,42 @@ The mime type of this media source.
 ##### Summary
 
 The URL of this media source.
+
+<a name='T-AdaptiveCards-AdaptiveMetadata'></a>
+## AdaptiveMetadata `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Metadata structure for adaptive card.
+
+<a name='P-AdaptiveCards-AdaptiveMetadata-AdditionalProperties'></a>
+### AdditionalProperties `property`
+
+##### Summary
+
+Additional properties not found on the default schema.
+
+<a name='P-AdaptiveCards-AdaptiveMetadata-WebUrl'></a>
+### WebUrl `property`
+
+##### Summary
+
+URL that uniquely identifies the card and serves as a browser fallback that can be used by some hosts.
+
+<a name='M-AdaptiveCards-AdaptiveMetadata-ShouldSerializeAdditionalProperties'></a>
+### ShouldSerializeAdditionalProperties() `method`
+
+##### Summary
+
+Determines whether the [AdditionalProperties](#P-AdaptiveCards-AdaptiveMetadata-AdditionalProperties 'AdaptiveCards.AdaptiveMetadata.AdditionalProperties') property should be serialized.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveNumberInput'></a>
 ## AdaptiveNumberInput `type`
@@ -4276,6 +4911,20 @@ Represents how a card can be refreshed by making a request to the target Bot
 The action to be executed to refresh the card.
    Clients can run this refresh action automatically or can provide an affordance for users to trigger it manually.
 
+<a name='P-AdaptiveCards-AdaptiveRefresh-Expires'></a>
+### Expires `property`
+
+##### Summary
+
+A timestamp that informs a Host when the card content has expired, and that it should trigger a refresh as appropriate. The format is ISO-8601 Instant format. E.g., 2022-01-01T12:00:00Z
+
+<a name='P-AdaptiveCards-AdaptiveRefresh-ExpiresXml'></a>
+### ExpiresXml `property`
+
+##### Summary
+
+Internal property for serializing xml.
+
 <a name='P-AdaptiveCards-AdaptiveRefresh-UserIds'></a>
 ### UserIds `property`
 
@@ -4285,6 +4934,76 @@ A list of user Ids informing the client for which users should the refresh actio
     Some clients will not run the refresh action automatically unless this property is specified.
     Some clients may ignore this property and always run the refresh action automatically.
 
+<a name='T-AdaptiveCards-Rendering-AdaptiveRenderArgs'></a>
+## AdaptiveRenderArgs `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Render args
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderArgs-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderArgs-#ctor-AdaptiveCards-Rendering-AdaptiveRenderArgs-'></a>
+### #ctor(previousRenderArgs) `constructor`
+
+##### Summary
+
+Constructor with parameters
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| previousRenderArgs | [AdaptiveCards.Rendering.AdaptiveRenderArgs](#T-AdaptiveCards-Rendering-AdaptiveRenderArgs 'AdaptiveCards.Rendering.AdaptiveRenderArgs') |  |
+
+<a name='P-AdaptiveCards-Rendering-AdaptiveRenderArgs-BleedDirection'></a>
+### BleedDirection `property`
+
+##### Summary
+
+Bleed direction
+
+<a name='P-AdaptiveCards-Rendering-AdaptiveRenderArgs-ContainerCardId'></a>
+### ContainerCardId `property`
+
+##### Summary
+
+ContainerId context.
+
+<a name='P-AdaptiveCards-Rendering-AdaptiveRenderArgs-ForegroundColors'></a>
+### ForegroundColors `property`
+
+##### Summary
+
+ForegoundColors config to use.
+
+<a name='P-AdaptiveCards-Rendering-AdaptiveRenderArgs-HasParentWithPadding'></a>
+### HasParentWithPadding `property`
+
+##### Summary
+
+Flag for wether the parent already has padding.
+
+<a name='P-AdaptiveCards-Rendering-AdaptiveRenderArgs-ParentStyle'></a>
+### ParentStyle `property`
+
+##### Summary
+
+Default value for the container style of the first adaptiveCard
+
 <a name='T-AdaptiveCards-Rendering-AdaptiveRenderException'></a>
 ## AdaptiveRenderException `type`
 
@@ -4292,12 +5011,129 @@ A list of user Ids informing the client for which users should the refresh actio
 
 AdaptiveCards.Rendering
 
+##### Summary
+
+Execption for adaptive renderer
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderException-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderException-#ctor-System-String-'></a>
+### #ctor(message) `constructor`
+
+##### Summary
+
+Constructor with message
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderException-#ctor-System-String,System-Exception-'></a>
+### #ctor(message,innerException) `constructor`
+
+##### Summary
+
+Constructor with message and inner exception
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+| innerException | [System.Exception](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Exception 'System.Exception') |  |
+
 <a name='P-AdaptiveCards-Rendering-AdaptiveRenderException-CardFallbackText'></a>
 ### CardFallbackText `property`
 
 ##### Summary
 
 The fallback text associated with this card, if provided by the card author
+
+<a name='T-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2'></a>
+## AdaptiveRenderTransformers\`2 `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Class for transforming elements.
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TUIElement |  |
+| TContext |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2-Apply``1-``0,`0,`1-'></a>
+### Apply\`\`1(element,uiElement,context) `method`
+
+##### Summary
+
+Apply
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| element | [\`\`0](#T-``0 '``0') |  |
+| uiElement | [\`0](#T-`0 '`0') |  |
+| context | [\`1](#T-`1 '`1') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TElement |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2-Register``1-System-Action{``0,`0,`1}-'></a>
+### Register\`\`1(transformer) `method`
+
+##### Summary
+
+Register
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| transformer | [System.Action{\`\`0,\`0,\`1}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{``0,`0,`1}') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TElement |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveRenderTransformers`2-Remove``1'></a>
+### Remove\`\`1() `method`
+
+##### Summary
+
+Remove
+
+##### Parameters
+
+This method has no parameters.
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TElement |  |
 
 <a name='T-AdaptiveCards-AdaptiveRichTextBlock'></a>
 ## AdaptiveRichTextBlock `type`
@@ -4821,8 +5657,8 @@ Return a enumerator for TableRows
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-AdaptiveTable-ShouldSerializeStyleXml'></a>
-### ShouldSerializeStyleXml() `method`
+<a name='M-AdaptiveCards-AdaptiveTable-ShouldSerializeGridStyleXml'></a>
+### ShouldSerializeGridStyleXml() `method`
 
 ##### Summary
 
@@ -4850,6 +5686,67 @@ Represents a cell within a row of a Table element.
 
 *Inherit from parent.*
 
+<a name='P-AdaptiveCards-AdaptiveTableCell-Items'></a>
+### Items `property`
+
+##### Summary
+
+Elements within this container.
+
+<a name='P-AdaptiveCards-AdaptiveTableCell-Rtl'></a>
+### Rtl `property`
+
+##### Summary
+
+Sets the text flow direction
+
+<a name='P-AdaptiveCards-AdaptiveTableCell-RtlXml'></a>
+### RtlXml `property`
+
+##### Summary
+
+Controls XML serialization of style.
+
+<a name='P-AdaptiveCards-AdaptiveTableCell-Type'></a>
+### Type `property`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='M-AdaptiveCards-AdaptiveTableCell-Add-AdaptiveCards-AdaptiveElement-'></a>
+### Add() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveTableCell-GetEnumerator'></a>
+### GetEnumerator() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveTableCell-ShouldSerializeRtlXml'></a>
+### ShouldSerializeRtlXml() `method`
+
+##### Summary
+
+Determines whether to serialize the style for XML.
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-AdaptiveCards-AdaptiveTableColumnDefinition'></a>
 ## AdaptiveTableColumnDefinition `type`
 
@@ -4875,12 +5772,26 @@ The JSON property name that this class implements.
 
 The content alignment for the TableCells inside the TableRow.
 
+<a name='P-AdaptiveCards-AdaptiveTableColumnDefinition-PixelWidth'></a>
+### PixelWidth `property`
+
+##### Summary
+
+Ths width in pixels
+
 <a name='P-AdaptiveCards-AdaptiveTableColumnDefinition-VerticalContentAlignment'></a>
 ### VerticalContentAlignment `property`
 
 ##### Summary
 
 The content alignment for the TableCells inside the TableRow.
+
+<a name='P-AdaptiveCards-AdaptiveTableColumnDefinition-Width'></a>
+### Width `property`
+
+##### Summary
+
+Ths relative width as a weight
 
 <a name='T-AdaptiveCards-AdaptiveTableRow'></a>
 ## AdaptiveTableRow `type`
@@ -4914,15 +5825,8 @@ Collection of TableCells that this TableRow contains.
 
 Sets the content flow direction
 
-<a name='P-AdaptiveCards-AdaptiveTableRow-Style'></a>
-### Style `property`
-
-##### Summary
-
-The style used to display this element. See [AdaptiveContainerStyle](#T-AdaptiveCards-AdaptiveContainerStyle 'AdaptiveCards.AdaptiveContainerStyle').
-
-<a name='P-AdaptiveCards-AdaptiveTableRow-StyleXml'></a>
-### StyleXml `property`
+<a name='P-AdaptiveCards-AdaptiveTableRow-RtlXml'></a>
+### RtlXml `property`
 
 ##### Summary
 
@@ -4935,6 +5839,17 @@ Controls XML serialization of style.
 
 *Inherit from parent.*
 
+<a name='M-AdaptiveCards-AdaptiveTableRow-Add-AdaptiveCards-AdaptiveElement-'></a>
+### Add() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='M-AdaptiveCards-AdaptiveTableRow-GetEnumerator'></a>
 ### GetEnumerator() `method`
 
@@ -4946,8 +5861,8 @@ Controls XML serialization of style.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-AdaptiveTableRow-ShouldSerializeStyleXml'></a>
-### ShouldSerializeStyleXml() `method`
+<a name='M-AdaptiveCards-AdaptiveTableRow-ShouldSerializeRtlXml'></a>
+### ShouldSerializeRtlXml() `method`
 
 ##### Summary
 
@@ -5800,6 +6715,10 @@ Ids of elements whose visibility this element should change.
 
 AdaptiveCards
 
+##### Summary
+
+Class for TokenExchangeResource
+
 <a name='P-AdaptiveCards-AdaptiveTokenExchangeResource-Id'></a>
 ### Id `property`
 
@@ -6140,6 +7059,429 @@ AdaptiveCards.Rendering
 
 Utility class which allows you to visit every node
 
+<a name='P-AdaptiveCards-Rendering-AdaptiveVisitor-Elements'></a>
+### Elements `property`
+
+##### Summary
+
+A hashset of each object found while visiting. This is useful for finding an element using Linq
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveElement-'></a>
+### Visit(adaptiveElement) `method`
+
+##### Summary
+
+Visit an element
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| adaptiveElement | [AdaptiveCards.AdaptiveElement](#T-AdaptiveCards-AdaptiveElement 'AdaptiveCards.AdaptiveElement') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveCard-'></a>
+### Visit(card) `method`
+
+##### Summary
+
+Visit a card
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| card | [AdaptiveCards.AdaptiveCard](#T-AdaptiveCards-AdaptiveCard 'AdaptiveCards.AdaptiveCard') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveContainer-'></a>
+### Visit(container) `method`
+
+##### Summary
+
+Visit a container
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| container | [AdaptiveCards.AdaptiveContainer](#T-AdaptiveCards-AdaptiveContainer 'AdaptiveCards.AdaptiveContainer') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveColumnSet-'></a>
+### Visit(columnSet) `method`
+
+##### Summary
+
+Visit a columnSet
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| columnSet | [AdaptiveCards.AdaptiveColumnSet](#T-AdaptiveCards-AdaptiveColumnSet 'AdaptiveCards.AdaptiveColumnSet') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveFactSet-'></a>
+### Visit(factSet) `method`
+
+##### Summary
+
+Visit a factset
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| factSet | [AdaptiveCards.AdaptiveFactSet](#T-AdaptiveCards-AdaptiveFactSet 'AdaptiveCards.AdaptiveFactSet') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveImageSet-'></a>
+### Visit(imageSet) `method`
+
+##### Summary
+
+Visit an imagesset.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| imageSet | [AdaptiveCards.AdaptiveImageSet](#T-AdaptiveCards-AdaptiveImageSet 'AdaptiveCards.AdaptiveImageSet') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTextBlock-'></a>
+### Visit(textBlock) `method`
+
+##### Summary
+
+Visit a textblock
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| textBlock | [AdaptiveCards.AdaptiveTextBlock](#T-AdaptiveCards-AdaptiveTextBlock 'AdaptiveCards.AdaptiveTextBlock') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveImage-'></a>
+### Visit(image) `method`
+
+##### Summary
+
+Visit a image
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| image | [AdaptiveCards.AdaptiveImage](#T-AdaptiveCards-AdaptiveImage 'AdaptiveCards.AdaptiveImage') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveFact-'></a>
+### Visit(fact) `method`
+
+##### Summary
+
+Visit a Fact.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| fact | [AdaptiveCards.AdaptiveFact](#T-AdaptiveCards-AdaptiveFact 'AdaptiveCards.AdaptiveFact') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTextInput-'></a>
+### Visit(inputText) `method`
+
+##### Summary
+
+Visit a textInput
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| inputText | [AdaptiveCards.AdaptiveTextInput](#T-AdaptiveCards-AdaptiveTextInput 'AdaptiveCards.AdaptiveTextInput') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveDateInput-'></a>
+### Visit(inputDate) `method`
+
+##### Summary
+
+Visit a Date Input
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| inputDate | [AdaptiveCards.AdaptiveDateInput](#T-AdaptiveCards-AdaptiveDateInput 'AdaptiveCards.AdaptiveDateInput') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveNumberInput-'></a>
+### Visit(inputNumber) `method`
+
+##### Summary
+
+Visit a Number Input
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| inputNumber | [AdaptiveCards.AdaptiveNumberInput](#T-AdaptiveCards-AdaptiveNumberInput 'AdaptiveCards.AdaptiveNumberInput') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTimeInput-'></a>
+### Visit(inputTime) `method`
+
+##### Summary
+
+Visit a time input
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| inputTime | [AdaptiveCards.AdaptiveTimeInput](#T-AdaptiveCards-AdaptiveTimeInput 'AdaptiveCards.AdaptiveTimeInput') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveToggleInput-'></a>
+### Visit(inputToggle) `method`
+
+##### Summary
+
+Visit a toggle input
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| inputToggle | [AdaptiveCards.AdaptiveToggleInput](#T-AdaptiveCards-AdaptiveToggleInput 'AdaptiveCards.AdaptiveToggleInput') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveChoiceSetInput-'></a>
+### Visit(adaptiveChoiceSetInput) `method`
+
+##### Summary
+
+Visit a choiceSet Input
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| adaptiveChoiceSetInput | [AdaptiveCards.AdaptiveChoiceSetInput](#T-AdaptiveCards-AdaptiveChoiceSetInput 'AdaptiveCards.AdaptiveChoiceSetInput') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveActionSet-'></a>
+### Visit(actionSet) `method`
+
+##### Summary
+
+Visit a actionSet
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| actionSet | [AdaptiveCards.AdaptiveActionSet](#T-AdaptiveCards-AdaptiveActionSet 'AdaptiveCards.AdaptiveActionSet') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveAction-'></a>
+### Visit(action) `method`
+
+##### Summary
+
+Visit an action
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| action | [AdaptiveCards.AdaptiveAction](#T-AdaptiveCards-AdaptiveAction 'AdaptiveCards.AdaptiveAction') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveSubmitAction-'></a>
+### Visit(action) `method`
+
+##### Summary
+
+Visit a submit action
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| action | [AdaptiveCards.AdaptiveSubmitAction](#T-AdaptiveCards-AdaptiveSubmitAction 'AdaptiveCards.AdaptiveSubmitAction') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveOpenUrlAction-'></a>
+### Visit(action) `method`
+
+##### Summary
+
+Visit a OpenUrlAction
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| action | [AdaptiveCards.AdaptiveOpenUrlAction](#T-AdaptiveCards-AdaptiveOpenUrlAction 'AdaptiveCards.AdaptiveOpenUrlAction') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveShowCardAction-'></a>
+### Visit(action) `method`
+
+##### Summary
+
+Visit a showCard action
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| action | [AdaptiveCards.AdaptiveShowCardAction](#T-AdaptiveCards-AdaptiveShowCardAction 'AdaptiveCards.AdaptiveShowCardAction') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveToggleVisibilityAction-'></a>
+### Visit(action) `method`
+
+##### Summary
+
+Visit a toggle visibility action.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| action | [AdaptiveCards.AdaptiveToggleVisibilityAction](#T-AdaptiveCards-AdaptiveToggleVisibilityAction 'AdaptiveCards.AdaptiveToggleVisibilityAction') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTargetElement-'></a>
+### Visit(targetElement) `method`
+
+##### Summary
+
+Visit a targetElement.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| targetElement | [AdaptiveCards.AdaptiveTargetElement](#T-AdaptiveCards-AdaptiveTargetElement 'AdaptiveCards.AdaptiveTargetElement') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveExecuteAction-'></a>
+### Visit(action) `method`
+
+##### Summary
+
+Visit a execute Action.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| action | [AdaptiveCards.AdaptiveExecuteAction](#T-AdaptiveCards-AdaptiveExecuteAction 'AdaptiveCards.AdaptiveExecuteAction') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveMedia-'></a>
+### Visit(media) `method`
+
+##### Summary
+
+Visit a Media element
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| media | [AdaptiveCards.AdaptiveMedia](#T-AdaptiveCards-AdaptiveMedia 'AdaptiveCards.AdaptiveMedia') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveRichTextBlock-'></a>
+### Visit(rtb) `method`
+
+##### Summary
+
+Visit a RichTextBlock
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| rtb | [AdaptiveCards.AdaptiveRichTextBlock](#T-AdaptiveCards-AdaptiveRichTextBlock 'AdaptiveCards.AdaptiveRichTextBlock') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveInline-'></a>
+### Visit(inline) `method`
+
+##### Summary
+
+Visit an Inline element
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| inline | [AdaptiveCards.AdaptiveInline](#T-AdaptiveCards-AdaptiveInline 'AdaptiveCards.AdaptiveInline') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTextRun-'></a>
+### Visit(run) `method`
+
+##### Summary
+
+Visit a textRun
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| run | [AdaptiveCards.AdaptiveTextRun](#T-AdaptiveCards-AdaptiveTextRun 'AdaptiveCards.AdaptiveTextRun') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveRefresh-'></a>
+### Visit(refresh) `method`
+
+##### Summary
+
+Visit refresh
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| refresh | [AdaptiveCards.AdaptiveRefresh](#T-AdaptiveCards-AdaptiveRefresh 'AdaptiveCards.AdaptiveRefresh') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTable-'></a>
+### Visit(table) `method`
+
+##### Summary
+
+Visit table
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| table | [AdaptiveCards.AdaptiveTable](#T-AdaptiveCards-AdaptiveTable 'AdaptiveCards.AdaptiveTable') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTableRow-'></a>
+### Visit(row) `method`
+
+##### Summary
+
+Visit TableRow
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| row | [AdaptiveCards.AdaptiveTableRow](#T-AdaptiveCards-AdaptiveTableRow 'AdaptiveCards.AdaptiveTableRow') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTableColumnDefinition-'></a>
+### Visit(col) `method`
+
+##### Summary
+
+Visit TableColumnDefinition
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| col | [AdaptiveCards.AdaptiveTableColumnDefinition](#T-AdaptiveCards-AdaptiveTableColumnDefinition 'AdaptiveCards.AdaptiveTableColumnDefinition') |  |
+
+<a name='M-AdaptiveCards-Rendering-AdaptiveVisitor-Visit-AdaptiveCards-AdaptiveTableCell-'></a>
+### Visit(cell) `method`
+
+##### Summary
+
+Visit table cell
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| cell | [AdaptiveCards.AdaptiveTableCell](#T-AdaptiveCards-AdaptiveTableCell 'AdaptiveCards.AdaptiveTableCell') |  |
+
 <a name='T-AdaptiveCards-AdaptiveWarning'></a>
 ## AdaptiveWarning `type`
 
@@ -6193,6 +7535,349 @@ Convinience method that provides same string as Message
 ##### Parameters
 
 This method has no parameters.
+
+<a name='T-AdaptiveCards-AdaptiveWidth'></a>
+## AdaptiveWidth `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Represents the Width property in Adaptive Cards.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes an empty AdaptiveWidth instance.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-#ctor-System-String-'></a>
+### #ctor(value) `constructor`
+
+##### Summary
+
+Initializes an AdaptiveWidth instance with the given string "auto"|"stretch"|"100px"
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | enumeration value or pixel . |
+
+<a name='M-AdaptiveCards-AdaptiveWidth-#ctor-System-UInt32-'></a>
+### #ctor(px) `constructor`
+
+##### Summary
+
+Initializes an AdaptiveWidth instance with the given pixel size.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| px | [System.UInt32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.UInt32 'System.UInt32') | The device-independent pixel size to use. |
+
+<a name='M-AdaptiveCards-AdaptiveWidth-#ctor-AdaptiveCards-AdaptiveWidthType-'></a>
+### #ctor(widthType) `constructor`
+
+##### Summary
+
+Initializes an AdaptiveWidth instance with the given [AdaptiveWidthType](#T-AdaptiveCards-AdaptiveWidthType 'AdaptiveCards.AdaptiveWidthType').
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| widthType | [AdaptiveCards.AdaptiveWidthType](#T-AdaptiveCards-AdaptiveWidthType 'AdaptiveCards.AdaptiveWidthType') | The AdaptiveWidthType to use. |
+
+<a name='P-AdaptiveCards-AdaptiveWidth-Auto'></a>
+### Auto `property`
+
+##### Summary
+
+Returns a new AdaptiveWidth instance initialized for the [Auto](#F-AdaptiveCards-AdaptiveWidthType-Auto 'AdaptiveCards.AdaptiveWidthType.Auto') Width type.
+
+<a name='P-AdaptiveCards-AdaptiveWidth-Stretch'></a>
+### Stretch `property`
+
+##### Summary
+
+Returns a new AdaptiveWidth instance initialized for the [Stretch](#F-AdaptiveCards-AdaptiveWidthType-Stretch 'AdaptiveCards.AdaptiveWidthType.Stretch') Width type.
+
+<a name='P-AdaptiveCards-AdaptiveWidth-Unit'></a>
+### Unit `property`
+
+##### Summary
+
+The specific Width to use (only valid for the [Pixel](#F-AdaptiveCards-AdaptiveWidthType-Pixel 'AdaptiveCards.AdaptiveWidthType.Pixel') type).
+
+<a name='P-AdaptiveCards-AdaptiveWidth-UnitXml'></a>
+### UnitXml `property`
+
+##### Summary
+
+Helper to aid in XML serialization of the [Unit](#P-AdaptiveCards-AdaptiveWidth-Unit 'AdaptiveCards.AdaptiveWidth.Unit') property.
+
+<a name='P-AdaptiveCards-AdaptiveWidth-WidthType'></a>
+### WidthType `property`
+
+##### Summary
+
+The [AdaptiveWidthType](#T-AdaptiveCards-AdaptiveWidthType 'AdaptiveCards.AdaptiveWidthType') this instance represents.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-Equals-System-Object-'></a>
+### Equals() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-Equals-AdaptiveCards-AdaptiveWidth-'></a>
+### Equals() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-GetHashCode'></a>
+### GetHashCode() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-IsPixel'></a>
+### IsPixel() `method`
+
+##### Summary
+
+Returns true if this [AdaptiveWidth](#T-AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidth') instance represents the [Pixel](#F-AdaptiveCards-AdaptiveWidthType-Pixel 'AdaptiveCards.AdaptiveWidthType.Pixel')[AdaptiveWidthType](#T-AdaptiveCards-AdaptiveWidthType 'AdaptiveCards.AdaptiveWidthType').
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-Parse-System-String-'></a>
+### Parse(value) `method`
+
+##### Summary
+
+Parse string into AdaptiveWidth
+
+##### Returns
+
+AdaptiveWidth
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | string |
+
+<a name='M-AdaptiveCards-AdaptiveWidth-ShouldSerializeAdaptiveWidth'></a>
+### ShouldSerializeAdaptiveWidth() `method`
+
+##### Summary
+
+Determines whether this [AdaptiveWidth](#T-AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidth') instance should be serialized.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-ShouldSerializeUnitXml'></a>
+### ShouldSerializeUnitXml() `method`
+
+##### Summary
+
+Determines whether to serialize the [UnitXml](#P-AdaptiveCards-AdaptiveWidth-UnitXml 'AdaptiveCards.AdaptiveWidth.UnitXml') property.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-ToString'></a>
+### ToString() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-op_Equality-AdaptiveCards-AdaptiveWidth,AdaptiveCards-AdaptiveWidth-'></a>
+### op_Equality() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveWidth-op_Implicit-System-UInt32-~AdaptiveCards-AdaptiveWidth'></a>
+### op_Implicit(value) `method`
+
+##### Summary
+
+Assignment operator with uint pixels
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.UInt32)~AdaptiveCards.AdaptiveWidth](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.UInt32)~AdaptiveCards.AdaptiveWidth 'System.UInt32)~AdaptiveCards.AdaptiveWidth') |  |
+
+<a name='M-AdaptiveCards-AdaptiveWidth-op_Implicit-AdaptiveCards-AdaptiveWidthType-~AdaptiveCards-AdaptiveWidth'></a>
+### op_Implicit(value) `method`
+
+##### Summary
+
+Assignment operator with type
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [AdaptiveCards.AdaptiveWidthType)~AdaptiveCards.AdaptiveWidth](#T-AdaptiveCards-AdaptiveWidthType-~AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidthType)~AdaptiveCards.AdaptiveWidth') |  |
+
+<a name='M-AdaptiveCards-AdaptiveWidth-op_Implicit-System-String-~AdaptiveCards-AdaptiveWidth'></a>
+### op_Implicit(value) `method`
+
+##### Summary
+
+Assignment operator with string (100x)
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [System.String)~AdaptiveCards.AdaptiveWidth](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String)~AdaptiveCards.AdaptiveWidth 'System.String)~AdaptiveCards.AdaptiveWidth') |  |
+
+<a name='M-AdaptiveCards-AdaptiveWidth-op_Inequality-AdaptiveCards-AdaptiveWidth,AdaptiveCards-AdaptiveWidth-'></a>
+### op_Inequality() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-AdaptiveCards-AdaptiveWidthType'></a>
+## AdaptiveWidthType `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Controls the vertical size (Width) of element.
+
+<a name='F-AdaptiveCards-AdaptiveWidthType-Auto'></a>
+### Auto `constants`
+
+##### Summary
+
+The Width of the element matches element content.
+
+<a name='F-AdaptiveCards-AdaptiveWidthType-Pixel'></a>
+### Pixel `constants`
+
+##### Summary
+
+The Width of the element was explicitly specified (only for Image elements).
+
+<a name='F-AdaptiveCards-AdaptiveWidthType-Stretch'></a>
+### Stretch `constants`
+
+##### Summary
+
+The Width of the element uses as much space as it is able to.
+
+<a name='F-AdaptiveCards-AdaptiveWidthType-Weighted'></a>
+### Weighted `constants`
+
+##### Summary
+
+The Width of the element was explicitly specified (only for Image elements).
+
+<a name='T-AdaptiveCards-Rendering-BleedDirection'></a>
+## BleedDirection `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Adaptive Bleed Direction (these are flags and so can be combined.)
+
+<a name='F-AdaptiveCards-Rendering-BleedDirection-BleedAll'></a>
+### BleedAll `constants`
+
+##### Summary
+
+Bleed in all directions.
+
+<a name='F-AdaptiveCards-Rendering-BleedDirection-BleedDown'></a>
+### BleedDown `constants`
+
+##### Summary
+
+Bleed down
+
+<a name='F-AdaptiveCards-Rendering-BleedDirection-BleedLeft'></a>
+### BleedLeft `constants`
+
+##### Summary
+
+bleed left
+
+<a name='F-AdaptiveCards-Rendering-BleedDirection-BleedNone'></a>
+### BleedNone `constants`
+
+##### Summary
+
+no bleed
+
+<a name='F-AdaptiveCards-Rendering-BleedDirection-BleedRight'></a>
+### BleedRight `constants`
+
+##### Summary
+
+bleed right
+
+<a name='F-AdaptiveCards-Rendering-BleedDirection-BleedUp'></a>
+### BleedUp `constants`
+
+##### Summary
+
+Bleed up
 
 <a name='T-Microsoft-MarkedNet-BlockRules'></a>
 ## BlockRules `type`
@@ -6300,6 +7985,10 @@ true iff the string was successfully converted.
 
 AdaptiveCards.Rendering
 
+##### Summary
+
+Class ContainersStyleConfig
+
 <a name='P-AdaptiveCards-Rendering-ContainerStyleConfig-BackgroundColor'></a>
 ### BackgroundColor `property`
 
@@ -6313,6 +8002,76 @@ The background color to use for this container
 ##### Summary
 
 The font colors to use for this container
+
+<a name='T-AdaptiveCards-Rendering-ContainerStylesConfig'></a>
+## ContainerStylesConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+ContainerStylesConfig
+
+<a name='P-AdaptiveCards-Rendering-ContainerStylesConfig-Accent'></a>
+### Accent `property`
+
+##### Summary
+
+Accent style config
+
+<a name='P-AdaptiveCards-Rendering-ContainerStylesConfig-Attention'></a>
+### Attention `property`
+
+##### Summary
+
+Attention style config
+
+<a name='P-AdaptiveCards-Rendering-ContainerStylesConfig-Default'></a>
+### Default `property`
+
+##### Summary
+
+Default Style config
+
+<a name='P-AdaptiveCards-Rendering-ContainerStylesConfig-Emphasis'></a>
+### Emphasis `property`
+
+##### Summary
+
+Emphasis style config
+
+<a name='P-AdaptiveCards-Rendering-ContainerStylesConfig-Good'></a>
+### Good `property`
+
+##### Summary
+
+Good style confing
+
+<a name='P-AdaptiveCards-Rendering-ContainerStylesConfig-Warning'></a>
+### Warning `property`
+
+##### Summary
+
+Warning style config
+
+<a name='M-AdaptiveCards-Rendering-ContainerStylesConfig-GetContainerStyleConfig-System-Nullable{AdaptiveCards-AdaptiveContainerStyle}-'></a>
+### GetContainerStyleConfig(style) `method`
+
+##### Summary
+
+Given a style return the config for the style.
+
+##### Returns
+
+configuration for that style.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| style | [System.Nullable{AdaptiveCards.AdaptiveContainerStyle}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{AdaptiveCards.AdaptiveContainerStyle}') | style to lookup |
 
 <a name='T-AdaptiveCards-ParseContext-ContextType'></a>
 ## ContextType `type`
@@ -6339,6 +8098,93 @@ Represents an Action (i.e. something that belongs in an ActionSet or in the acti
 
 Represents an Element (i.e. something that belongs in the body of a card).
 
+<a name='T-Microsoft-MarkedNet-Emoji'></a>
+## Emoji `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Emoji to Char constants
+
+<a name='T-Microsoft-MarkedNet-EmojiConverter'></a>
+## EmojiConverter `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Converter for Emoji - defines maps from symbol to Char and symbol to markup.
+
+<a name='P-Microsoft-MarkedNet-EmojiConverter-Emoji2Markup'></a>
+### Emoji2Markup `property`
+
+##### Summary
+
+Table of emoji to markup
+
+<a name='P-Microsoft-MarkedNet-EmojiConverter-Markup2Emoji'></a>
+### Markup2Emoji `property`
+
+##### Summary
+
+Table of markup to emojii chars
+
+<a name='M-Microsoft-MarkedNet-EmojiConverter-Add-System-String,System-String,System-Int32,System-Nullable{System-Int32},System-Nullable{System-Int32}-'></a>
+### Add(name,markup,code1,code2,code3) `method`
+
+##### Summary
+
+Add a new definition
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| name | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+| markup | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+| code1 | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
+| code2 | [System.Nullable{System.Int32}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Int32}') |  |
+| code3 | [System.Nullable{System.Int32}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Nullable 'System.Nullable{System.Int32}') |  |
+
+<a name='M-Microsoft-MarkedNet-EmojiConverter-ConvertEmojiToMarkup-System-String-'></a>
+### ConvertEmojiToMarkup(emojiText) `method`
+
+##### Summary
+
+Converts emojichars to markup
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| emojiText | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+<a name='M-Microsoft-MarkedNet-EmojiConverter-ConvertMarkupToEmoji-System-String-'></a>
+### ConvertMarkupToEmoji(markup) `method`
+
+##### Summary
+
+Convert markup to emoji chars
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| markup | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
 <a name='T-Microsoft-MarkedNet-EmojiMarkdownRenderer'></a>
 ## EmojiMarkdownRenderer `type`
 
@@ -6349,6 +8195,58 @@ Microsoft.MarkedNet
 ##### Summary
 
 Renderer which renders emoji markdown to unicode
+
+<a name='M-Microsoft-MarkedNet-EmojiMarkdownRenderer-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-Microsoft-MarkedNet-EmojiMarkdownRenderer-#ctor-Microsoft-MarkedNet-Options-'></a>
+### #ctor(options) `constructor`
+
+##### Summary
+
+Constructor with options
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| options | [Microsoft.MarkedNet.Options](#T-Microsoft-MarkedNet-Options 'Microsoft.MarkedNet.Options') |  |
+
+<a name='M-Microsoft-MarkedNet-EmojiMarkdownRenderer-Preprocess-System-String-'></a>
+### Preprocess(text) `method`
+
+##### Summary
+
+Process text before it's used.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+<a name='T-Microsoft-MarkedNet-EmojiMarkup'></a>
+## EmojiMarkup `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Emoji to markup constants
 
 <a name='T-AdaptiveCards-Rendering-ErrorMessageConfig'></a>
 ## ErrorMessageConfig `type`
@@ -6389,6 +8287,10 @@ The text weight of the label
 
 AdaptiveCards.Rendering
 
+##### Summary
+
+FactSetConfig
+
 <a name='P-AdaptiveCards-Rendering-FactSetConfig-Spacing'></a>
 ### Spacing `property`
 
@@ -6417,12 +8319,324 @@ TextBlock to use for Values in fact sets
 
 AdaptiveCards.Rendering
 
+##### Summary
+
+Font Color config
+
+<a name='M-AdaptiveCards-Rendering-FontColorConfig-#ctor-System-String,System-String-'></a>
+### #ctor(defaultColor,subtle) `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| defaultColor | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+| subtle | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
 <a name='P-AdaptiveCards-Rendering-FontColorConfig-Default'></a>
 ### Default `property`
 
 ##### Summary
 
 Color in #RRGGBB format
+
+<a name='P-AdaptiveCards-Rendering-FontColorConfig-HighlightColors'></a>
+### HighlightColors `property`
+
+##### Summary
+
+HightlightColors config
+
+<a name='P-AdaptiveCards-Rendering-FontColorConfig-Subtle'></a>
+### Subtle `property`
+
+##### Summary
+
+Subtle config
+
+<a name='T-AdaptiveCards-Rendering-FontSizesConfig'></a>
+## FontSizesConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+FontSizes conffig
+
+<a name='P-AdaptiveCards-Rendering-FontSizesConfig-Default'></a>
+### Default `property`
+
+##### Summary
+
+font size for default
+
+<a name='P-AdaptiveCards-Rendering-FontSizesConfig-ExtraLarge'></a>
+### ExtraLarge `property`
+
+##### Summary
+
+font size for extra large
+
+<a name='P-AdaptiveCards-Rendering-FontSizesConfig-Large'></a>
+### Large `property`
+
+##### Summary
+
+font size for large
+
+<a name='P-AdaptiveCards-Rendering-FontSizesConfig-Medium'></a>
+### Medium `property`
+
+##### Summary
+
+font size for medium
+
+<a name='P-AdaptiveCards-Rendering-FontSizesConfig-Small'></a>
+### Small `property`
+
+##### Summary
+
+font size for small
+
+<a name='M-AdaptiveCards-Rendering-FontSizesConfig-GetDefaultFontSize-AdaptiveCards-AdaptiveTextSize-'></a>
+### GetDefaultFontSize(fontSize) `method`
+
+##### Summary
+
+Given a textSize return the default font size.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| fontSize | [AdaptiveCards.AdaptiveTextSize](#T-AdaptiveCards-AdaptiveTextSize 'AdaptiveCards.AdaptiveTextSize') |  |
+
+<a name='M-AdaptiveCards-Rendering-FontSizesConfig-GetFontSize-AdaptiveCards-AdaptiveTextSize-'></a>
+### GetFontSize(fontSize) `method`
+
+##### Summary
+
+Given AdaptiveTextSize get the font size in real size.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| fontSize | [AdaptiveCards.AdaptiveTextSize](#T-AdaptiveCards-AdaptiveTextSize 'AdaptiveCards.AdaptiveTextSize') |  |
+
+<a name='T-AdaptiveCards-Rendering-FontStyleConfig'></a>
+## FontStyleConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+FontStyle config
+
+<a name='P-AdaptiveCards-Rendering-FontStyleConfig-FontFamily'></a>
+### FontFamily `property`
+
+##### Summary
+
+Font family
+
+<a name='P-AdaptiveCards-Rendering-FontStyleConfig-FontSizes'></a>
+### FontSizes `property`
+
+##### Summary
+
+FontSizes Config
+
+<a name='P-AdaptiveCards-Rendering-FontStyleConfig-FontWeights'></a>
+### FontWeights `property`
+
+##### Summary
+
+FontWeights config
+
+<a name='T-AdaptiveCards-Rendering-FontTypesConfig'></a>
+## FontTypesConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+FontTypes config
+
+<a name='P-AdaptiveCards-Rendering-FontTypesConfig-Default'></a>
+### Default `property`
+
+##### Summary
+
+Default config
+
+<a name='P-AdaptiveCards-Rendering-FontTypesConfig-Monospace'></a>
+### Monospace `property`
+
+##### Summary
+
+Monospace congfig
+
+<a name='M-AdaptiveCards-Rendering-FontTypesConfig-GetFontType-AdaptiveCards-AdaptiveFontType-'></a>
+### GetFontType(fontType) `method`
+
+##### Summary
+
+Given a fontType get the fontstyle config for ti.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| fontType | [AdaptiveCards.AdaptiveFontType](#T-AdaptiveCards-AdaptiveFontType 'AdaptiveCards.AdaptiveFontType') |  |
+
+<a name='T-AdaptiveCards-Rendering-FontWeightsConfig'></a>
+## FontWeightsConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+FontWeight config
+
+<a name='P-AdaptiveCards-Rendering-FontWeightsConfig-Bolder'></a>
+### Bolder `property`
+
+##### Summary
+
+Bolder config
+
+<a name='P-AdaptiveCards-Rendering-FontWeightsConfig-Default'></a>
+### Default `property`
+
+##### Summary
+
+Default confing
+
+<a name='P-AdaptiveCards-Rendering-FontWeightsConfig-Lighter'></a>
+### Lighter `property`
+
+##### Summary
+
+Lighter config
+
+<a name='M-AdaptiveCards-Rendering-FontWeightsConfig-GetDefaultFontWeight-AdaptiveCards-AdaptiveTextWeight-'></a>
+### GetDefaultFontWeight(fontWeight) `method`
+
+##### Summary
+
+Given a text weight get the default font weight for it.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| fontWeight | [AdaptiveCards.AdaptiveTextWeight](#T-AdaptiveCards-AdaptiveTextWeight 'AdaptiveCards.AdaptiveTextWeight') |  |
+
+<a name='M-AdaptiveCards-Rendering-FontWeightsConfig-GetFontWeight-AdaptiveCards-AdaptiveTextWeight-'></a>
+### GetFontWeight(fontWeight) `method`
+
+##### Summary
+
+Given a textWeight get the fontweight config for it.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| fontWeight | [AdaptiveCards.AdaptiveTextWeight](#T-AdaptiveCards-AdaptiveTextWeight 'AdaptiveCards.AdaptiveTextWeight') |  |
+
+<a name='T-AdaptiveCards-Rendering-ForegroundColorsConfig'></a>
+## ForegroundColorsConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Foreground Color Config
+
+<a name='P-AdaptiveCards-Rendering-ForegroundColorsConfig-Accent'></a>
+### Accent `property`
+
+##### Summary
+
+Accent config
+
+<a name='P-AdaptiveCards-Rendering-ForegroundColorsConfig-Attention'></a>
+### Attention `property`
+
+##### Summary
+
+Attention config
+
+<a name='P-AdaptiveCards-Rendering-ForegroundColorsConfig-Dark'></a>
+### Dark `property`
+
+##### Summary
+
+Dark config
+
+<a name='P-AdaptiveCards-Rendering-ForegroundColorsConfig-Default'></a>
+### Default `property`
+
+##### Summary
+
+Default Config
+
+<a name='P-AdaptiveCards-Rendering-ForegroundColorsConfig-Good'></a>
+### Good `property`
+
+##### Summary
+
+Good config
+
+<a name='P-AdaptiveCards-Rendering-ForegroundColorsConfig-Light'></a>
+### Light `property`
+
+##### Summary
+
+Light config
+
+<a name='P-AdaptiveCards-Rendering-ForegroundColorsConfig-Warning'></a>
+### Warning `property`
+
+##### Summary
+
+Warning config
 
 <a name='T-Microsoft-MarkedNet-GfmBlockRules'></a>
 ## GfmBlockRules `type`
@@ -6511,6 +8725,10 @@ This method has no parameters.
 
 AdaptiveCards.Rendering
 
+##### Summary
+
+Headings Config
+
 <a name='P-AdaptiveCards-Rendering-HeadingsConfig-Level'></a>
 ### Level `property`
 
@@ -6525,12 +8743,34 @@ Level of heading text, used only if underlying platform requires it.
 
 AdaptiveCards.Rendering
 
+##### Summary
+
+Configuration for HightlightColors
+
+<a name='M-AdaptiveCards-Rendering-HighlightColorConfig-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
 <a name='P-AdaptiveCards-Rendering-HighlightColorConfig-Default'></a>
 ### Default `property`
 
 ##### Summary
 
 Color in #RRGGBB format
+
+<a name='P-AdaptiveCards-Rendering-HighlightColorConfig-Subtle'></a>
+### Subtle `property`
+
+##### Summary
+
+Color config for subtle highlight
 
 <a name='T-Microsoft-MarkedNet-HtmlRenderer'></a>
 ## HtmlRenderer `type`
@@ -6542,6 +8782,30 @@ Microsoft.MarkedNet
 ##### Summary
 
 Renderer which renders to HTML with Emoji Support
+
+<a name='M-Microsoft-MarkedNet-HtmlRenderer-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-Microsoft-MarkedNet-HtmlRenderer-#ctor-Microsoft-MarkedNet-Options-'></a>
+### #ctor(options) `constructor`
+
+##### Summary
+
+Constructor with options.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| options | [Microsoft.MarkedNet.Options](#T-Microsoft-MarkedNet-Options 'Microsoft.MarkedNet.Options') |  |
 
 <a name='T-AdaptiveCards-IAdaptiveTextElement'></a>
 ## IAdaptiveTextElement `type`
@@ -6754,12 +9018,66 @@ This method has no parameters.
 
 This method has no parameters.
 
+<a name='T-AdaptiveCards-Rendering-ImageSetConfig'></a>
+## ImageSetConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Config for ImageSets
+
+<a name='P-AdaptiveCards-Rendering-ImageSetConfig-ImageSize'></a>
+### ImageSize `property`
+
+##### Summary
+
+Define default image size for ImageSets.
+
+<a name='T-AdaptiveCards-Rendering-ImageSizesConfig'></a>
+## ImageSizesConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Defines config for ImageSizes
+
+<a name='P-AdaptiveCards-Rendering-ImageSizesConfig-Large'></a>
+### Large `property`
+
+##### Summary
+
+Large image size config.
+
+<a name='P-AdaptiveCards-Rendering-ImageSizesConfig-Medium'></a>
+### Medium `property`
+
+##### Summary
+
+Medium image size config.
+
+<a name='P-AdaptiveCards-Rendering-ImageSizesConfig-Small'></a>
+### Small `property`
+
+##### Summary
+
+Small image size config.
+
 <a name='T-Microsoft-MarkedNet-InlineLexer'></a>
 ## InlineLexer `type`
 
 ##### Namespace
 
 Microsoft.MarkedNet
+
+##### Summary
+
+Inline Lexer  Compiler
 
 <a name='M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String-'></a>
 ### Mangle() `method`
@@ -6873,6 +9191,42 @@ AdaptiveCards.Rendering
 
 Properties which control rendering of media
 
+<a name='P-AdaptiveCards-Rendering-InputsConfig-ErrorMessage'></a>
+### ErrorMessage `property`
+
+##### Summary
+
+ErrorMessage config
+
+<a name='P-AdaptiveCards-Rendering-InputsConfig-Label'></a>
+### Label `property`
+
+##### Summary
+
+LabelConfig config
+
+<a name='T-AdaptiveCards-Iso8601DateTimeConverter'></a>
+## Iso8601DateTimeConverter `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Format datetime as Iso8601 instant format "yyyy-MM-ddTHH:mm:ssZ";
+
+<a name='M-AdaptiveCards-Iso8601DateTimeConverter-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
 <a name='T-AdaptiveCards-JsonExtensions'></a>
 ## JsonExtensions `type`
 
@@ -6901,6 +9255,23 @@ true iff c is a valid hex digit.
 | ---- | ---- | ----------- |
 | c | [System.Char](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Char 'System.Char') | Character to check. |
 
+<a name='M-AdaptiveCards-JsonExtensions-IsIntegerType-System-Type-'></a>
+### IsIntegerType(type) `method`
+
+##### Summary
+
+Helper function to determine if type is a integer type.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| type | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') |  |
+
 <a name='T-AdaptiveCards-Rendering-LabelConfig'></a>
 ## LabelConfig `type`
 
@@ -6918,6 +9289,20 @@ Properties which control rendering of input labels
 ##### Summary
 
 Specifies the spacing between the label and the input
+
+<a name='P-AdaptiveCards-Rendering-LabelConfig-OptionalInputs'></a>
+### OptionalInputs `property`
+
+##### Summary
+
+Optional input label configs
+
+<a name='P-AdaptiveCards-Rendering-LabelConfig-RequiredInputs'></a>
+### RequiredInputs `property`
+
+##### Summary
+
+Required input label configs
 
 <a name='T-Microsoft-MarkedNet-Lexer'></a>
 ## Lexer `type`
@@ -7239,6 +9624,26 @@ AdaptiveCards.Rendering
 
 The base class for RenderedAdaptiveCard. Renderers extend this class to provide their native UI element property.
 
+<a name='M-AdaptiveCards-Rendering-RenderedAdaptiveCardBase-#ctor-AdaptiveCards-AdaptiveCard,System-Collections-Generic-IList{AdaptiveCards-AdaptiveWarning}-'></a>
+### #ctor(originatingCard,warnings) `constructor`
+
+##### Summary
+
+Internal constructor
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| originatingCard | [AdaptiveCards.AdaptiveCard](#T-AdaptiveCards-AdaptiveCard 'AdaptiveCards.AdaptiveCard') |  |
+| warnings | [System.Collections.Generic.IList{AdaptiveCards.AdaptiveWarning}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IList 'System.Collections.Generic.IList{AdaptiveCards.AdaptiveWarning}') |  |
+
+##### Exceptions
+
+| Name | Description |
+| ---- | ----------- |
+| [System.ArgumentNullException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentNullException 'System.ArgumentNullException') |  |
+
 <a name='P-AdaptiveCards-Rendering-RenderedAdaptiveCardBase-OriginatingCard'></a>
 ### OriginatingCard `property`
 
@@ -7270,6 +9675,30 @@ AdaptiveCards.Rendering
 ##### Summary
 
 Provides access to the input fields on a card
+
+<a name='M-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs-#ctor-System-Collections-Generic-IDictionary{System-String,System-Func{System-String}}@-'></a>
+### #ctor(inputBindings) `constructor`
+
+##### Summary
+
+Constructor with bindings.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| inputBindings | [System.Collections.Generic.IDictionary{System.String,System.Func{System.String}}@](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IDictionary 'System.Collections.Generic.IDictionary{System.String,System.Func{System.String}}@') |  |
 
 <a name='M-AdaptiveCards-Rendering-RenderedAdaptiveCardInputs-AsDictionary'></a>
 ### AsDictionary() `method`
@@ -7313,7 +9742,7 @@ AdaptiveCards.Rendering
 Utility methods for dealing with body and binding
 
 <a name='M-AdaptiveCards-Rendering-RendererUtilities-ApplyTextFunctions-System-String,System-String-'></a>
-### ApplyTextFunctions(text) `method`
+### ApplyTextFunctions(text,lang) `method`
 
 ##### Summary
 
@@ -7328,6 +9757,91 @@ This funct will return modified text replacing {{DATE|TIME()}} style functions a
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+| lang | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+<a name='M-AdaptiveCards-Rendering-RendererUtilities-HandleHtmlSpaces-System-String-'></a>
+### HandleHtmlSpaces(text) `method`
+
+##### Summary
+
+Utility function for spacings.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+<a name='M-AdaptiveCards-Rendering-RendererUtilities-JoinString-System-Collections-Generic-List{System-String},System-String,System-String-'></a>
+### JoinString(choices,sep,last) `method`
+
+##### Summary
+
+Joines strings choices together
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| choices | [System.Collections.Generic.List{System.String}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{System.String}') |  |
+| sep | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+| last | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+<a name='M-AdaptiveCards-Rendering-RendererUtilities-TryGetValue``1-System-Collections-IDictionary,System-String-'></a>
+### TryGetValue\`\`1(dictionary,key) `method`
+
+##### Summary
+
+Typed lookup for anonymous dictionary.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| dictionary | [System.Collections.IDictionary](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.IDictionary 'System.Collections.IDictionary') |  |
+| key | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T |  |
+
+<a name='M-AdaptiveCards-Rendering-RendererUtilities-TryGetValue``1-System-Collections-Generic-IDictionary{System-String,System-Object},System-String-'></a>
+### TryGetValue\`\`1(dictionary,key) `method`
+
+##### Summary
+
+Typed value lookup for anonymous dictionary.
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| dictionary | [System.Collections.Generic.IDictionary{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IDictionary 'System.Collections.Generic.IDictionary{System.String,System.Object}') |  |
+| key | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T |  |
 
 <a name='T-AdaptiveCards-Rendering-SeparatorConfig'></a>
 ## SeparatorConfig `type`
@@ -7335,6 +9849,10 @@ This funct will return modified text replacing {{DATE|TIME()}} style functions a
 ##### Namespace
 
 AdaptiveCards.Rendering
+
+##### Summary
+
+Config for seperator
 
 <a name='P-AdaptiveCards-Rendering-SeparatorConfig-LineColor'></a>
 ### LineColor `property`
@@ -7429,6 +9947,99 @@ AdaptiveCards.Rendering
 
 Specifies how much spacing should be used for the various spacing options
 
+<a name='P-AdaptiveCards-Rendering-SpacingsConfig-Default'></a>
+### Default `property`
+
+##### Summary
+
+Default spacing config
+
+<a name='P-AdaptiveCards-Rendering-SpacingsConfig-ExtraLarge'></a>
+### ExtraLarge `property`
+
+##### Summary
+
+ExtraLarge spacing config
+
+<a name='P-AdaptiveCards-Rendering-SpacingsConfig-Large'></a>
+### Large `property`
+
+##### Summary
+
+Large spacing config
+
+<a name='P-AdaptiveCards-Rendering-SpacingsConfig-Medium'></a>
+### Medium `property`
+
+##### Summary
+
+Medium spacing config
+
+<a name='P-AdaptiveCards-Rendering-SpacingsConfig-Padding'></a>
+### Padding `property`
+
+##### Summary
+
+Padding config
+
+<a name='P-AdaptiveCards-Rendering-SpacingsConfig-Small'></a>
+### Small `property`
+
+##### Summary
+
+Small spacing config
+
+<a name='T-AdaptiveCards-StrictIntConverter'></a>
+## StrictIntConverter `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Converter for integers only.
+
+<a name='P-AdaptiveCards-StrictIntConverter-CanWrite'></a>
+### CanWrite `property`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='M-AdaptiveCards-StrictIntConverter-CanConvert-System-Type-'></a>
+### CanConvert() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-StrictIntConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
+### ReadJson() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-StrictIntConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
+### WriteJson() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-Microsoft-MarkedNet-TablesBlockRules'></a>
 ## TablesBlockRules `type`
 
@@ -7446,6 +10057,10 @@ GFM + Tables Block Grammar
 ##### Namespace
 
 AdaptiveCards.Rendering
+
+##### Summary
+
+Config for TextBlock
 
 <a name='P-AdaptiveCards-Rendering-TextBlockConfig-Color'></a>
 ### Color `property`
@@ -7499,6 +10114,74 @@ Microsoft.MarkedNet
 ##### Summary
 
 Renderer which renders to pure text environments like SMS
+
+<a name='T-AdaptiveCards-ToggleElementsConverter'></a>
+## ToggleElementsConverter `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Converter for AdaptiveTargetElement
+
+<a name='M-AdaptiveCards-ToggleElementsConverter-CanConvert-System-Type-'></a>
+### CanConvert() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-ToggleElementsConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
+### ReadJson() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-ToggleElementsConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
+### WriteJson() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-AdaptiveCards-TypedEventHandler`2'></a>
+## TypedEventHandler\`2 `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Delegate for typed events
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| sender | [T:AdaptiveCards.TypedEventHandler\`2](#T-T-AdaptiveCards-TypedEventHandler`2 'T:AdaptiveCards.TypedEventHandler`2') |  |
+
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| TSender |  |
+| TEventArgs |  |
 
 <a name='T-AdaptiveCards-WarningLoggingContractResolver'></a>
 ## WarningLoggingContractResolver `type`
@@ -7586,6 +10269,30 @@ Microsoft.MarkedNet
 ##### Summary
 
 Renderer which renders to pure text environments like SMS
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-#ctor-Microsoft-MarkedNet-Options-'></a>
+### #ctor(options) `constructor`
+
+##### Summary
+
+Constructor for renderer
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| options | [Microsoft.MarkedNet.Options](#T-Microsoft-MarkedNet-Options 'Microsoft.MarkedNet.Options') |  |
 
 <a name='P-Microsoft-MarkedNet-XamlRenderer-BlockQuoteStyle'></a>
 ### BlockQuoteStyle `property`
@@ -7677,3 +10384,201 @@ set style as string -> Style=\"..."
 ##### Summary
 
 set style as string -> Style=\"..."
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Blockquote-System-String-'></a>
+### Blockquote() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Br'></a>
+### Br() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Code-System-String,System-String,System-Boolean-'></a>
+### Code() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Codespan-System-String-'></a>
+### Codespan() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Del-System-String-'></a>
+### Del() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Em-System-String-'></a>
+### Em() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Heading-System-String,System-Int32,System-String-'></a>
+### Heading() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Hr'></a>
+### Hr() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Html-System-String-'></a>
+### Html() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Image-System-String,System-String,System-String-'></a>
+### Image() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Link-System-String,System-String,System-String-'></a>
+### Link() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-List-System-String,System-Boolean,System-Int32-'></a>
+### List() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-ListItem-System-String-'></a>
+### ListItem() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Paragraph-System-String-'></a>
+### Paragraph() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Strong-System-String-'></a>
+### Strong() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-Table-System-String,System-String-'></a>
+### Table() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-TableCell-System-String,Microsoft-MarkedNet-TableCellFlags-'></a>
+### TableCell() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-XamlRenderer-TableRow-System-String-'></a>
+### TableRow() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
