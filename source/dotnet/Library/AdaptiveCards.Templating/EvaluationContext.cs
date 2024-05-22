@@ -33,15 +33,15 @@ namespace AdaptiveCards.Templating
         public object Root
         {
             get;
-            [RequiresDynamicCode("For AOT compatibility, use RootString instead")]
-            [RequiresUnreferencedCode("For AOT compatibility, use RootString instead")]
+            [RequiresDynamicCode("For AOT compatibility, use RootJson instead")]
+            [RequiresUnreferencedCode("For AOT compatibility, use RootJson instead")]
             set;
         }
 
         /// <summary>
         /// AOT compatible version of Root property.
         /// </summary>
-        public string RootString
+        public string RootJson
         {
             get => (string)Root;
             [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "This path guarantees Root is a known type.")]
@@ -81,15 +81,15 @@ namespace AdaptiveCards.Templating
         public object Host
         {
             get;
-            [RequiresDynamicCode("For AOT compatibility, use HostString instead")]
-            [RequiresUnreferencedCode("For AOT compatibility, use HostString instead")]
+            [RequiresDynamicCode("For AOT compatibility, use HostJson instead")]
+            [RequiresUnreferencedCode("For AOT compatibility, use HostJson instead")]
             set;
         }
 
         /// <summary>
         /// AOT compatible version of Host property.
         /// </summary>
-        public string HostString
+        public string HostJson
         {
             get => (string)Host;
             [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "This path guarantees Host is a known type")]
@@ -120,12 +120,12 @@ namespace AdaptiveCards.Templating
         /// <summary>
         /// constructor for <c>EvaluationContext</c> that takes one required argument used for root data context and one optional argument supplying host data
         /// </summary>
-        /// <param name="rootData">Data to use while binding</param>
-        /// <param name="hostData">Data supplied by the host for use while binding</param>
-        public EvaluationContext(string rootData, string hostData = null)
+        /// <param name="rootJson">Data to use while binding</param>
+        /// <param name="hostJson">Data supplied by the host for use while binding</param>
+        public EvaluationContext(string rootJson, string hostJson = null)
         {
-            RootString = rootData;
-            HostString = hostData;
+            RootJson = rootJson;
+            HostJson = hostJson;
         }
     }
 }

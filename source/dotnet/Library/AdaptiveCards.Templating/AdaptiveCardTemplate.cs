@@ -74,6 +74,8 @@ namespace AdaptiveCards.Templating
         {
             if (jsonTemplate != null)
             {
+                jsonTemplateString = jsonTemplate;
+
                 AntlrInputStream stream = new AntlrInputStream(jsonTemplate);
                 ITokenSource lexer = new AdaptiveCardsTemplateLexer(stream);
                 ITokenStream tokens = new CommonTokenStream(lexer);
@@ -179,16 +181,16 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
-        /// Create a root data context using <paramref name="rootData"/>, and bind it to the instance of AdaptiveCardTemplate
+        /// Create a root data context using <paramref name="rootJson"/>, and bind it to the instance of AdaptiveCardTemplate
         /// </summary>
         /// <remarks>
         /// <para> Data can be also inlined in AdaptiveCardTemplate payload</para>
-        /// <para> Expand can be called multiple times with different or same <paramref name="rootData"/></para>
+        /// <para> Expand can be called multiple times with different or same <paramref name="rootJson"/></para>
         /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
         /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
         /// <para> Default behavior is leaving templated string unchanged</para>
         /// </remarks>
-        /// <param name="rootData">Serializable object or a string in valid json format that will be used as data context</param>
+        /// <param name="rootJson">Serializable object or a string in valid json format that will be used as data context</param>
         /// <param name="nullSubstitutionOption">Defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
@@ -198,10 +200,34 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(string rootData, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(string rootJson, Func<string, object> nullSubstitutionOption = null)
         {
-            var context = new EvaluationContext(rootData);
+            var context = new EvaluationContext(rootJson);
             return Expand(context, nullSubstitutionOption);
+        }
+
+        /// <summary>
+        /// Create a root data context using empty context, and bind it to the instance of AdaptiveCardTemplate
+        /// </summary>
+        /// <remarks>
+        /// <para> Data can be also inlined in AdaptiveCardTemplate payload</para>
+        /// <para> Expand can be called multiple times with different or same <paramref name="rootJson"/></para>
+        /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
+        /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
+        /// <para> Default behavior is leaving templated string unchanged</para>
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// var template = new AdaptiveCardTemplate(jsonTemplate);
+        /// template.Expand(rootData);
+        /// </code>
+        /// </example>
+        /// <seealso cref="EvaluationContext"/>
+        /// <returns>json as string</returns>
+        public string Expand()
+        {
+            var context = new EvaluationContext();
+            return Expand(context, null);
         }
 
         /// <summary>
