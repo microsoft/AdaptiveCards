@@ -1,0 +1,47 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "Container",
+			"minHeight": "150px",
+			"backgroundImage": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "What a beautiful background"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "They can even repeat a bunch of different ways..."
+		},
+		{
+			"type": "Container",
+			"minHeight": "100px",
+			"backgroundImage": {
+				"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+				"fillMode": "Repeat"
+			}
+		},
+		{
+			"type": "Container",
+			"backgroundImage": {
+				"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+				"fillMode": "RepeatHorizontally",
+				"verticalAlignment": "Center"
+			}
+		},
+		{
+			"type": "Container",
+			"minHeight": "100px",
+			"backgroundImage": {
+				"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+				"fillMode": "RepeatVertically",
+				"horizontalAlignment": "Center"
+			}
+		}
+	]
+}
