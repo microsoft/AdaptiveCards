@@ -1,0 +1,43 @@
+{
+  "ConfigVersion": 3,
+  "Entries": [
+    {
+      "JobNotificationEmail": "paulcam@microsoft.com",
+      "Skip": false,
+      "Fuzzer": {
+        "$type": "libfuzzer",
+        "FuzzingHarnessExecutableName": "SharedModelFuzz.exe"
+      },
+      "OneFuzzJobs": [
+        {
+          "ProjectName": "AdaptiveCards Shared Model Fuzzer",
+          "TargetName": "SharedModelFuzz",
+          "SeedCorpusContainer": "adaptivecards-samples"
+        }
+      ],
+      "JobDependencies": [
+        "SharedModelFuzz.exe",
+        "SharedModelFuzz.pdb",
+        "clang_rt.asan_dynamic-x86_64.dll",
+        "concrt140d.dll",
+        "msvcp140_1d.dll",
+        "msvcp140_2d.dll",
+        "msvcp140d.dll",
+        "msvcp140d_atomic_wait.dll",
+        "msvcp140d_codecvt_ids.dll",
+        "vccorlib140d.dll",
+        "vcruntime140_1d.dll",
+        "vcruntime140_threadsd.dll",
+        "vcruntime140d.dll",
+        "ucrtbased.dll"
+      ],
+      "AdoTemplate": {
+        "Org": "microsoft",
+        "Project": "OS",
+        "AssignedTo": "paulcam@microsoft.com",
+        "AreaPath": "OS\\Windows Client and Services\\ADEPT\\AI Platform\\SnaX\\AdaptiveCards",
+        "IterationPath": "OS\\Future"
+      }
+    }
+  ]
+}
