@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating.Test", "Test\AdaptiveCards.Templating.Test\AdaptiveCards.Templating.Test.csproj", "{9E7E5953-A5B4-4867-9A06-046A754AFAC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Template", "Library\AdaptiveCards.Templating.CSharp.WinRT\AdaptiveCards.Template.csproj", "{A3A5F273-80D5-43DC-99E8-E34E46260009}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating.WinRT", "Library\AdaptiveCards.Templating.CSharp.WinRT\AdaptiveCards.Templating.WinRT.csproj", "{A3A5F273-80D5-43DC-99E8-E34E46260009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
