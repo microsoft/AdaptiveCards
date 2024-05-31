@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using AdaptiveExpressions;
-using AdaptiveExpressions.Memory;
-using AdaptiveExpressions.Properties;
+using Microsoft.AdaptiveExpressions.Core;
+using Microsoft.AdaptiveExpressions.Core.Memory;
+using Microsoft.AdaptiveExpressions.Core.Properties;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using System;
