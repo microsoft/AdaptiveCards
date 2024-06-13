@@ -62,7 +62,7 @@ JPATH
    ;
 
 TEMPLATELITERAL
-   : '${' (~ ["] | ESC )*? '}'
+   : '${' (ESC | ~[\{\}])* ('{' (ESC | ~[\{\}])* '}' (ESC | ~[\{\}])*)* '}'
    ;
 
 TEMPLATEROOT
