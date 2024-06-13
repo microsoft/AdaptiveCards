@@ -20,6 +20,16 @@ const std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns() const
     return m_columns;
 }
 
+const std::optional<HorizontalAlignment> AdaptiveCards::ColumnSet::GetHorizontalAlignment() const
+{
+    return m_horizontalAlignment;
+}
+
+void AdaptiveCards::ColumnSet::SetHorizontalAlignment(const std::optional<HorizontalAlignment> value)
+{
+    m_horizontalAlignment = value;
+}
+
 std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns()
 {
     return m_columns;
@@ -34,6 +44,13 @@ Json::Value ColumnSet::SerializeToJsonValue() const
     for (const auto& column : m_columns)
     {
         root[propertyName].append(column->SerializeToJsonValue());
+    }
+
+    std::string const& horizontalAlignmentKey = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment);
+
+    if (m_horizontalAlignment.has_value())
+    {
+        root[horizontalAlignmentKey] = HorizontalAlignmentToString(m_horizontalAlignment.value());
     }
 
     return root;
@@ -70,9 +87,12 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
-    auto container = StyledCollectionElement::Deserialize<ColumnSet>(context, value);
+    auto columnSet = StyledCollectionElement::Deserialize<ColumnSet>(context, value);
 
-    return container;
+	columnSet->SetHorizontalAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+        value, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignmentFromString));
+
+    return columnSet;
 }
 
 std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)

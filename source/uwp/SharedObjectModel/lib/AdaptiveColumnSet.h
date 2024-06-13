@@ -14,6 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         property<winrt::Windows::Foundation::Collections::IVector<Xaml_OM::AdaptiveColumn>> Columns;
         property<Xaml_OM::IAdaptiveActionElement> SelectAction;
         property<Xaml_OM::ContainerStyle> Style;
+        property_opt<Xaml_OM::HAlignment> HorizontalAlignment;
         property<uint32_t> MinHeight;
         property<bool> Bleed;
         property<Xaml_OM::BleedDirection> BleedDirection;

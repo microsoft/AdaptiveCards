@@ -104,7 +104,7 @@
         OleAut32.lib;
         %(AdditionalDependencies);
       </AdditionalDependencies>
-      <AdditionalOptions>/profile /DEBUGTYPE:FIXUP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/profile %(AdditionalOptions)</AdditionalOptions>
       <AdditionalLibraryDirectories>$(VC_LibraryPath_VC_OneCore_CurrentPlatform_spectre);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

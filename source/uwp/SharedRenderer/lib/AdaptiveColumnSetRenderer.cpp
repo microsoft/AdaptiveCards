@@ -47,6 +47,31 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto hostConfig = renderContext.HostConfig();
             auto ancestorHasFallback = renderArgs.AncestorHasFallback();
 
+            auto horizontalentAlignmentReference = adaptiveColumnSet.HorizontalAlignment();
+
+            HAlignment horizontalAlignment =
+                GetValueFromRef(horizontalentAlignmentReference , winrt::HAlignment::Left);
+
+            winrt::HorizontalAlignment horizontalAlignmentValue = winrt::HorizontalAlignment::Left;
+
+            switch (horizontalAlignment)
+			{
+                case winrt::HAlignment::Left:
+                    horizontalAlignmentValue = winrt::HorizontalAlignment::Left;
+                    break;
+                case winrt::HAlignment::Center:
+                    horizontalAlignmentValue = winrt::HorizontalAlignment::Center;
+                    break;
+                case winrt::HAlignment::Right:
+                    horizontalAlignmentValue = winrt::HorizontalAlignment::Right;
+                    break;
+                default:
+                    horizontalAlignmentValue = winrt::HorizontalAlignment::Left;
+                    break;
+			}
+
+			xamlGrid.HorizontalAlignment(horizontalAlignmentValue);
+
             for (auto column : columns)
             {
                 auto columnAsCardElement = column.as<winrt::IAdaptiveCardElement>();
@@ -119,6 +144,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     // Mark the column container with the current column
                     if (const auto columnAsFrameworkElement = xamlColumn.try_as<winrt::FrameworkElement>())
                     {
+                        columnAsFrameworkElement.HorizontalAlignment(horizontalAlignmentValue);
                         winrt::Grid::SetColumn(columnAsFrameworkElement, currentColumn++);
                     }
 
@@ -129,6 +155,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             XamlHelpers::SetSeparatorVisibility(xamlGrid);
 
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ColumnSet", xamlGrid);
+
             xamlGrid.VerticalAlignment(winrt::VerticalAlignment::Stretch);
 
             auto selectAction = adaptiveColumnSet.SelectAction();

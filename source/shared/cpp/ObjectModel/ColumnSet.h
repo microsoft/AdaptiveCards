@@ -27,12 +27,17 @@ public:
     std::vector<std::shared_ptr<Column>>& GetColumns();
     const std::vector<std::shared_ptr<Column>>& GetColumns() const;
 
+    const std::optional<HorizontalAlignment> GetHorizontalAlignment() const;
+
+    void SetHorizontalAlignment(const std::optional<HorizontalAlignment> value);
+
     void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
 private:
     void PopulateKnownPropertiesSet();
 
     std::vector<std::shared_ptr<Column>> m_columns;
+    std::optional<HorizontalAlignment> m_horizontalAlignment;
 };
 
 class ColumnSetParser : public BaseCardElementParser
