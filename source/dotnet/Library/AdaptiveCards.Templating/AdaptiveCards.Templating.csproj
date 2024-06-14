@@ -52,7 +52,7 @@
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
-    <PackageReference Include="Microsoft.AdaptiveExpressions.Core" Version="0.0.0" />
+    <PackageReference Include="Microsoft.AdaptiveExpressions.Core" Version="4.22.5-rc1" />
     <PackageReference Include="PolySharp" Version="1.14.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />
   </ItemGroup>
