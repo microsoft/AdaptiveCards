@@ -97,10 +97,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
         winrt::ImageSource CreateImageSource(bool isImageSvg);
 
-        winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content);
-
-        winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream);
-
         winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(
             winrt::Uri const uri, winrt::AdaptiveCardResourceResolvers const resolvers, bool const isImageSvg);
 
@@ -115,8 +111,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             winrt::AdaptiveCardResourceResolvers const resolvers,
             winrt::ImageSource imageSource,
             ImageProperties<TElement> const properties);
-
-        boolean IsSvgImage(std::string url);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();

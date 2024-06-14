@@ -1,0 +1,141 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.6",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+					"width": "auto"
+				},
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"verticalAlignment": "Center"
+					},
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+					"width": "auto"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "You can even repeat the background image..."
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"fillMode": "Repeat"
+					},
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"horizontalAlignment": "Center",
+					"verticalContentAlignment": "Center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "Center",
+							"text": "Those are some neat arrows",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Horizontal repeat..."
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"fillMode": "RepeatHorizontally"
+					},
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"fillMode": "RepeatHorizontally",
+						"verticalAlignment": "Center"
+					},
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"fillMode": "RepeatHorizontally",
+						"verticalAlignment": "Bottom"
+					},
+					"width": "stretch"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Vertical repeat..."
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"fillMode": "RepeatVertically"
+					},
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"fillMode": "RepeatVertically",
+						"horizontalAlignment": "Center"
+					},
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"minHeight": "50px",
+					"backgroundImage": {
+						"url": "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/car.svg",
+						"fillMode": "RepeatVertically",
+						"horizontalAlignment": "Right"
+					},
+					"width": "stretch"
+				}
+			]
+		}
+	]
+}

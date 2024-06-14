@@ -5,7 +5,7 @@
     <Authors>Microsoft</Authors>
     <Summary>Adaptive Card Template for WinRT</Summary>
     <Description>This library implements classes for building and serializing adaptive card objects</Description>
-    <PackageId>AdaptiveCards.Template</PackageId>
+    <PackageId>AdaptiveCards.Templating.WinRT</PackageId>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>adaptivecardstemplatewinrt</PackageTags>
     <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
@@ -21,10 +21,6 @@
 
   <PropertyGroup>
     <CsWinRTComponent>true</CsWinRTComponent>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFilePath>../../../../35MSSharedLib1024.snk</AssemblyOriginatorKeyFilePath>
-    <AssemblyOriginatorKeyFile>$(AssemblyOriginatorKeyFilePath)</AssemblyOriginatorKeyFile>
-    <DelaySign>True</DelaySign>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
