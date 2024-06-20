@@ -3570,6 +3570,10 @@ export abstract class Input extends CardElement implements IInput {
                 this._renderedInputControlElement.classList.add(
                     hostConfig.makeCssClassName("ac-input-required")
                 );
+
+                if (this._renderedInputControlElement instanceof HTMLInputElement) {
+                    this._renderedInputControlElement.setAttribute("aria-required", "true");
+                }
             }
 
             this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
@@ -4119,10 +4123,6 @@ export class ToggleInput extends Input {
 
         if (this.title) {
             this._checkboxInputElement.setAttribute("aria-label", this.title);
-        }
-
-        if (this.isRequired) {
-            this._checkboxInputElement.setAttribute("aria-required", "true");
         }
 
         this._checkboxInputElement.tabIndex = this.isDesignMode() ? -1 : 0;
