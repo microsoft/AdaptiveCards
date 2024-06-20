@@ -1,0 +1,44 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr: none
+
+trigger: none
+
+schedules:
+- cron: "0 0 * * *"
+  displayName: Shared Model Daily Fuzz
+  branches:
+    include:
+    - main
+  always: true
+
+variables:
+  solution: source/shared/cpp/AdaptiveCardsSharedModel/AdaptiveCardsSharedModel.sln
+  buildConfiguration: Debug
+  buildPlatform: x64
+
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2022
+
+steps:
+- task: VSBuild@1
+  name: Build SharedModelFuzz
+  displayName: Build solution
+  inputs:
+    solution: $(solution)
+    vsVersion: 17.0
+    platform: $(buildPlatform)
+    configuration: $(buildConfiguration)
+    msbuildArgs: '/t:SharedModelFuzz'
+    maximumCpuCount: true
+    createLogFile: true
+    logFileVerbosity: detailed
+
+- task: onefuzz-task@0
+  name: Submit to OneFuzz
+  inputs:
+    onefuzzOSes: 'Windows'
+  env:
+    onefuzzDropDirectory: '$(Build.SourcesDirectory)/ac/source/shared/cpp/AdaptiveCardsSharedModel/$(buildPlatform)/$(buildConfiguration)'
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
