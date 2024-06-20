@@ -17,6 +17,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         property<uint32_t> MinHeight;
         property<bool> Bleed;
         property<Xaml_OM::BleedDirection> BleedDirection;
+        property_opt<Xaml_OM::HAlignment> HorizontalAlignment;
 
         // IAdaptiveCardElement
         auto ElementType() { return Xaml_OM::ElementType::ColumnSet; }
