@@ -599,6 +599,8 @@ namespace AdaptiveCards.ObjectModel.Uwp
         AdaptiveColumnSet();
 
         Windows.Foundation.Collections.IVector<AdaptiveColumn> Columns { get; };
+
+        Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
     };
 
     [default_interface] runtimeclass AdaptiveCarouselPage : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
