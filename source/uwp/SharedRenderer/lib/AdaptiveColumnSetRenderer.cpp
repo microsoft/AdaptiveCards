@@ -128,6 +128,19 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             XamlHelpers::SetSeparatorVisibility(xamlGrid);
 
+            const auto horizontalAlignmentRef = adaptiveColumnSet.HorizontalAlignment();
+            auto horizontalAlignment =
+                GetValueFromRef(horizontalAlignmentRef, winrt::HAlignment::Left);
+
+            if (horizontalAlignment == winrt::HAlignment::Center)
+            {
+                xamlGrid.HorizontalAlignment(winrt::HorizontalAlignment::Center);
+            }
+			else if (horizontalAlignment == winrt::HAlignment::Right)
+			{
+				xamlGrid.HorizontalAlignment(winrt::HorizontalAlignment::Right);
+			}
+
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ColumnSet", xamlGrid);
             xamlGrid.VerticalAlignment(winrt::VerticalAlignment::Stretch);
 
