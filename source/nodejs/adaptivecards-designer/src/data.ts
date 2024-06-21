@@ -308,7 +308,7 @@ export class FieldDefinition {
 
             // If we include `[0]` in the qualified name while determining if we should use indexer syntax,
             // We could incorrectly wrap the name in []
-            if (this.dataType instanceof ArrayData && qualifiedName.endsWith("[0]")) {
+            if (path[i].dataType instanceof ArrayData && qualifiedName.endsWith("[0]")) {
                 modifiedName = qualifiedName.substring(0, qualifiedName.length - 3);
             }
 
