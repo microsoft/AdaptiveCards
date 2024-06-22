@@ -226,7 +226,10 @@ namespace AdaptiveCards.Templating
         /// </summary>
         private void PopDataContext()
         {
-            dataContext.Pop();
+            if (dataContext.Count > 0)
+            {
+                dataContext.Pop();
+            }
         }
 
         /// <summary>
