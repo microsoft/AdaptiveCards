@@ -59,16 +59,8 @@ TEMPLATEWHEN
    : '$when'
    ;
 
-JPATH
-   : ('.' STRING | '[' INT ']')+ '}'
-   ;
-
 TemplateStart
    : '${' -> pushMode(TemplateString), more
-   ;
-
-TEMPLATEROOT
-   : '${$root' JPATH
    ;
 
 STRING

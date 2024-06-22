@@ -17,7 +17,6 @@ obj
 
 pair
    : StringDeclOpen STRING* CLOSE COLON value    # jsonPair
-   | StringDeclOpen TEMPLATEDATA CLOSE COLON StringDeclOpen templateRoot CLOSE # templateRootData
    | StringDeclOpen TEMPLATEDATA CLOSE COLON value # templateData
    | StringDeclOpen TEMPLATEWHEN CLOSE COLON templateExpression # templateWhen
    ;
@@ -29,7 +28,6 @@ array
 
 value
    : StringDeclOpen templateString (templateString)* CLOSE # valueTemplateString
-   | StringDeclOpen templateRoot  CLOSE # valueTemplateStringWithRoot
    | StringDeclOpen STRING* CLOSE # valueString
    | NUMBER # valueNumber
    | obj    # valueObject
@@ -41,10 +39,6 @@ value
 
 templateString
    : (STRING* TEMPLATELITERAL STRING*) # templatedString
-   ;
-
-templateRoot
-   :  TEMPLATEROOT # templateStringWithRoot
    ;
 
 templateExpression
