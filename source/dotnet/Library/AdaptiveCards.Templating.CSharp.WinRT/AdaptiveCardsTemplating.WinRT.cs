@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 // AdaptiveCards template windows runtime component library
-namespace AdaptiveCards.Template
+namespace AdaptiveCards.Templating.WinRT
 {
     /// <summary>
     /// AdaptiveCards template windows runtime component library
