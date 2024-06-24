@@ -1,8 +1,20 @@
 # Adaptive Cards
 
-![logo](assets/adaptive-card-200.png)
+<img align="left" width="70" src="assets/adaptive-card-200.png">
 
 [Adaptive Cards](https://adaptivecards.io) are a new way for developers to exchange content in a common and consistent way. Get started today by putting Adaptive Cards into Microsoft Teams, Outlook Actionable Messages, Cortana Skills, or Windows Timeline -- or render cards inside your own apps by using our SDKs.
+
+## Summary
+
+- [Dive in](#dive-in)
+- [Install and build](#install-and-build)
+- [Code format](#code-format)
+  - [IDE Integration](#ide-integration)
+  - [Format with script](#format-with-script)
+  - [Use Git pre-commit hook](#use-git-pre-commit-hook)
+  - [End User License Agreement](#end-user-license-agreement-for-our-binary-packages)
+  - [Community SDKs](#community-sdks)
+- [Contribute](#contribute)
 
 ## Dive in
 
