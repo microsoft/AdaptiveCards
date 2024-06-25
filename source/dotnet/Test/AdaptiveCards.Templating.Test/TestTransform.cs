@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.AdaptiveExpressions.Core.Properties;
-using Microsoft.AdaptiveExpressions.Core;
+using Microsoft.Bot.AdaptiveExpressions.Core.Properties;
+using Microsoft.Bot.AdaptiveExpressions.Core;
 using System.Diagnostics;
 using System;
-using Microsoft.AdaptiveExpressions.Core.Memory;
+using Microsoft.Bot.AdaptiveExpressions.Core.Memory;
 using System.Collections;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;

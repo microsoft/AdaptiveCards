@@ -13,18 +13,18 @@
     <repository url="https://github.com/Microsoft/AdaptiveCards" />
     <dependencies>
         <group targetFramework=".NETStandard2.0">
-            <dependency id="AdaptiveExpressionsSTJ" version="0.0.6" exclude="Build,Analyzers" />
-            <dependency id="Antlr4.Runtime.Standard" version="4.11.1" exclude="Build,Analyzers" />
+            <dependency id="Microsoft.Bot.AdaptiveExpressions.Core" version="4.22.7" exclude="Build,Analyzers" />
+            <dependency id="Antlr4.Runtime.Standard" version="4.13.1" exclude="Build,Analyzers" />
             <dependency id="System.Text.Json" version="8.0.3" exclude="Build,Analyzers" />
         </group>
         <group targetFramework="net6.0">
-            <dependency id="AdaptiveExpressionsSTJ" version="0.0.6" exclude="Build,Analyzers" />
-            <dependency id="Antlr4.Runtime.Standard" version="4.11.1" exclude="Build,Analyzers" />
+            <dependency id="Microsoft.Bot.AdaptiveExpressions.Core" version="4.22.7" exclude="Build,Analyzers" />
+            <dependency id="Antlr4.Runtime.Standard" version="4.13.1" exclude="Build,Analyzers" />
             <dependency id="System.Text.Json" version="8.0.3" exclude="Build,Analyzers" />
         </group>
         <group targetFramework="net8.0">
-            <dependency id="AdaptiveExpressionsSTJ" version="0.0.6" exclude="Build,Analyzers" />
-            <dependency id="Antlr4.Runtime.Standard" version="4.11.1" exclude="Build,Analyzers" />
+            <dependency id="Microsoft.Bot.AdaptiveExpressions.Core" version="4.22.7" exclude="Build,Analyzers" />
+            <dependency id="Antlr4.Runtime.Standard" version="4.13.1" exclude="Build,Analyzers" />
             <dependency id="System.Text.Json" version="8.0.3" exclude="Build,Analyzers" />
         </group>
     </dependencies>
