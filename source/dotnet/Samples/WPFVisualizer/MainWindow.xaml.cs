@@ -133,9 +133,16 @@ namespace WpfVisualizer
                 // don't throw error, but should affect work flow and performance.
                 // transformer -> has to have errors
                 var template = new AdaptiveCardTemplate(CardPayload);
+
+                // Example usage:
+                Object host = new {
+                    widgetSize = "small"
+                };
+                
                 var context = new EvaluationContext
                 {
-                    Root = templateData
+                    Root = templateData,
+                    Host = host
                 };
 
                 // Create a data binding context, and set its $root property to the
