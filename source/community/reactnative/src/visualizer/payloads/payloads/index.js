@@ -120,6 +120,10 @@ export default payloads = [
     "json": require('./Column.Explicit.Size.json')
   },
   {
+    "title": "Column.Auto.json",
+    "json": require('./Column.Auto.json')
+  },
+  {
     "title": "ColumnSet.Empty.json",
     "json": require('./ColumnSet.Empty.json')
   },

@@ -1,0 +1,54 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://searchuxcdn.azureedge.net/designerapp/images/servicenow-icon.png",
+                            "size": "Small",
+                            "horizontalAlignment": "Center",
+                            "altText": "Not available"
+                        }
+                    ],
+                    "height": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "width": 8,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "[KB0033192 OneITVSO: Create Repos In a Test Instance and Provide Force Push Access](https://microsoft.service-now.com/kb_view.do?sys_kb_id=713adb5d131fd6003976bc42f244b0f2)",
+                            "color": "Accent",
+                            "size": "Medium",
+                            "weight": "Bolder"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Last modified {{DATE(2022-03-21T14:02:23Z,SHORT)}}",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": " 1. You can create repositories through the web application 2. For links to both Prod and Staging, ...",
+                            "wrap": true,
+                            "maxLines": 3,
+                            "spacing": "Small",
+                            "color": "Dark"
+                        }
+                    ],
+                    "horizontalAlignment": "Center",
+                    "spacing": "Medium"
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

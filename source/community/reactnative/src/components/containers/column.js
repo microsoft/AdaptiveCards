@@ -96,32 +96,56 @@ export class Column extends React.Component {
 	 * @returns {flex}
 	 */
 
-	flex = (containerViewStyle) => {
-		var flex = 0
-		var columns = this.props.columns
-		const widthArray = columns.map((column) => column.width);
-		var sizeValues = []
-		widthArray.map((value) => {
-			if (Utils.isaNumber(value)) {
-				sizeValues.push(value)
-			}
-		})
-		var minValue = Math.min.apply(null, sizeValues)
-		var maxValue = Math.max.apply(null, sizeValues)
+	flex = (containerViewStyle, flexShrinkType) => {
+		//fix layout issue
+		var flex = 0;
+
 		if (Utils.isaNumber(this.column.width)) {
-			flex = this.column.width / maxValue
-		}
-		else if (!this.column || this.column.width === 'auto') {
-			if (sizeValues.length == 0) {
-				containerViewStyle.push({ flexWrap: 'wrap' })
-			} else {
-				flex = minValue / maxValue
-			}
-		}
-		else if (this.column.width === undefined || this.column.width === 'stretch') {
-			flex = 1
+			flex = this.column.width;
+			this.setFlexShrink(containerViewStyle, flexShrinkType, 1);
+		} else if (!this.column || this.column.width === 'auto') {
+			flex = 0;
+			this.setFlexShrink(containerViewStyle, flexShrinkType, 2);
+		} else if (this.column.width === undefined || this.column.width === 'stretch') {
+			flex = 1;
+			containerViewStyle.push({ flexShrink: 1 });
 		}
 		return flex;
+	}
+	/**
+	 * @description set flexShrink to view
+	 * @param  containerViewStyle the container style
+	 * @param  flexShrinkType which type need to be set flexShrink
+	 * @param  currentViewFlexShrinkType the view flexShrinkType
+	 */
+	setFlexShrink = (containerViewStyle, flexShrinkType, currentViewFlexShrinkType) => {
+		if (flexShrinkType === currentViewFlexShrinkType) {
+			containerViewStyle.push({ flexShrink: 1 });
+		} else if (flexShrinkType > currentViewFlexShrinkType) {
+			containerViewStyle.push({ flexShrink: 0 });
+		}
+	}
+
+	/**
+	 * @description get which type width need to be flexShrink.
+	 * 0 is pixel 1 is weight 2 is auto 3 is stretch
+	 * Precedence order of displaying elements with the width attribute
+	 * px > weight > auto > stretch
+	 * @param width the column payload width
+	 * @returns {flexShrinkType} 0 is pixel 1 is weight 2 is auto 3 is stretch
+	 */
+	getFlexShrinkType = (width) => {
+		var flexShrinkType = 3;
+		if (Utils.isPixelValue(width) && Utils.isaNumber(width)) {
+			flexShrinkType = 0;
+		} else if (Utils.isaNumber(width)) {
+			flexShrinkType = 1;
+		} else if (!this.column || this.column.width === 'auto') {
+			flexShrinkType = 2;
+		} else {
+			flexShrinkType = 3;
+		}
+		return flexShrinkType;
 	}
 
 	render() {
@@ -143,11 +167,22 @@ export class Column extends React.Component {
 			spacingStyle.push({ marginLeft: this.spacing })
 		}
 		spacingStyle.push({ flexGrow: 1 });
-
+		// Get flexShrinkType to point which column need to be setted flexShrink:1
+		var columns = this.props.columns;
+		const widthArray = columns.map((column) => column.width);
+		// get flexShrinkType
+		var flexShrinkType = 0;
+		widthArray.map((value) => {
+			const tmpShrink = this.getFlexShrinkType(value);
+			if (tmpShrink > flexShrinkType) {
+				flexShrinkType = tmpShrink;
+			}
+		});
 		if (Utils.isPixelValue(this.column.width) && Utils.isaNumber(this.column.width)) {
-			containerViewStyle.push({ width: parseInt(this.column.width) })
+			containerViewStyle.push({ width: parseInt(this.column.width) });
+			this.setFlexShrink(containerViewStyle, flexShrinkType, 0);
 		} else {
-			containerViewStyle.push({ flex: this.flex(containerViewStyle) })
+			containerViewStyle.push({ flex: this.flex(containerViewStyle, flexShrinkType) });
 		}
 
 		let ActionComponent = React.Fragment;
