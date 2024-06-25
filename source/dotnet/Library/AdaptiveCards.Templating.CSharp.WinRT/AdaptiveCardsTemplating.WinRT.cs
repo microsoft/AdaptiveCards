@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 // AdaptiveCards template windows runtime component library
-namespace AdaptiveCards.Template
+namespace AdaptiveCards.Templating.WinRT
 {
     /// <summary>
     /// AdaptiveCards template windows runtime component library
@@ -28,7 +28,18 @@ namespace AdaptiveCards.Template
             return adaptiveCardTemplate.Expand(rootData);
         }
 
-        private AdaptiveCards.Templating.AdaptiveCardTemplate adaptiveCardTemplate;
+        /// <summary>
+        /// Expand the template with root data and host data
+        /// </summary>
+        /// <param name="rootData">JSON serialized data for AdaptiveCard template</param>
+        /// <param name="hostData">JSON serialized host config</param>
+        /// <returns></returns>
+        public string Expand(String rootData, String hostData)
+        {
+            AdaptiveCards.Templating.EvaluationContext evaluationContext = new(rootData, hostData);
+            return adaptiveCardTemplate.Expand(evaluationContext);
+        }
 
+        private readonly AdaptiveCards.Templating.AdaptiveCardTemplate adaptiveCardTemplate;
     }
 }

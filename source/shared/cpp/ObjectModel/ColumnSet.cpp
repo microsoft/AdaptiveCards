@@ -36,6 +36,11 @@ Json::Value ColumnSet::SerializeToJsonValue() const
         root[propertyName].append(column->SerializeToJsonValue());
     }
 
+    if (m_horizontalAlignment.has_value())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+            HorizontalAlignmentToString(m_horizontalAlignment.value_or(HorizontalAlignment::Left));
+    }
     return root;
 }
 
@@ -48,6 +53,16 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         AdaptiveCardSchemaKey::Columns,
         false,                                             // isRequired
         CardElementTypeToString(CardElementType::Column)); // impliedType
+}
+
+std::optional<HorizontalAlignment> AdaptiveCards::ColumnSet::GetHorizontalAlignment() const
+{
+    return m_horizontalAlignment;
+}
+
+void AdaptiveCards::ColumnSet::SetHorizontalAlignment(std::optional<HorizontalAlignment> value)
+{
+    m_horizontalAlignment = value;
 }
 
 void ColumnSet::PopulateKnownPropertiesSet()
@@ -71,6 +86,9 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
     auto container = StyledCollectionElement::Deserialize<ColumnSet>(context, value);
+
+    container->SetHorizontalAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+        value, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignmentFromString));
 
     return container;
 }

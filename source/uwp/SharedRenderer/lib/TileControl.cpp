@@ -32,6 +32,25 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             }
         }
     }
+
+    void TileControl::SvgImageOpened(const IInspectable& /* sender */, const winrt::SvgImageSourceOpenedEventArgs& /* args */)
+    {
+        auto uiElement = m_resolvedImage;
+
+        // Do we need to throw/log if we fail here?
+        if (const auto image = m_resolvedImage.try_as<winrt::Image>())
+        {
+            if (const auto imageSource = image.Source())
+            {
+                if (const auto svgImageSource = imageSource.try_as<winrt::SvgImageSource>())
+                {
+                    m_imageSize = {(float)svgImageSource.RasterizePixelWidth(), (float)svgImageSource.RasterizePixelHeight()};
+                    RefreshContainerTile();
+                }
+            }
+        }
+    }
+
     void TileControl::LoadImageBrush(winrt::UIElement const& uielement)
     {
         m_resolvedImage = uielement;
@@ -44,6 +63,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 {
                     m_imageOpenedRevoker.revoke();
                     m_imageOpenedRevoker = bitmapImage.ImageOpened(winrt::auto_revoke, {this, &TileControl::ImageOpened});
+                    m_brushXaml.ImageSource(imageSource);
+                }
+                else if (const auto svgImageSource = imageSource.try_as<winrt::SvgImageSource>())
+                {
+                    m_svgImageOpenedRevoker.revoke();
+                    m_svgImageOpenedRevoker = svgImageSource.Opened(winrt::auto_revoke, {this, &TileControl::SvgImageOpened});
                     m_brushXaml.ImageSource(imageSource);
                 }
             }

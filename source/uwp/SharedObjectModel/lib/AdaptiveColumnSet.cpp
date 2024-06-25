@@ -17,6 +17,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         MinHeight = sharedColumnSet->GetMinHeight();
         Bleed = sharedColumnSet->GetBleed();
         BleedDirection = static_cast<Xaml_OM::BleedDirection>(sharedColumnSet->GetBleedDirection());
+        HorizontalAlignment = opt_cast<Xaml_OM::HAlignment>(sharedColumnSet->GetHorizontalAlignment());
         InitializeBaseElement(sharedColumnSet);
     }
 
@@ -28,6 +29,11 @@ namespace winrt::AdaptiveCards::ObjectModel::Xaml_OM::implementation
         if (SelectAction.get())
         {
             columnSet->SetSelectAction(GenerateSharedAction(SelectAction.get()));
+        }
+
+        if (HorizontalAlignment)
+        {
+            columnSet->SetHorizontalAlignment(HorizontalAlignment.get<::AdaptiveCards::HorizontalAlignment>());
         }
 
         columnSet->GetColumns() = GenerateSharedVector<implementation::AdaptiveColumn, ::AdaptiveCards::Column>(Columns.get());

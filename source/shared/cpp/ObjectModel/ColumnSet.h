@@ -24,6 +24,9 @@ public:
     Json::Value SerializeToJsonValue() const override;
     void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
+    std::optional<HorizontalAlignment> GetHorizontalAlignment() const;
+    void SetHorizontalAlignment(std::optional<HorizontalAlignment> value);
+
     std::vector<std::shared_ptr<Column>>& GetColumns();
     const std::vector<std::shared_ptr<Column>>& GetColumns() const;
 
@@ -31,6 +34,8 @@ public:
 
 private:
     void PopulateKnownPropertiesSet();
+
+    std::optional<HorizontalAlignment> m_horizontalAlignment;
 
     std::vector<std::shared_ptr<Column>> m_columns;
 };

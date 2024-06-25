@@ -36,15 +36,6 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
-    auto inline GetDispatcher(winrt::ImageSource const &imageSource)
-    {
-#ifdef USE_WINUI3
-        return imageSource.DispatcherQueue();
-#else
-        return imageSource.Dispatcher();
-#endif
-    }
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // IMPORTANT! Methods below here are actually XamlBuilder methods. They're defined here because they're only used
@@ -71,7 +62,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             return nullptr;
         }
 
-        auto isImageSvg = IsSvgImage(HStringToUTF8(url));
+        auto isImageSvg = IsSvgImage(imageUrl);
 
         uint32_t pixelWidth = adaptiveImage.PixelWidth();
         uint32_t pixelHeight = adaptiveImage.PixelHeight();
@@ -289,57 +280,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
-    winrt::Windows::Foundation::Size XamlBuilder::ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content)
-    {
-        // Parse the size from the XamlDocument as XML
-        winrt::XmlDocument xmlDoc;
-
-        xmlDoc.LoadXml(content);
-
-        if (xmlDoc)
-        {
-            auto rootElement = xmlDoc.DocumentElement();
-
-            // Root element must be an SVG
-            if (rootElement.NodeName() == L"svg")
-            {
-                auto heightAttribute = rootElement.GetAttribute(L"height");
-                auto widthAttribute = rootElement.GetAttribute(L"width");
-
-                double height{0.0}; 
-                double width{0.0}; 
-
-                if (!heightAttribute.empty())
-                {
-                    height = TryHStringToDouble(heightAttribute).value_or(0.0);
-                }
-
-                if (!widthAttribute.empty())
-                {
-                    width = TryHStringToDouble(widthAttribute).value_or(0.0);
-                }
-
-                return {static_cast<float>(width), static_cast<float>(height)};
-            }
-        }
-
-        return {};
-    }
-
-    winrt::IAsyncOperation<winrt::Windows::Foundation::Size> XamlBuilder::ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream)
-    {
-        auto inputStream = stream.GetInputStreamAt(0);
-        auto dataReader = winrt::DataReader(inputStream);
-
-        // Load the data from the stream
-        uint32_t numBytesLoaded = co_await dataReader.LoadAsync(static_cast<uint32_t>(stream.Size()));
-
-        // Read the data as a string
-        winrt::hstring svgString = dataReader.ReadString(numBytesLoaded);
-
-        co_return ParseSizeOfSVGImageFromXmlString(svgString);
-    }
-
     winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(winrt::Uri const imageUrl,
         winrt::AdaptiveCardResourceResolvers const resolvers, bool const isImageSvg)
     {
@@ -457,14 +397,13 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                             svgImageSource.RasterizePixelHeight(size.Height);
                             svgImageSource.RasterizePixelWidth(size.Width);
                         }
-
-                        co_await svgImageSource.SetSourceAsync(stream);
+                        svgImageSource.SetSourceAsync(stream);
                     }
                     else
                     {
                         co_await wil::resume_foreground(GetDispatcher(strongImageSource));
                         auto bitmapImage = strongImageSource.as<winrt::BitmapImage>();
-                        co_await bitmapImage.SetSourceAsync(stream);
+                        bitmapImage.SetSourceAsync(stream);
                     }
                 }
                 else
@@ -688,14 +627,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             }
         }
     }
-
-    boolean XamlBuilder::IsSvgImage(std::string url)
-    {
-        // Question: is this check sufficient?
-        auto foundSvg = url.find("svg");
-        return !(foundSvg == std::string::npos);
-    }
-    
+ 
     void XamlBuilder::SetRasterizedPixelHeight(winrt::ImageSource const& imageSource, double const& imageSize) {
         if (auto image = imageSource.try_as<winrt::SvgImageSource>())
         {

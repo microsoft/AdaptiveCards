@@ -657,3 +657,71 @@ std::string ExtractSvgDataFromUri(winrt::Windows::Foundation::Uri const& imageUr
     }
     return data;
 }
+
+winrt::Windows::Foundation::Size ParseSizeOfSVGImageFromXmlString(winrt::hstring const& content)
+{
+    // Parse the size from the XamlDocument as XML
+    winrt::XmlDocument xmlDoc;
+
+    xmlDoc.LoadXml(content);
+
+    if (xmlDoc)
+    {
+        auto rootElement = xmlDoc.DocumentElement();
+
+        // Root element must be an SVG
+        if (rootElement.NodeName() == L"svg")
+        {
+            auto heightAttribute = rootElement.GetAttribute(L"height");
+            auto widthAttribute = rootElement.GetAttribute(L"width");
+
+            double height{0.0};
+            double width{0.0};
+
+            if (!heightAttribute.empty())
+            {
+                height = TryHStringToDouble(heightAttribute).value_or(0.0);
+            }
+
+            if (!widthAttribute.empty())
+            {
+                width = TryHStringToDouble(widthAttribute).value_or(0.0);
+            }
+
+            return {static_cast<float>(width), static_cast<float>(height)};
+        }
+    }
+
+    return {};
+}
+
+winrt::IAsyncOperation<winrt::Windows::Foundation::Size> ParseSizeOfSVGImageFromStreamAsync(winrt::IRandomAccessStream const stream)
+{
+    auto inputStream = stream.GetInputStreamAt(0);
+    auto dataReader = winrt::DataReader(inputStream);
+
+    // Load the data from the stream
+    uint32_t numBytesLoaded = co_await dataReader.LoadAsync(static_cast<uint32_t>(stream.Size()));
+
+    // Read the data as a string
+    winrt::hstring svgString = dataReader.ReadString(numBytesLoaded);
+
+    co_return ParseSizeOfSVGImageFromXmlString(svgString);
+}
+
+bool IsSvgImage(winrt::Windows::Foundation::Uri const& imageUrl)
+{
+    auto imagePath = HStringToUTF8(imageUrl.Path());
+
+    if (imageUrl.SchemeName() == L"data")
+    {
+        // Find the position of the first semicolon
+        size_t semicolonPos = imagePath.find(';');
+
+        // Check if "svg" is present in the substring from the start to the semicolon
+        return imagePath.substr(0, semicolonPos).find("svg") != std::string::npos;
+    }
+
+	// Check if the file extension is ".svg"
+	return imagePath.substr(imagePath.find_last_of('.') + 1) == "svg";
+}
