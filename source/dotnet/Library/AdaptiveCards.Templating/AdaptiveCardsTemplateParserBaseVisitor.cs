@@ -66,17 +66,6 @@ public partial class AdaptiveCardsTemplateParserBaseVisitor<Result> : AbstractPa
 	/// <return>The visitor result.</return>
 	public virtual Result VisitJsonPair([NotNull] AdaptiveCardsTemplateParser.JsonPairContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>templateRootData</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by the <c>templateData</c>
 	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
 	/// <para>
@@ -119,17 +108,6 @@ public partial class AdaptiveCardsTemplateParserBaseVisitor<Result> : AbstractPa
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitValueTemplateString([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueTemplateStringWithRoot</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitValueTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>valueString</c>
 	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
@@ -218,17 +196,6 @@ public partial class AdaptiveCardsTemplateParserBaseVisitor<Result> : AbstractPa
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	public virtual Result VisitTemplatedString([NotNull] AdaptiveCardsTemplateParser.TemplatedStringContext context) { return VisitChildren(context); }
-	/// <summary>
-	/// Visit a parse tree produced by the <c>templateStringWithRoot</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateRoot"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>valueTemplateExpression</c>
 	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateExpression"/>.

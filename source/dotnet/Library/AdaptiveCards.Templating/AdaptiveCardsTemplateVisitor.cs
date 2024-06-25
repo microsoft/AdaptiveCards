@@ -226,7 +226,10 @@ namespace AdaptiveCards.Templating
         /// </summary>
         private void PopDataContext()
         {
-            dataContext.Pop();
+            if (dataContext.Count > 0)
+            {
+                dataContext.Pop();
+            }
         }
 
         /// <summary>
@@ -265,14 +268,7 @@ namespace AdaptiveCards.Templating
             // get value node from pair node
             // i.e. $data : "value"
             IParseTree templateDataValueNode = context.value();
-            // refer to label, valueTemplateStringWithRoot in AdaptiveCardsTemplateParser.g4 for the grammar this branch is checking
-            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
-            {
-                // call a visit method for further processing
-                Visit(templateDataValueNode);
-            }
-            // refer to label, valueTemplateString in AdaptiveCardsTemplateParser.g4 for the grammar this branch is checking
-            else if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringContext)
+            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringContext)
             {
                 // tempalteString() can be zero or more due to user error
                 var templateStrings = (templateDataValueNode as AdaptiveCardsTemplateParser.ValueTemplateStringContext).templateString();
@@ -307,54 +303,6 @@ namespace AdaptiveCards.Templating
                 {
                     throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", innerException);
                 }
-            }
-
-            return new AdaptiveCardsTemplateResult();
-        }
-
-        /// <summary>
-        /// Visitor method for <c>templateRoot</c> grammar in <c>AdaptiveCardsTemplateParser.g4</c>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns><see cref="AdaptiveCardsTemplateResult"/></returns>
-        public override AdaptiveCardsTemplateResult VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context)
-        {
-            // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (!ValidateParserRuleContext(context))
-            {
-                return new AdaptiveCardsTemplateResult(context.GetText());
-            }
-
-            // retreives templateroot token from current context; please refers to templateRoot grammar in AdaptiveCardsTemplateParser.g4
-            return Visit(context.TEMPLATEROOT());
-        }
-
-        /// <summary>
-        /// Visitor method for <c>templateRootData</c> grammar rule in <c>AdaptiveCardsTemplateParser.g4</c>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns><see cref="AdaptiveCardsTemplateResult"/></returns>
-        public override AdaptiveCardsTemplateResult VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context)
-        {
-            // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (!ValidateParserRuleContext(context))
-            {
-                return new AdaptiveCardsTemplateResult(context.GetText());
-            }
-
-            // retrieves templateRoot of the grammar as in this method's summary
-            var child = context.templateRoot() as AdaptiveCardsTemplateParser.TemplateStringWithRootContext;
-            try
-            {
-                PushTemplatedDataContext(child.GetText());
-            }
-            catch (ArgumentNullException)
-            {
-                throw new ArgumentException($"Check if parent data context is set, or please enter a non-null value for '{context.GetText()}' at line, '{context.Start.Line}'");
-            }
-            catch (JsonException innerException)
-            {
-                throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{child.TEMPLATEROOT().Symbol.Text}' at line, '{child.TEMPLATEROOT().Symbol.Line}' is malformed", innerException);
             }
 
             return new AdaptiveCardsTemplateResult();
@@ -487,7 +435,7 @@ namespace AdaptiveCards.Templating
             // visit the first data context available, the rest is ignored
             foreach (var pair in pairs)
             {
-                if (pair is AdaptiveCardsTemplateParser.TemplateDataContext || pair is AdaptiveCardsTemplateParser.TemplateRootDataContext)
+                if (pair is AdaptiveCardsTemplateParser.TemplateDataContext)
                 {
                     if (pair.exception == null)
                     {
@@ -629,7 +577,7 @@ namespace AdaptiveCards.Templating
                 throw new ArgumentNullException(nameof(node));
             }
 
-            if (node.Symbol.Type == AdaptiveCardsTemplateLexer.TEMPLATELITERAL || node.Symbol.Type == AdaptiveCardsTemplateLexer.TEMPLATEROOT)
+            if (node.Symbol.Type == AdaptiveCardsTemplateLexer.TEMPLATELITERAL)
             {
                 return ExpandTemplatedString(node);
             }

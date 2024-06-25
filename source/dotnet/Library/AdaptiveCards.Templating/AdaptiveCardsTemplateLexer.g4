@@ -5,6 +5,8 @@
 
 lexer grammar AdaptiveCardsTemplateLexer;
 
+tokens { TEMPLATELITERAL }
+
 COMMA : ',';
 
 COLON : ':';
@@ -57,16 +59,8 @@ TEMPLATEWHEN
    : '$when'
    ;
 
-JPATH
-   : ('.' STRING | '[' INT ']')+ '}'
-   ;
-
-TEMPLATELITERAL
-   : '${' (~ ["] | ESC )*? '}'
-   ;
-
-TEMPLATEROOT
-   : '${$root' JPATH
+TemplateStart
+   : '${' -> pushMode(TemplateString), more
    ;
 
 STRING
@@ -86,3 +80,21 @@ fragment HEX
 fragment SAFECODEPOINT
    : ~ ["\\\u0000-\u001F$]
    ;
+
+mode TemplateString;
+
+TRCB 
+   : RCB  -> popMode, type(TEMPLATELITERAL)
+   ;
+   
+TEXT : (SINGLE | DOUBLE | TSTM | . ) -> more 
+   ;
+  
+SINGLE : '\'' .*? '\''
+   ;
+   
+DOUBLE : '\\"' .*? '\\"'
+   ;
+
+TSTM
+   : LCB (TSTM | . )*? RCB;

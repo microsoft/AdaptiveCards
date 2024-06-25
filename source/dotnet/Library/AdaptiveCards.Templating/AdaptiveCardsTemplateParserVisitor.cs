@@ -51,13 +51,6 @@ public interface IAdaptiveCardsTemplateParserVisitor<Result> : IParseTreeVisitor
 	/// <return>The visitor result.</return>
 	Result VisitJsonPair([NotNull] AdaptiveCardsTemplateParser.JsonPairContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>templateRootData</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>templateData</c>
 	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.pair"/>.
 	/// </summary>
@@ -84,13 +77,6 @@ public interface IAdaptiveCardsTemplateParserVisitor<Result> : IParseTreeVisitor
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitValueTemplateString([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>valueTemplateStringWithRoot</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitValueTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>valueString</c>
 	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.value"/>.
@@ -147,13 +133,6 @@ public interface IAdaptiveCardsTemplateParserVisitor<Result> : IParseTreeVisitor
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTemplatedString([NotNull] AdaptiveCardsTemplateParser.TemplatedStringContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>templateStringWithRoot</c>
-	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateRoot"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>valueTemplateExpression</c>
 	/// labeled alternative in <see cref="AdaptiveCardsTemplateParser.templateExpression"/>.
