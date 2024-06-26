@@ -36,25 +36,25 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		COMMA=1, COLON=2, LCB=3, RCB=4, LSB=5, RSB=6, TRUE=7, FALSE=8, NULL=9, 
-		StringDeclOpen=10, NUMBER=11, WS=12, CLOSE=13, TEMPLATEDATA=14, TEMPLATEWHEN=15, 
-		JPATH=16, TEMPLATELITERAL=17, TEMPLATEROOT=18, STRING=19;
+		TEMPLATELITERAL=1, COMMA=2, COLON=3, LCB=4, RCB=5, LSB=6, RSB=7, TRUE=8, 
+		FALSE=9, NULL=10, StringDeclOpen=11, NUMBER=12, WS=13, CLOSE=14, TEMPLATEDATA=15, 
+		TEMPLATEWHEN=16, STRING=17, SINGLE=18, DOUBLE=19, TSTM=20, TemplateStart=21;
 	public const int
 		RULE_json = 0, RULE_obj = 1, RULE_pair = 2, RULE_array = 3, RULE_value = 4, 
-		RULE_templateString = 5, RULE_templateRoot = 6, RULE_templateExpression = 7;
+		RULE_templateString = 5, RULE_templateExpression = 6;
 	public static readonly string[] ruleNames = {
-		"json", "obj", "pair", "array", "value", "templateString", "templateRoot", 
-		"templateExpression"
+		"json", "obj", "pair", "array", "value", "templateString", "templateExpression"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "','", "':'", "'{'", "'}'", "'['", "']'", "'true'", "'false'", "'null'", 
-		null, null, null, null, "'$data'", "'$when'"
+		null, null, "','", "':'", "'{'", "'}'", "'['", "']'", "'true'", "'false'", 
+		"'null'", null, null, null, null, "'$data'", "'$when'", null, null, null, 
+		null, "'${'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "COMMA", "COLON", "LCB", "RCB", "LSB", "RSB", "TRUE", "FALSE", "NULL", 
-		"StringDeclOpen", "NUMBER", "WS", "CLOSE", "TEMPLATEDATA", "TEMPLATEWHEN", 
-		"JPATH", "TEMPLATELITERAL", "TEMPLATEROOT", "STRING"
+		null, "TEMPLATELITERAL", "COMMA", "COLON", "LCB", "RCB", "LSB", "RSB", 
+		"TRUE", "FALSE", "NULL", "StringDeclOpen", "NUMBER", "WS", "CLOSE", "TEMPLATEDATA", 
+		"TEMPLATEWHEN", "STRING", "SINGLE", "DOUBLE", "TSTM", "TemplateStart"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -112,7 +112,7 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 16;
+			State = 14;
 			value();
 			}
 		}
@@ -159,42 +159,42 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		EnterRule(_localctx, 2, RULE_obj);
 		int _la;
 		try {
-			State = 31;
+			State = 29;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 18;
+				State = 16;
 				Match(LCB);
-				State = 19;
+				State = 17;
 				pair();
-				State = 24;
+				State = 22;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					State = 20;
+					State = 18;
 					Match(COMMA);
-					State = 21;
+					State = 19;
 					pair();
 					}
 					}
-					State = 26;
+					State = 24;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 27;
+				State = 25;
 				Match(RCB);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 29;
+				State = 27;
 				Match(LCB);
-				State = 30;
+				State = 28;
 				Match(RCB);
 				}
 				break;
@@ -274,28 +274,6 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class TemplateRootDataContext : PairContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] StringDeclOpen() { return GetTokens(AdaptiveCardsTemplateParser.StringDeclOpen); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode StringDeclOpen(int i) {
-			return GetToken(AdaptiveCardsTemplateParser.StringDeclOpen, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TEMPLATEDATA() { return GetToken(AdaptiveCardsTemplateParser.TEMPLATEDATA, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] CLOSE() { return GetTokens(AdaptiveCardsTemplateParser.CLOSE); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CLOSE(int i) {
-			return GetToken(AdaptiveCardsTemplateParser.CLOSE, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COLON() { return GetToken(AdaptiveCardsTemplateParser.COLON, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public TemplateRootContext templateRoot() {
-			return GetRuleContext<TemplateRootContext>(0);
-		}
-		public TemplateRootDataContext(PairContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitTemplateRootData(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
 
 	[RuleVersion(0)]
 	public PairContext pair() {
@@ -303,86 +281,66 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		EnterRule(_localctx, 4, RULE_pair);
 		int _la;
 		try {
-			State = 61;
+			State = 51;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,3,Context) ) {
 			case 1:
 				_localctx = new JsonPairContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 33;
+				State = 31;
 				Match(StringDeclOpen);
-				State = 37;
+				State = 35;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==STRING) {
 					{
 					{
-					State = 34;
+					State = 32;
 					Match(STRING);
 					}
 					}
-					State = 39;
+					State = 37;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 40;
+				State = 38;
 				Match(CLOSE);
-				State = 41;
+				State = 39;
 				Match(COLON);
-				State = 42;
+				State = 40;
 				value();
 				}
 				break;
 			case 2:
-				_localctx = new TemplateRootDataContext(_localctx);
+				_localctx = new TemplateDataContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
+				State = 41;
+				Match(StringDeclOpen);
+				State = 42;
+				Match(TEMPLATEDATA);
 				State = 43;
-				Match(StringDeclOpen);
+				Match(CLOSE);
 				State = 44;
-				Match(TEMPLATEDATA);
+				Match(COLON);
 				State = 45;
-				Match(CLOSE);
-				State = 46;
-				Match(COLON);
-				State = 47;
-				Match(StringDeclOpen);
-				State = 48;
-				templateRoot();
-				State = 49;
-				Match(CLOSE);
-				}
-				break;
-			case 3:
-				_localctx = new TemplateDataContext(_localctx);
-				EnterOuterAlt(_localctx, 3);
-				{
-				State = 51;
-				Match(StringDeclOpen);
-				State = 52;
-				Match(TEMPLATEDATA);
-				State = 53;
-				Match(CLOSE);
-				State = 54;
-				Match(COLON);
-				State = 55;
 				value();
 				}
 				break;
-			case 4:
+			case 3:
 				_localctx = new TemplateWhenContext(_localctx);
-				EnterOuterAlt(_localctx, 4);
+				EnterOuterAlt(_localctx, 3);
 				{
-				State = 56;
+				State = 46;
 				Match(StringDeclOpen);
-				State = 57;
+				State = 47;
 				Match(TEMPLATEWHEN);
-				State = 58;
+				State = 48;
 				Match(CLOSE);
-				State = 59;
+				State = 49;
 				Match(COLON);
-				State = 60;
+				State = 50;
 				templateExpression();
 				}
 				break;
@@ -431,42 +389,42 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		EnterRule(_localctx, 6, RULE_array);
 		int _la;
 		try {
-			State = 76;
+			State = 66;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 63;
+				State = 53;
 				Match(LSB);
-				State = 64;
+				State = 54;
 				value();
-				State = 69;
+				State = 59;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					State = 65;
+					State = 55;
 					Match(COMMA);
-					State = 66;
+					State = 56;
 					value();
 					}
 					}
-					State = 71;
+					State = 61;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 72;
+				State = 62;
 				Match(RSB);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 74;
+				State = 64;
 				Match(LSB);
-				State = 75;
+				State = 65;
 				Match(RSB);
 				}
 				break;
@@ -579,20 +537,6 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class ValueTemplateStringWithRootContext : ValueContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode StringDeclOpen() { return GetToken(AdaptiveCardsTemplateParser.StringDeclOpen, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public TemplateRootContext templateRoot() {
-			return GetRuleContext<TemplateRootContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CLOSE() { return GetToken(AdaptiveCardsTemplateParser.CLOSE, 0); }
-		public ValueTemplateStringWithRootContext(ValueContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitValueTemplateStringWithRoot(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
 	public partial class ValueArrayContext : ValueContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ArrayContext array() {
 			return GetRuleContext<ArrayContext>(0);
@@ -612,116 +556,104 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		EnterRule(_localctx, 8, RULE_value);
 		int _la;
 		try {
-			State = 106;
+			State = 92;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
 			case 1:
 				_localctx = new ValueTemplateStringContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 78;
+				State = 68;
 				Match(StringDeclOpen);
-				State = 79;
+				State = 69;
 				templateString();
-				State = 83;
+				State = 73;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==TEMPLATELITERAL || _la==STRING) {
 					{
 					{
-					State = 80;
+					State = 70;
 					templateString();
 					}
 					}
-					State = 85;
+					State = 75;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 86;
+				State = 76;
 				Match(CLOSE);
 				}
 				break;
 			case 2:
-				_localctx = new ValueTemplateStringWithRootContext(_localctx);
+				_localctx = new ValueStringContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 88;
+				State = 78;
 				Match(StringDeclOpen);
-				State = 89;
-				templateRoot();
-				State = 90;
-				Match(CLOSE);
-				}
-				break;
-			case 3:
-				_localctx = new ValueStringContext(_localctx);
-				EnterOuterAlt(_localctx, 3);
-				{
-				State = 92;
-				Match(StringDeclOpen);
-				State = 96;
+				State = 82;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==STRING) {
 					{
 					{
-					State = 93;
+					State = 79;
 					Match(STRING);
 					}
 					}
-					State = 98;
+					State = 84;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
-				State = 99;
+				State = 85;
 				Match(CLOSE);
 				}
 				break;
-			case 4:
+			case 3:
 				_localctx = new ValueNumberContext(_localctx);
-				EnterOuterAlt(_localctx, 4);
+				EnterOuterAlt(_localctx, 3);
 				{
-				State = 100;
+				State = 86;
 				Match(NUMBER);
 				}
 				break;
-			case 5:
+			case 4:
 				_localctx = new ValueObjectContext(_localctx);
-				EnterOuterAlt(_localctx, 5);
+				EnterOuterAlt(_localctx, 4);
 				{
-				State = 101;
+				State = 87;
 				obj();
 				}
 				break;
-			case 6:
+			case 5:
 				_localctx = new ValueArrayContext(_localctx);
-				EnterOuterAlt(_localctx, 6);
+				EnterOuterAlt(_localctx, 5);
 				{
-				State = 102;
+				State = 88;
 				array();
 				}
 				break;
-			case 7:
+			case 6:
 				_localctx = new ValueTrueContext(_localctx);
-				EnterOuterAlt(_localctx, 7);
+				EnterOuterAlt(_localctx, 6);
 				{
-				State = 103;
+				State = 89;
 				Match(TRUE);
 				}
 				break;
-			case 8:
+			case 7:
 				_localctx = new ValueFalseContext(_localctx);
-				EnterOuterAlt(_localctx, 8);
+				EnterOuterAlt(_localctx, 7);
 				{
-				State = 104;
+				State = 90;
 				Match(FALSE);
 				}
 				break;
-			case 9:
+			case 8:
 				_localctx = new ValueNullContext(_localctx);
-				EnterOuterAlt(_localctx, 9);
+				EnterOuterAlt(_localctx, 8);
 				{
-				State = 105;
+				State = 91;
 				Match(NULL);
 				}
 				break;
@@ -776,85 +708,39 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			{
-			State = 111;
+			State = 97;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==STRING) {
 				{
 				{
-				State = 108;
+				State = 94;
 				Match(STRING);
 				}
 				}
-				State = 113;
+				State = 99;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 114;
+			State = 100;
 			Match(TEMPLATELITERAL);
-			State = 118;
+			State = 104;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 115;
+					State = 101;
 					Match(STRING);
 					}
 					} 
 				}
-				State = 120;
+				State = 106;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
 			}
 			}
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
-	public partial class TemplateRootContext : ParserRuleContext {
-		public TemplateRootContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_templateRoot; } }
-	 
-		public TemplateRootContext() { }
-		public virtual void CopyFrom(TemplateRootContext context) {
-			base.CopyFrom(context);
-		}
-	}
-	public partial class TemplateStringWithRootContext : TemplateRootContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TEMPLATEROOT() { return GetToken(AdaptiveCardsTemplateParser.TEMPLATEROOT, 0); }
-		public TemplateStringWithRootContext(TemplateRootContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitTemplateStringWithRoot(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public TemplateRootContext templateRoot() {
-		TemplateRootContext _localctx = new TemplateRootContext(Context, State);
-		EnterRule(_localctx, 12, RULE_templateRoot);
-		try {
-			_localctx = new TemplateStringWithRootContext(_localctx);
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 121;
-			Match(TEMPLATEROOT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -896,16 +782,16 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 	[RuleVersion(0)]
 	public TemplateExpressionContext templateExpression() {
 		TemplateExpressionContext _localctx = new TemplateExpressionContext(Context, State);
-		EnterRule(_localctx, 14, RULE_templateExpression);
+		EnterRule(_localctx, 12, RULE_templateExpression);
 		try {
 			_localctx = new ValueTemplateExpressionContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 123;
+			State = 107;
 			Match(StringDeclOpen);
-			State = 124;
+			State = 108;
 			Match(TEMPLATELITERAL);
-			State = 125;
+			State = 109;
 			Match(CLOSE);
 			}
 		}
@@ -921,45 +807,40 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,19,128,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
-		7,7,1,0,1,0,1,1,1,1,1,1,1,1,5,1,23,8,1,10,1,12,1,26,9,1,1,1,1,1,1,1,1,
-		1,3,1,32,8,1,1,2,1,2,5,2,36,8,2,10,2,12,2,39,9,2,1,2,1,2,1,2,1,2,1,2,1,
-		2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,62,8,
-		2,1,3,1,3,1,3,1,3,5,3,68,8,3,10,3,12,3,71,9,3,1,3,1,3,1,3,1,3,3,3,77,8,
-		3,1,4,1,4,1,4,5,4,82,8,4,10,4,12,4,85,9,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,
-		1,4,5,4,95,8,4,10,4,12,4,98,9,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,107,8,
-		4,1,5,5,5,110,8,5,10,5,12,5,113,9,5,1,5,1,5,5,5,117,8,5,10,5,12,5,120,
-		9,5,1,6,1,6,1,7,1,7,1,7,1,7,1,7,0,0,8,0,2,4,6,8,10,12,14,0,0,139,0,16,
-		1,0,0,0,2,31,1,0,0,0,4,61,1,0,0,0,6,76,1,0,0,0,8,106,1,0,0,0,10,111,1,
-		0,0,0,12,121,1,0,0,0,14,123,1,0,0,0,16,17,3,8,4,0,17,1,1,0,0,0,18,19,5,
-		3,0,0,19,24,3,4,2,0,20,21,5,1,0,0,21,23,3,4,2,0,22,20,1,0,0,0,23,26,1,
-		0,0,0,24,22,1,0,0,0,24,25,1,0,0,0,25,27,1,0,0,0,26,24,1,0,0,0,27,28,5,
-		4,0,0,28,32,1,0,0,0,29,30,5,3,0,0,30,32,5,4,0,0,31,18,1,0,0,0,31,29,1,
-		0,0,0,32,3,1,0,0,0,33,37,5,10,0,0,34,36,5,19,0,0,35,34,1,0,0,0,36,39,1,
-		0,0,0,37,35,1,0,0,0,37,38,1,0,0,0,38,40,1,0,0,0,39,37,1,0,0,0,40,41,5,
-		13,0,0,41,42,5,2,0,0,42,62,3,8,4,0,43,44,5,10,0,0,44,45,5,14,0,0,45,46,
-		5,13,0,0,46,47,5,2,0,0,47,48,5,10,0,0,48,49,3,12,6,0,49,50,5,13,0,0,50,
-		62,1,0,0,0,51,52,5,10,0,0,52,53,5,14,0,0,53,54,5,13,0,0,54,55,5,2,0,0,
-		55,62,3,8,4,0,56,57,5,10,0,0,57,58,5,15,0,0,58,59,5,13,0,0,59,60,5,2,0,
-		0,60,62,3,14,7,0,61,33,1,0,0,0,61,43,1,0,0,0,61,51,1,0,0,0,61,56,1,0,0,
-		0,62,5,1,0,0,0,63,64,5,5,0,0,64,69,3,8,4,0,65,66,5,1,0,0,66,68,3,8,4,0,
-		67,65,1,0,0,0,68,71,1,0,0,0,69,67,1,0,0,0,69,70,1,0,0,0,70,72,1,0,0,0,
-		71,69,1,0,0,0,72,73,5,6,0,0,73,77,1,0,0,0,74,75,5,5,0,0,75,77,5,6,0,0,
-		76,63,1,0,0,0,76,74,1,0,0,0,77,7,1,0,0,0,78,79,5,10,0,0,79,83,3,10,5,0,
-		80,82,3,10,5,0,81,80,1,0,0,0,82,85,1,0,0,0,83,81,1,0,0,0,83,84,1,0,0,0,
-		84,86,1,0,0,0,85,83,1,0,0,0,86,87,5,13,0,0,87,107,1,0,0,0,88,89,5,10,0,
-		0,89,90,3,12,6,0,90,91,5,13,0,0,91,107,1,0,0,0,92,96,5,10,0,0,93,95,5,
-		19,0,0,94,93,1,0,0,0,95,98,1,0,0,0,96,94,1,0,0,0,96,97,1,0,0,0,97,99,1,
-		0,0,0,98,96,1,0,0,0,99,107,5,13,0,0,100,107,5,11,0,0,101,107,3,2,1,0,102,
-		107,3,6,3,0,103,107,5,7,0,0,104,107,5,8,0,0,105,107,5,9,0,0,106,78,1,0,
-		0,0,106,88,1,0,0,0,106,92,1,0,0,0,106,100,1,0,0,0,106,101,1,0,0,0,106,
-		102,1,0,0,0,106,103,1,0,0,0,106,104,1,0,0,0,106,105,1,0,0,0,107,9,1,0,
-		0,0,108,110,5,19,0,0,109,108,1,0,0,0,110,113,1,0,0,0,111,109,1,0,0,0,111,
-		112,1,0,0,0,112,114,1,0,0,0,113,111,1,0,0,0,114,118,5,17,0,0,115,117,5,
-		19,0,0,116,115,1,0,0,0,117,120,1,0,0,0,118,116,1,0,0,0,118,119,1,0,0,0,
-		119,11,1,0,0,0,120,118,1,0,0,0,121,122,5,18,0,0,122,13,1,0,0,0,123,124,
-		5,10,0,0,124,125,5,17,0,0,125,126,5,13,0,0,126,15,1,0,0,0,11,24,31,37,
-		61,69,76,83,96,106,111,118
+		4,1,21,112,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,1,0,
+		1,0,1,1,1,1,1,1,1,1,5,1,21,8,1,10,1,12,1,24,9,1,1,1,1,1,1,1,1,1,3,1,30,
+		8,1,1,2,1,2,5,2,34,8,2,10,2,12,2,37,9,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
+		2,1,2,1,2,1,2,1,2,1,2,3,2,52,8,2,1,3,1,3,1,3,1,3,5,3,58,8,3,10,3,12,3,
+		61,9,3,1,3,1,3,1,3,1,3,3,3,67,8,3,1,4,1,4,1,4,5,4,72,8,4,10,4,12,4,75,
+		9,4,1,4,1,4,1,4,1,4,5,4,81,8,4,10,4,12,4,84,9,4,1,4,1,4,1,4,1,4,1,4,1,
+		4,1,4,3,4,93,8,4,1,5,5,5,96,8,5,10,5,12,5,99,9,5,1,5,1,5,5,5,103,8,5,10,
+		5,12,5,106,9,5,1,6,1,6,1,6,1,6,1,6,0,0,7,0,2,4,6,8,10,12,0,0,122,0,14,
+		1,0,0,0,2,29,1,0,0,0,4,51,1,0,0,0,6,66,1,0,0,0,8,92,1,0,0,0,10,97,1,0,
+		0,0,12,107,1,0,0,0,14,15,3,8,4,0,15,1,1,0,0,0,16,17,5,4,0,0,17,22,3,4,
+		2,0,18,19,5,2,0,0,19,21,3,4,2,0,20,18,1,0,0,0,21,24,1,0,0,0,22,20,1,0,
+		0,0,22,23,1,0,0,0,23,25,1,0,0,0,24,22,1,0,0,0,25,26,5,5,0,0,26,30,1,0,
+		0,0,27,28,5,4,0,0,28,30,5,5,0,0,29,16,1,0,0,0,29,27,1,0,0,0,30,3,1,0,0,
+		0,31,35,5,11,0,0,32,34,5,17,0,0,33,32,1,0,0,0,34,37,1,0,0,0,35,33,1,0,
+		0,0,35,36,1,0,0,0,36,38,1,0,0,0,37,35,1,0,0,0,38,39,5,14,0,0,39,40,5,3,
+		0,0,40,52,3,8,4,0,41,42,5,11,0,0,42,43,5,15,0,0,43,44,5,14,0,0,44,45,5,
+		3,0,0,45,52,3,8,4,0,46,47,5,11,0,0,47,48,5,16,0,0,48,49,5,14,0,0,49,50,
+		5,3,0,0,50,52,3,12,6,0,51,31,1,0,0,0,51,41,1,0,0,0,51,46,1,0,0,0,52,5,
+		1,0,0,0,53,54,5,6,0,0,54,59,3,8,4,0,55,56,5,2,0,0,56,58,3,8,4,0,57,55,
+		1,0,0,0,58,61,1,0,0,0,59,57,1,0,0,0,59,60,1,0,0,0,60,62,1,0,0,0,61,59,
+		1,0,0,0,62,63,5,7,0,0,63,67,1,0,0,0,64,65,5,6,0,0,65,67,5,7,0,0,66,53,
+		1,0,0,0,66,64,1,0,0,0,67,7,1,0,0,0,68,69,5,11,0,0,69,73,3,10,5,0,70,72,
+		3,10,5,0,71,70,1,0,0,0,72,75,1,0,0,0,73,71,1,0,0,0,73,74,1,0,0,0,74,76,
+		1,0,0,0,75,73,1,0,0,0,76,77,5,14,0,0,77,93,1,0,0,0,78,82,5,11,0,0,79,81,
+		5,17,0,0,80,79,1,0,0,0,81,84,1,0,0,0,82,80,1,0,0,0,82,83,1,0,0,0,83,85,
+		1,0,0,0,84,82,1,0,0,0,85,93,5,14,0,0,86,93,5,12,0,0,87,93,3,2,1,0,88,93,
+		3,6,3,0,89,93,5,8,0,0,90,93,5,9,0,0,91,93,5,10,0,0,92,68,1,0,0,0,92,78,
+		1,0,0,0,92,86,1,0,0,0,92,87,1,0,0,0,92,88,1,0,0,0,92,89,1,0,0,0,92,90,
+		1,0,0,0,92,91,1,0,0,0,93,9,1,0,0,0,94,96,5,17,0,0,95,94,1,0,0,0,96,99,
+		1,0,0,0,97,95,1,0,0,0,97,98,1,0,0,0,98,100,1,0,0,0,99,97,1,0,0,0,100,104,
+		5,1,0,0,101,103,5,17,0,0,102,101,1,0,0,0,103,106,1,0,0,0,104,102,1,0,0,
+		0,104,105,1,0,0,0,105,11,1,0,0,0,106,104,1,0,0,0,107,108,5,11,0,0,108,
+		109,5,1,0,0,109,110,5,14,0,0,110,13,1,0,0,0,11,22,29,35,51,59,66,73,82,
+		92,97,104
 	};
 
 	public static readonly ATN _ATN =
