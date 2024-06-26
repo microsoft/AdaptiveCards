@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using AdaptiveExpressions;
-using AdaptiveExpressions.Memory;
-using AdaptiveExpressions.Properties;
+using Microsoft.Bot.AdaptiveExpressions.Core;
+using Microsoft.Bot.AdaptiveExpressions.Core.Memory;
+using Microsoft.Bot.AdaptiveExpressions.Core.Properties;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
 namespace AdaptiveCards.Templating
@@ -22,8 +22,8 @@ namespace AdaptiveCards.Templating
     public sealed class AdaptiveCardsTemplateVisitor : AdaptiveCardsTemplateParserBaseVisitor<AdaptiveCardsTemplateResult>
     {
         private Stack<DataContext> dataContext = new Stack<DataContext>();
-        private readonly JToken root;
-        private readonly JToken host;
+        private readonly JsonNode root;
+        private readonly JsonNode host;
         private readonly Options options;
         private ArrayList templateVisitorWarnings;
 
@@ -32,12 +32,12 @@ namespace AdaptiveCards.Templating
         /// </summary>
         private sealed class DataContext
         {
-            public JToken token;
-            public AdaptiveCardsTemplateSimpleObjectMemory AELMemory;
+            public JsonNode token;
+            public IMemory AELMemory;
             public bool IsArrayType;
 
-            public JToken RootDataContext;
-            public JToken HostDataContext;
+            public JsonNode RootDataContext;
+            public JsonNode HostDataContext;
             public const string rootKeyword = "$root";
             public const string hostKeyword = "$host";
             public const string dataKeyword = "$data";
@@ -49,7 +49,7 @@ namespace AdaptiveCards.Templating
             /// <param name="jtoken">new data to kept as data context</param>
             /// <param name="rootDataContext">root data context</param>
             /// <param name="hostDataContext">optional host data context</param>
-            public DataContext(JToken jtoken, JToken rootDataContext, JToken hostDataContext = null)
+            public DataContext(JsonNode jtoken, JsonNode rootDataContext, JsonNode hostDataContext = null)
             {
                 Init(jtoken, rootDataContext, hostDataContext);
             }
@@ -57,18 +57,14 @@ namespace AdaptiveCards.Templating
             /// <summary>
             /// overload contructor that takes <paramref name="text"/> which is <c>string</c>
             /// </summary>
-            /// <exception cref="JsonException"><c>JToken.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
+            /// <exception cref="JsonException"><c>JsonNode.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
             /// <param name="text">json in string</param>
             /// <param name="rootDataContext">a root data context</param>
             /// <param name="hostDataContext">optional host data context</param>
-            public DataContext(string text, JToken rootDataContext, JToken hostDataContext = null)
+            public DataContext(string text, JsonNode rootDataContext, JsonNode hostDataContext = null)
             {
-                // disable date parsing handling
-                using (var jsonReader = new JsonTextReader(new StringReader(text)) { DateParseHandling = DateParseHandling.None })
-                {
-                    var jtoken = JToken.Load(jsonReader);
-                    Init(jtoken, rootDataContext, hostDataContext);
-                }
+                var jtoken = JsonNode.Parse(text);
+                Init(jtoken, rootDataContext, hostDataContext);
             }
 
             /// <summary>
@@ -77,15 +73,15 @@ namespace AdaptiveCards.Templating
             /// <param name="jtoken">current data context</param>
             /// <param name="rootDataContext">root data context</param>
             /// <param name="hostDataContext">optional host data context</param>
-            private void Init(JToken jtoken, JToken rootDataContext, JToken hostDataContext)
+            private void Init(JsonNode jtoken, JsonNode rootDataContext, JsonNode hostDataContext)
             {
-                AELMemory = (jtoken is JObject) ? new AdaptiveCardsTemplateSimpleObjectMemory(jtoken) : new AdaptiveCardsTemplateSimpleObjectMemory(new JObject());
+                AELMemory = (jtoken is JsonObject) ? new JsonNodeMemory(jtoken) : new JsonNodeMemory(new JsonObject());
 
                 token = jtoken;
                 RootDataContext = rootDataContext;
                 HostDataContext = hostDataContext;
 
-                if (jtoken is JArray)
+                if (jtoken is JsonArray)
                 {
                     IsArrayType = true;
                 }
@@ -96,13 +92,13 @@ namespace AdaptiveCards.Templating
             }
 
             /// <summary>
-            /// retrieve a <see cref="JObject"/> from this DataContext instance if <see cref="JToken"/> is a <see cref="JArray"/> at <paramref name="index"/>
+            /// retrieve a <see cref="JsonNode"/> from this DataContext instance if <see cref="JsonNode"/> is a <see cref="JsonArray"/> at <paramref name="index"/>
             /// </summary>
             /// <param name="index"></param>
-            /// <returns><see cref="JObject"/> at<paramref name="index"/> of a <see cref="JArray"/></returns>
+            /// <returns><see cref="JsonNode"/> at<paramref name="index"/> of a <see cref="JsonArray"/></returns>
             public DataContext GetDataContextAtIndex(int index)
             {
-                var jarray = token as JArray;
+                var jarray = token as JsonArray;
                 var jtokenAtIndex = jarray[index];
                 var dataContext = new DataContext(jtokenAtIndex, RootDataContext, HostDataContext);
                 dataContext.AELMemory.SetValue(indexKeyword, index);
@@ -123,10 +119,7 @@ namespace AdaptiveCards.Templating
                 // parse and save host context
                 try
                 {
-                    using (var jsonReader = new JsonTextReader(new StringReader(hostData)) { DateParseHandling = DateParseHandling.None })
-                    {
-                        host = JToken.Load(jsonReader);
-                    }
+                    host = JsonNode.Parse(hostData);
                 }
                 catch (JsonException innerException)
                 {
@@ -139,11 +132,8 @@ namespace AdaptiveCards.Templating
                 // set data as root data context
                 try
                 {
-                    using (var jsonReader = new JsonTextReader(new StringReader(data)) { DateParseHandling = DateParseHandling.None })
-                    {
-                        root = JToken.Load(jsonReader);
-                        PushDataContext(data, root);
-                    }
+                    root = JsonNode.Parse(data);
+                    PushDataContext(data, root);
                 }
                 catch (JsonException innerException)
                 {
@@ -170,11 +160,11 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
-        /// creates <see cref="JToken"/> object based on stringToParse, and pushes the object onto a stack
+        /// creates <see cref="JsonNode"/> object based on stringToParse, and pushes the object onto a stack
         /// </summary>
         /// <param name="stringToParse"></param>
         /// <param name="rootDataContext">current root data context</param>
-        private void PushDataContext(string stringToParse, JToken rootDataContext)
+        private void PushDataContext(string stringToParse, JsonNode rootDataContext)
         {
             dataContext.Push(new DataContext(stringToParse, rootDataContext, host));
         }
@@ -203,14 +193,14 @@ namespace AdaptiveCards.Templating
             var (value, error) = new ValueExpression("=" + Regex.Unescape(jpath)).TryGetValue(parentDataContext.AELMemory);
             if (error == null)
             {
-                if (value is JToken jvalue)
+                if (value is JsonNode jvalue)
                 {
                     dataContext.Push(new DataContext(jvalue, parentDataContext.RootDataContext, parentDataContext.HostDataContext));
 
                 }
                 else
                 {
-                    var serializedValue = JsonConvert.SerializeObject(value);
+                    var serializedValue = parentDataContext.AELMemory.JsonSerializeToString(value);
                     dataContext.Push(new DataContext(serializedValue, parentDataContext.RootDataContext, parentDataContext.HostDataContext));
                 }
             }
@@ -454,7 +444,7 @@ namespace AdaptiveCards.Templating
 
             if (isArrayType && hasDataContext)
             {
-                var jarray = dataContext.token as JArray;
+                var jarray = dataContext.token as JsonArray;
                 repeatsCounts = jarray.Count;
             }
 
@@ -649,7 +639,7 @@ namespace AdaptiveCards.Templating
             var (value, error) = exp.TryEvaluate(data, options);
             if (error == null)
             {
-                string s = JsonConvert.SerializeObject(value);
+                string s = data.JsonSerializeToString(value);
                 // after serialization, the double quotes should be removed
                 if (value is string && !isTemplatedString)
                 {
@@ -746,7 +736,7 @@ namespace AdaptiveCards.Templating
         /// <param name="predicate"></param>
         /// <param name="data"></param>
         /// <returns><c>true</c> if predicate is evaluated to <c>true</c></returns>
-        public static bool IsTrue(string predicate, JToken data)
+        public static bool IsTrue(string predicate, JsonNode data)
         {
             var (value, error) = new ValueExpression(Regex.Unescape(predicate)).TryGetValue(data);
             if (error == null)

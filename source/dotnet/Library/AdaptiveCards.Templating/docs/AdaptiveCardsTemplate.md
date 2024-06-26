@@ -50,9 +50,9 @@
   - [ExpandTemplatedString(node,isExpanded)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-ExpandTemplatedString-Antlr4-Runtime-Tree-ITerminalNode,System-Boolean- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.ExpandTemplatedString(Antlr4.Runtime.Tree.ITerminalNode,System.Boolean)')
   - [GetCurrentDataContext()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-GetCurrentDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.GetCurrentDataContext')
   - [HasDataContext()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-HasDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.HasDataContext')
-  - [IsTrue(predicate,data)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-IsTrue-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.IsTrue(System.String,Newtonsoft.Json.Linq.JToken)')
+  - [IsTrue(predicate,data)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-IsTrue-System-String,Newtonsoft-Json-Linq-JsonNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.IsTrue(System.String,System.Text.Json.Nodes.JsonNode)')
   - [PopDataContext()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PopDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PopDataContext')
-  - [PushDataContext(stringToParse,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushDataContext(System.String,Newtonsoft.Json.Linq.JToken)')
+  - [PushDataContext(stringToParse,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-System-String,Newtonsoft-Json-Linq-JsonNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushDataContext(System.String,System.Text.Json.Nodes.JsonNode)')
   - [PushDataContext(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushDataContext(AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext)')
   - [PushTemplatedDataContext(jpath)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushTemplatedDataContext-System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushTemplatedDataContext(System.String)')
   - [VisitArray(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
@@ -72,10 +72,10 @@
   - [#ctor(message)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String)')
   - [#ctor(message,innerException)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String,System-Exception- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String,System.Exception)')
 - [DataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext')
-  - [#ctor(jtoken,rootDataContext,hostDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken)')
-  - [#ctor(text,rootDataContext,hostDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(System.String,Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken)')
+  - [#ctor(jtoken,rootDataContext,hostDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(System.Text.Json.Nodes.JsonNode,System.Text.Json.Nodes.JsonNode,System.Text.Json.Nodes.JsonNode)')
+  - [#ctor(text,rootDataContext,hostDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(System.String,System.Text.Json.Nodes.JsonNode,System.Text.Json.Nodes.JsonNode)')
   - [GetDataContextAtIndex(index)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-GetDataContextAtIndex-System-Int32- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.GetDataContextAtIndex(System.Int32)')
-  - [Init(jtoken,rootDataContext,hostDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-Init-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.Init(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken)')
+  - [Init(jtoken,rootDataContext,hostDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-Init-Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.Init(System.Text.Json.Nodes.JsonNode,System.Text.Json.Nodes.JsonNode,System.Text.Json.Nodes.JsonNode)')
 - [EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
   - [#ctor()](#M-AdaptiveCards-Templating-EvaluationContext-#ctor 'AdaptiveCards.Templating.EvaluationContext.#ctor')
   - [#ctor(rootData,hostData)](#M-AdaptiveCards-Templating-EvaluationContext-#ctor-System-Object,System-Object- 'AdaptiveCards.Templating.EvaluationContext.#ctor(System.Object,System.Object)')
@@ -884,7 +884,7 @@ Checks if there is a data context
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-IsTrue-System-String,Newtonsoft-Json-Linq-JToken-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-IsTrue-System-String,Newtonsoft-Json-Linq-JsonNode-'></a>
 ### IsTrue(predicate,data) `method`
 
 ##### Summary
@@ -900,7 +900,7 @@ Evaluates a predicate
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | predicate | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| data | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') |  |
+| data | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') |  |
 
 <a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PopDataContext'></a>
 ### PopDataContext() `method`
@@ -913,19 +913,19 @@ Pops a data context
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-System-String,Newtonsoft-Json-Linq-JToken-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-System-String,Newtonsoft-Json-Linq-JsonNode-'></a>
 ### PushDataContext(stringToParse,rootDataContext) `method`
 
 ##### Summary
 
-creates [JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') object based on stringToParse, and pushes the object onto a stack
+creates [JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') object based on stringToParse, and pushes the object onto a stack
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | stringToParse | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | current root data context |
+| rootDataContext | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | current root data context |
 
 <a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-'></a>
 ### PushDataContext(context) `method`
@@ -1225,7 +1225,7 @@ AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor
 
 maintains data context
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode-'></a>
 ### #ctor(jtoken,rootDataContext,hostDataContext) `constructor`
 
 ##### Summary
@@ -1236,11 +1236,11 @@ constructs a data context of which current data is jtoken
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| jtoken | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | new data to kept as data context |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | root data context |
-| hostDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | optional host data context |
+| jtoken | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | new data to kept as data context |
+| rootDataContext | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | root data context |
+| hostDataContext | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | optional host data context |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode-'></a>
 ### #ctor(text,rootDataContext,hostDataContext) `constructor`
 
 ##### Summary
@@ -1252,25 +1252,25 @@ overload contructor that takes `text` which is `string`
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | json in string |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | a root data context |
-| hostDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | optional host data context |
+| rootDataContext | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | a root data context |
+| hostDataContext | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | optional host data context |
 
 ##### Exceptions
 
 | Name | Description |
 | ---- | ----------- |
-| [Newtonsoft.Json.JsonException](#T-Newtonsoft-Json-JsonException 'Newtonsoft.Json.JsonException') | `JToken.Parse(text)` can throw JsonException if `text` is invalid json |
+| [Newtonsoft.Json.JsonException](#T-Newtonsoft-Json-JsonException 'Newtonsoft.Json.JsonException') | `JsonNode.Parse(text)` can throw JsonException if `text` is invalid json |
 
 <a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-GetDataContextAtIndex-System-Int32-'></a>
 ### GetDataContextAtIndex(index) `method`
 
 ##### Summary
 
-retrieve a [JObject](#T-Newtonsoft-Json-Linq-JObject 'Newtonsoft.Json.Linq.JObject') from this DataContext instance if [JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') is a [JArray](#T-Newtonsoft-Json-Linq-JArray 'Newtonsoft.Json.Linq.JArray') at `index`
+retrieve a [JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'Newtonsoft.Json.Linq.JsonNode') from this DataContext instance if [JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') is a [JsonArray](#T-Newtonsoft-Json-Linq-JsonArray 'Newtonsoft.Json.Linq.JsonArray') at `index`
 
 ##### Returns
 
-[JObject](#T-Newtonsoft-Json-Linq-JObject 'Newtonsoft.Json.Linq.JObject') at`index` of a [JArray](#T-Newtonsoft-Json-Linq-JArray 'Newtonsoft.Json.Linq.JArray')
+[JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'Newtonsoft.Json.Linq.JsonNode') at`index` of a [JsonArray](#T-Newtonsoft-Json-Linq-JsonArray 'Newtonsoft.Json.Linq.JsonArray')
 
 ##### Parameters
 
@@ -1278,7 +1278,7 @@ retrieve a [JObject](#T-Newtonsoft-Json-Linq-JObject 'Newtonsoft.Json.Linq.JObje
 | ---- | ---- | ----------- |
 | index | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-Init-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-Init-Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode,Newtonsoft-Json-Linq-JsonNode-'></a>
 ### Init(jtoken,rootDataContext,hostDataContext) `method`
 
 ##### Summary
@@ -1289,9 +1289,9 @@ Initializer method that takes jtoken and root data context to initialize a data 
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| jtoken | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | current data context |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | root data context |
-| hostDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | optional host data context |
+| jtoken | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | current data context |
+| rootDataContext | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | root data context |
+| hostDataContext | [System.Text.Json.Nodes.JsonNode](#T-Newtonsoft-Json-Linq-JsonNode 'System.Text.Json.Nodes.JsonNode') | optional host data context |
 
 <a name='T-AdaptiveCards-Templating-EvaluationContext'></a>
 ## EvaluationContext `type`
