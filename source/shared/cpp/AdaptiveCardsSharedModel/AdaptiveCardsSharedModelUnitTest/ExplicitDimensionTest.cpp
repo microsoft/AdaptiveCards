@@ -460,6 +460,12 @@ namespace AdaptiveCardsSharedModelUnitTest
                                 \"width\": \"20\",\
                                 \"items\": [\
                                 ]\
+                            },\
+                            {\
+                                \"type\": \"Column\",\
+                                \"width\": \"20\",\
+                                \"items\": [\
+                                ]\
                             }\
                         ]\
                     }\
@@ -531,7 +537,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
             Assert::AreEqual<int>(0, column->GetPixelWidth());
-            Assert::AreEqual<std::string>("20px20", column->GetWidth());
+            Assert::AreEqual<std::string>("stretch", column->GetWidth());
         }
 
         TEST_METHOD(ExplicitWidthMalformedValueTest)

@@ -63,6 +63,10 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     for (auto const& column : m_columns)
     {
         const auto width {column->GetWidth()};
+        if (width.empty())
+        {
+            continue;
+        }
         const auto ch = width.at(0);
         if (column->GetPixelWidth() == 0 &&
             (ch != 'a' && ch != 's') &&
