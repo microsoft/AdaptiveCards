@@ -53,6 +53,33 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         AdaptiveCardSchemaKey::Columns,
         false,                                             // isRequired
         CardElementTypeToString(CardElementType::Column)); // impliedType
+
+    auto counts = 0;
+    std::shared_ptr<Column> cur = nullptr;
+
+    // If there is one column with numeric width,
+    // set it to stretch since the ratio requires at least two columns
+    // with numeric width.
+    for (auto const& column : m_columns)
+    {
+        const auto width {column->GetWidth()};
+        const auto ch = width.at(0);
+        if (column->GetPixelWidth() == 0 &&
+            (ch != 'a' && ch != 's') &&
+            // The check of the numeric width is purposely
+            // left at minimum. The stronger check should
+            // be placed at the column.
+             std::isdigit(ch))
+        {
+            counts++;
+            cur = column;
+        }
+    }
+
+    if (counts == 1 && cur)
+    {
+        cur->SetWidth("stretch");
+    }
 }
 
 std::optional<HorizontalAlignment> AdaptiveCards::ColumnSet::GetHorizontalAlignment() const
