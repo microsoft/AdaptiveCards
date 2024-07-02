@@ -260,26 +260,10 @@ namespace AdaptiveCards.Templating
             IParseTree templateDataValueNode = context.value();
             if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringContext)
             {
-                // tempalteString() can be zero or more due to user error
-                var templateStrings = (templateDataValueNode as AdaptiveCardsTemplateParser.ValueTemplateStringContext).templateString();
-                if (templateStrings?.Length == 1)
-                {
-                    // retrieve template literal and create a data context
-                    var templateLiteral = (templateStrings[0] as AdaptiveCardsTemplateParser.TemplatedStringContext).TEMPLATELITERAL();
-                    try
-                    {
-                        string templateLiteralExpression = templateLiteral.GetText();
-                        PushTemplatedDataContext(templateLiteralExpression.Substring(2, templateLiteralExpression.Length - 3));
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        throw new ArgumentNullException($"Check if parent data context is set, or please enter a non-null value for '{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}'");
-                    }
-                    catch (JsonException innerException)
-                    {
-                        throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is malformed for '$data : ' pair", innerException);
-                    }
-                }
+                // Adding JS behavior, js template library concatenates strings implicitly
+                // This case handles a template string mixed with strings and template strings
+                var expanded = Visit(templateDataValueNode);
+                PushTemplatedDataContext(expanded.ToString());
             }
             else
             // else clause handles all of the ordinary json values
