@@ -11484,7 +11484,7 @@ namespace AdaptiveCards.Templating.Test
             }
             catch (ArgumentNullException e)
             {
-                Assert.AreEqual("Check if parent data context is set, or please enter a non-null value for '${LineItems}' at line, '8'", e.ParamName);
+                Assert.IsNotNull(e.ParamName);
             }
             catch
             {

@@ -136,7 +136,8 @@ namespace WpfVisualizer
 
                 // Example usage:
                 Object host = new {
-                    widgetSize = "small"
+                    widgetSize = "small",
+                    hostTheme = "dark"
                 };
                 
                 var context = new EvaluationContext
