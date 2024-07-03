@@ -190,7 +190,13 @@ namespace AdaptiveCards.Templating
                 throw new ArgumentNullException("Parent data context or selection path is null");
             }
 
-            var (value, error) = new ValueExpression("=" + Regex.Unescape(jpath)).TryGetValue(parentDataContext.AELMemory);
+            var unescaped = Regex.Unescape(jpath);
+            if (unescaped.StartsWith("\""))
+            {
+                unescaped = unescaped.Substring(1, unescaped.Length - 2);
+            }
+
+            var (value, error) = new ValueExpression("=" + unescaped).TryGetValue(parentDataContext.AELMemory);
             if (error == null)
             {
                 if (value is JsonNode jvalue)
