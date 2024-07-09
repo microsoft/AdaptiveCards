@@ -210,10 +210,10 @@ namespace AdaptiveCards.Templating
                     dataContext.Push(new DataContext(serializedValue, parentDataContext.RootDataContext, parentDataContext.HostDataContext));
                 }
             }
+            // value expression can't handle json, try to parse it as json and set the correct data context
             else
             {
-                // if there was an error during parsing data, it's irrecoverable
-                throw new Exception(error);
+                PushDataContext(jpath, root);
             }
         }
 
@@ -263,26 +263,28 @@ namespace AdaptiveCards.Templating
 
             // get value node from pair node
             // i.e. $data : "value"
+
             IParseTree templateDataValueNode = context.value();
-            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringContext)
+            string childJson = templateDataValueNode.GetText();
+
+            try
             {
-                // Adding JS behavior, js template library concatenates strings implicitly
-                // This case handles a template string mixed with strings and template strings
-                var expanded = Visit(templateDataValueNode);
-                PushTemplatedDataContext(expanded.ToString());
-            }
-            else
-            // else clause handles all of the ordinary json values
-            {
-                string childJson = templateDataValueNode.GetText();
-                try
+                if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringContext)
+                {
+                    // Adding JS behavior, js template library concatenates strings implicitly
+                    // This case handles a template string mixed with strings and template strings
+                    var expanded = Visit(templateDataValueNode);
+                    PushTemplatedDataContext(expanded.ToString());
+                }
+                else
+                // else clause handles all of the ordinary json values
                 {
                     PushDataContext(childJson, root);
                 }
-                catch (JsonException innerException)
-                {
-                    throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", innerException);
-                }
+            }
+            catch (JsonException innerException)
+            {
+                throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", innerException);
             }
 
             return new AdaptiveCardsTemplateResult();
