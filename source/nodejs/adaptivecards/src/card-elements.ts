@@ -3570,6 +3570,12 @@ export abstract class Input extends CardElement implements IInput {
                 this._renderedInputControlElement.classList.add(
                     hostConfig.makeCssClassName("ac-input-required")
                 );
+
+                if (this._renderedInputControlElement instanceof HTMLInputElement ||
+                    this._renderedInputControlElement instanceof HTMLSelectElement
+                ) {
+                    this._renderedInputControlElement.setAttribute("aria-required", "true");
+                }
             }
 
             this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
