@@ -345,7 +345,6 @@ namespace UWPUnitTests
             Assert.AreEqual("Specified URI:${myBackgroundImage} for background image is not valid. Image loading has failed.", renderedCard.Warnings[0].Message);
         }
 
-
         public async Task<RenderedAdaptiveCard> RenderOnUIThread(AdaptiveCard card, AdaptiveHostConfig hostConfig = null, bool overflowMaxActions = false)
         {
             RenderedAdaptiveCard renderedCard = null;
