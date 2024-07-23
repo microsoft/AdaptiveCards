@@ -225,6 +225,11 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
                             mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
                         }
                     }
+                    else
+                    {
+                        renderContext.AddWarning(winrt::WarningStatusCode::AssetLoadFailed,
+                            L"Specified URI:" + captionSource.Url() + L" for Media Text Sources is not valid. Text sources loading has failed.");
+                    }
                 }
             }
         }
