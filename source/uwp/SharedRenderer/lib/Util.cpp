@@ -536,27 +536,26 @@ bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage const& backgroundImag
     return false;
 }
 
-winrt::Uri UriTryCreate(winrt::hstring const &uri, winrt::hstring const& baseUri = L"")
+winrt::Uri UriTryCreate(winrt::hstring const &uriString, winrt::hstring const& baseUriString = L"")
 {
     auto factory = winrt::
         get_activation_factory<winrt::Windows::Foundation::Uri, winrt::Windows::Foundation::IUriRuntimeClassFactory>();
     auto abiFactory = static_cast<ABI::Windows::Foundation::IUriRuntimeClassFactory *>(winrt::get_abi(factory));
 
-    const winrt::hstring &localUri = uri;
-    winrt::Windows::Foundation::Uri returnValue{nullptr};
+    winrt::Windows::Foundation::Uri uri{nullptr};
     HRESULT hr = S_OK;
-    if (baseUri.empty())
+    if (baseUriString.empty())
     {
         hr = abiFactory->CreateUri(
-            static_cast<HSTRING>(winrt::get_abi(localUri)),
-            reinterpret_cast<ABI::Windows::Foundation::IUriRuntimeClass**>(winrt::put_abi(returnValue)));
+            static_cast<HSTRING>(winrt::get_abi(uriString)),
+            reinterpret_cast<ABI::Windows::Foundation::IUriRuntimeClass**>(winrt::put_abi(uri)));
     }
     else
     {
         hr = abiFactory->CreateWithRelativeUri(
-            static_cast<HSTRING>(winrt::get_abi(baseUri)),
-            static_cast<HSTRING>(winrt::get_abi(uri)),
-            reinterpret_cast<ABI::Windows::Foundation::IUriRuntimeClass**>(winrt::put_abi(returnValue)));
+            static_cast<HSTRING>(winrt::get_abi(baseUriString)),
+            static_cast<HSTRING>(winrt::get_abi(uriString)),
+            reinterpret_cast<ABI::Windows::Foundation::IUriRuntimeClass**>(winrt::put_abi(uri)));
     }
 
     if (FAILED(hr))
@@ -564,7 +563,7 @@ winrt::Uri UriTryCreate(winrt::hstring const &uri, winrt::hstring const& baseUri
         return winrt::Windows::Foundation::Uri { nullptr };
     }
 
-    return returnValue;
+    return uri;
 }
 
 winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
