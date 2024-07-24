@@ -192,36 +192,43 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::MediaHelpers
                 if (const auto search = supportedCaptionTypes.find(captionSource.MimeType());
                     search != supportedCaptionTypes.end())
                 {
-                    const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url());
-
-                    winrt::IAdaptiveCardResourceResolver resourceResolver{nullptr};
-                    if (const auto resourceResolvers = renderContext.ResourceResolvers())
+                    if (const auto timedTextURL = GetUrlFromString(renderContext.HostConfig(), captionSource.Url()))
                     {
-                        resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
-                    }
 
-                    const auto timedTextSrcResolvedHelper =
-                        [label = captionSource.Label()](winrt::TimedTextSource const& /*sender*/,
-                                                        winrt::TimedTextSourceResolveResultEventArgs const& args)
-                    {
-                        if (!args.Error())
+                        winrt::IAdaptiveCardResourceResolver resourceResolver{ nullptr };
+                        if (const auto resourceResolvers = renderContext.ResourceResolvers())
                         {
-                            args.Tracks().GetAt(0).Label(label);
+                            resourceResolver = resourceResolvers.Get(timedTextURL.SchemeName());
                         }
-                    };
-                    if (!resourceResolver)
-                    {
-                        const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
-                        timedTextSrc.Resolved(timedTextSrcResolvedHelper);
-                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+
+                        const auto timedTextSrcResolvedHelper =
+                            [label = captionSource.Label()](winrt::TimedTextSource const& /*sender*/,
+                                winrt::TimedTextSourceResolveResultEventArgs const& args)
+                            {
+                                if (!args.Error())
+                                {
+                                    args.Tracks().GetAt(0).Label(label);
+                                }
+                            };
+                        if (!resourceResolver)
+                        {
+                            const auto timedTextSrc = winrt::TimedTextSource::CreateFromUri(timedTextURL);
+                            timedTextSrc.Resolved(timedTextSrcResolvedHelper);
+                            mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                        }
+                        else
+                        {
+                            auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
+                            const auto randomAccessStream = resourceResolver.GetResourceStreamAsync(args);
+                            auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream.get());
+                            timedTextSrc.Resolved(timedTextSrcResolvedHelper);
+                            mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                        }
                     }
                     else
                     {
-                        auto args = winrt::make<winrt::implementation::AdaptiveCardGetResourceStreamArgs>(timedTextURL);
-                        const auto randomAccessStream = resourceResolver.GetResourceStreamAsync(args);
-                        auto timedTextSrc = winrt::TimedTextSource::CreateFromStream(randomAccessStream.get());
-                        timedTextSrc.Resolved(timedTextSrcResolvedHelper);
-                        mediaSrc.ExternalTimedTextSources().Append(timedTextSrc);
+                        renderContext.AddWarning(winrt::WarningStatusCode::AssetLoadFailed,
+                            L"Specified URI:" + captionSource.Url() + L" for Media Text Sources is not valid. Text sources loading has failed.");
                     }
                 }
             }
