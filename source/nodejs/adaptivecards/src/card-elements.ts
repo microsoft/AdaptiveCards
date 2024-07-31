@@ -5,6 +5,12 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
+import { sanitize } from "dompurify";
+import type { Config } from "dompurify";
+
+function sanitizeHTML(html: string, extendedConfig: Config = {}): string {
+	return sanitize(html, {...extendedConfig, USE_PROFILES: { html: true },  RETURN_TRUSTED_TYPE: true }) as unknown as string;
+}
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
     if (action) {
@@ -295,15 +301,15 @@ export abstract class CardElement extends CardObject {
 
             if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
                 let parentContainer = this.getParentContainer();
-    
+
                 if (parentContainer && parentContainer.getEffectivePadding()) {
                     let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
-    
+
                     renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
                     renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
                 }
             }
-    
+
             return renderedSeparator;
     }
 
@@ -1137,7 +1143,7 @@ export class TextBlock extends BaseTextBlock {
             : null;
 
         this.renderedElement.style.maxHeight = maxHeight;
-        this.renderedElement.innerHTML = this._originalInnerHtml;
+        this.renderedElement.innerHTML = sanitizeHTML(this._originalInnerHtml);
     }
 
     private truncateIfSupported(maxHeight: number): boolean {
@@ -1251,7 +1257,7 @@ export class TextBlock extends BaseTextBlock {
                 element.innerText = this._processedText;
             }
             else {
-                element.innerHTML = this._processedText;
+                element.innerHTML = sanitizeHTML(this._processedText);
             }
 
             if (element.firstElementChild instanceof HTMLElement) {
@@ -1935,7 +1941,7 @@ export class Image extends CardElement {
             imageElement.onerror = (e: Event) => {
                 let card = this.getRootElement() as AdaptiveCard;
 
-                this.renderedElement.innerHTML = "";
+                this.renderedElement.innerHTML = sanitizeHTML("");
 
                 if (card && card.designMode) {
                     let errorElement = document.createElement("div");
@@ -2562,7 +2568,7 @@ export class Media extends CardElement {
 
                     let mediaPlayerElement = this.renderMediaPlayer();
 
-                    this.renderedElement.innerHTML = "";
+                    this.renderedElement.innerHTML = sanitizeHTML("");
                     this.renderedElement.appendChild(mediaPlayerElement);
 
                     mediaPlayerElement.play();
@@ -4528,7 +4534,7 @@ class ActionCollection {
     private _actionCard: HTMLElement = null;
 
     private refreshContainer() {
-        this._actionCardContainer.innerHTML = "";
+        this._actionCardContainer.innerHTML = sanitizeHTML("");
 
         if (this._actionCard === null) {
             this._actionCardContainer.style.marginTop = "0px";
