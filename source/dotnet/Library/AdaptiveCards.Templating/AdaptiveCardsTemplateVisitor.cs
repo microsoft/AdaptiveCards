@@ -498,6 +498,10 @@ namespace AdaptiveCards.Templating
                             else
                             {
                                 whenEvaluationResult = returnedResult.WhenEvaluationResult;
+                                if(whenEvaluationResult == AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse)
+                                {
+                                    break;
+                                }
                             }
                         }
                         else
