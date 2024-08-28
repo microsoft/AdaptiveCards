@@ -57,9 +57,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Library\AdaptiveCards.Net6\AdaptiveCards.csproj" />
     <ProjectReference Include="..\..\Library\AdaptiveCards.Rendering.Wpf.Net6\AdaptiveCards.Rendering.Wpf.Net6.csproj" />
-    <ProjectReference Include="..\..\Library\AdaptiveCards.Templating.Net6\AdaptiveCards.Templating.Net6.csproj" />
-    <ProjectReference Include="..\..\Library\AdaptiveCards\AdaptiveCards.csproj" />
+    <ProjectReference Include="..\..\Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -82,7 +82,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="NuGet.CommandLine">
-      <Version>5.7.0</Version>
+      <Version>6.9.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

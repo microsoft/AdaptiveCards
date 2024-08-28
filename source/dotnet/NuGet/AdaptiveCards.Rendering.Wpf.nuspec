@@ -19,7 +19,7 @@
       </group>
       <group targetFramework="net6.0-windows7.0">
         <dependency id="AdaptiveCards" version="3.0.2" exclude="Build,Analyzers" />
-        <dependency id="System.Drawing.Common" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="System.Drawing.Common" version="8.0.8" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <frameworkAssemblies>
