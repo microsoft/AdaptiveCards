@@ -56,8 +56,5 @@
 			"jsx",
 			"json"
 		]
-	},
-	"dependencies": {
-		"dompurify": "^3.1.6"
 	}
 }
