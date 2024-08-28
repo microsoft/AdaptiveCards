@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Library\AdaptiveCards.Net6\AdaptiveCards.csproj" />
     <ProjectReference Include="..\..\Library\AdaptiveCards.Rendering.Wpf.Net6\AdaptiveCards.Rendering.Wpf.Net6.csproj" />
-    <ProjectReference Include="..\..\Library\AdaptiveCards\AdaptiveCards.csproj" />
   </ItemGroup>
 </Project>
