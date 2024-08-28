@@ -36,12 +36,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Library\AdaptiveCards\bin\Release\net4.5.2\AdaptiveCards.dll" target="lib\net452"/>
-    <file src="..\Library\AdaptiveCards\bin\Release\net4.5.2\AdaptiveCards.xml" target="lib\net452"/>
-
-    <file src="..\Library\AdaptiveCards\bin\Release\netstandard1.3\AdaptiveCards.dll" target="lib\netstandard1.3"/>
-    <file src="..\Library\AdaptiveCards\bin\Release\netstandard1.3\AdaptiveCards.xml" target="lib\netstandard1.3"/>
-
     <file src="..\Library\AdaptiveCards\bin\Release\netstandard2.0\AdaptiveCards.dll" target="lib\netstandard2.0"/>
     <file src="..\Library\AdaptiveCards\bin\Release\netstandard2.0\AdaptiveCards.xml" target="lib\netstandard2.0"/>
 
