@@ -7,8 +7,11 @@ import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
 
 function clearElement(element: HTMLElement) : void {
-    const trustedHtml = (typeof window === 'undefined') ? "" : (window.trustedTypes?.emptyHTML ?? "");
-    element.innerHTML = trustedHtml as string;
+	if (typeof window !== 'undefined' && window.trustedTypes) {
+	    element.innerHTML = window.trustedTypes.emptyHTML as unknown as string;
+	} else {
+		element.innerHTML = "";
+	}
 }
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
@@ -1144,8 +1147,11 @@ export class TextBlock extends BaseTextBlock {
 
             this.renderedElement.style.maxHeight = maxHeight;
 
-            const originalHtml = TextBlock._ttRoundtripPolicy?.createHTML(this._originalInnerHtml) ?? this._originalInnerHtml;
-            this.renderedElement.innerHTML = originalHtml as string;
+			if (TextBlock._ttRoundtripPolicy) {
+				this.renderedElement.innerHTML = TextBlock._ttRoundtripPolicy.createHTML(this._originalInnerHtml) as unknown as string;
+			} else {
+				this.renderedElement.innerHTML = this._originalInnerHtml;
+			}
         }
     }
 
@@ -1173,19 +1179,19 @@ export class TextBlock extends BaseTextBlock {
 
     // Markdown processing is handled outside of Adaptive Cards. It's up to the host to ensure that markdown is safely
     // processed.
-    private static readonly _ttMarkdownPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy(
-        "adaptivecards#markdownPassthroughPolicy",
-        { createHTML: (value) => value }
-    );
+    private static readonly _ttMarkdownPolicy = (typeof window === 'undefined') ? undefined :
+    	(window.trustedTypes && window.trustedTypes.createPolicy) ?
+    		window.trustedTypes.createPolicy("adaptivecards#markdownPassthroughPolicy", { createHTML: (value) => value }) :
+			undefined;
 
     // When "advanced" truncation is enabled (see GlobalSettings.useAdvancedCardBottomTruncation and
     // GlobalSettings.useAdvancedTextBlockTruncation), we store the original pre-truncation content in
     // _originalInnerHtml so that we can restore/recalculate truncation later if space availability has changed (see
     // TextBlock.restoreOriginalContent())
-    private static readonly _ttRoundtripPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy(
-        "adaptivecards#restoreContentsPolicy",
-        { createHTML: (value) => value }
-    );
+    private static readonly _ttRoundtripPolicy = (typeof window === 'undefined') ? undefined :
+    	(window.trustedTypes && window.trustedTypes.createPolicy) ?
+    		window.trustedTypes.createPolicy("adaptivecards#restoreContentsPolicy", { createHTML: (value) => value }) :
+			undefined;
 
     protected setText(value: string) {
         super.setText(value);
@@ -1276,10 +1282,11 @@ export class TextBlock extends BaseTextBlock {
                 element.innerText = this._processedText;
             }
             else {
-                const processedHtml =
-                    TextBlock._ttMarkdownPolicy?.createHTML(this._processedText) ??
-                    this._processedText;
-                element.innerHTML = processedHtml as string;
+				if (TextBlock._ttMarkdownPolicy) {
+					element.innerHTML = TextBlock._ttMarkdownPolicy.createHTML(this._processedText) as unknown as string;
+				} else {
+					element.innerHTML = this._processedText;
+				}
             }
 
             if (element.firstElementChild instanceof HTMLElement) {
