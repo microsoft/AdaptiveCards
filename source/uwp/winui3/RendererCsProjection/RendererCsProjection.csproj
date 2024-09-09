@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <WindowsSdkPackageVersion>10.0.18362.38</WindowsSdkPackageVersion>
+    <WindowsSdkPackageVersion>10.0.17763.38</WindowsSdkPackageVersion>
     <!-- Set Platform to AnyCPU to allow consumption of the projection assembly from any architecture. -->
     <Platform>AnyCPU</Platform>
     <RootNamespace>AdaptiveCards.Rendering.WinUI3</RootNamespace>
