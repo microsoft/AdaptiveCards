@@ -5,11 +5,13 @@ import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
-import { sanitize } from "dompurify";
-import type { Config } from "dompurify";
 
-function sanitizeHTML(html: string, extendedConfig: Config = {}): string {
-	return sanitize(html, {...extendedConfig, USE_PROFILES: { html: true },  RETURN_TRUSTED_TYPE: true }) as unknown as string;
+function clearElement(element: HTMLElement) : void {
+	if (typeof window !== 'undefined' && window.trustedTypes) {
+	    element.innerHTML = window.trustedTypes.emptyHTML as unknown as string;
+	} else {
+		element.innerHTML = "";
+	}
 }
 
 function invokeSetCollection(action: Action, collection: ActionCollection) {
@@ -1138,12 +1140,19 @@ export class TextBlock extends BaseTextBlock {
     private _treatAsPlainText: boolean = true;
 
     private restoreOriginalContent() {
-        var maxHeight = this.maxLines
-            ? (this._computedLineHeight * this.maxLines) + 'px'
-            : null;
+        if (this.renderedElement !== undefined) {
+            var maxHeight = this.maxLines
+                ? (this._computedLineHeight * this.maxLines) + 'px'
+                : null;
 
-        this.renderedElement.style.maxHeight = maxHeight;
-        this.renderedElement.innerHTML = sanitizeHTML(this._originalInnerHtml);
+            this.renderedElement.style.maxHeight = maxHeight;
+
+			if (TextBlock._ttRoundtripPolicy) {
+				this.renderedElement.innerHTML = TextBlock._ttRoundtripPolicy.createHTML(this._originalInnerHtml) as unknown as string;
+			} else {
+				this.renderedElement.innerHTML = this._originalInnerHtml;
+			}
+        }
     }
 
     private truncateIfSupported(maxHeight: number): boolean {
@@ -1167,6 +1176,22 @@ export class TextBlock extends BaseTextBlock {
 
         return false;
     }
+
+    // Markdown processing is handled outside of Adaptive Cards. It's up to the host to ensure that markdown is safely
+    // processed.
+    private static readonly _ttMarkdownPolicy = (typeof window === 'undefined') ? undefined :
+    	(window.trustedTypes && window.trustedTypes.createPolicy) ?
+    		window.trustedTypes.createPolicy("adaptivecards#markdownPassthroughPolicy", { createHTML: (value) => value }) :
+			undefined;
+
+    // When "advanced" truncation is enabled (see GlobalSettings.useAdvancedCardBottomTruncation and
+    // GlobalSettings.useAdvancedTextBlockTruncation), we store the original pre-truncation content in
+    // _originalInnerHtml so that we can restore/recalculate truncation later if space availability has changed (see
+    // TextBlock.restoreOriginalContent())
+    private static readonly _ttRoundtripPolicy = (typeof window === 'undefined') ? undefined :
+    	(window.trustedTypes && window.trustedTypes.createPolicy) ?
+    		window.trustedTypes.createPolicy("adaptivecards#restoreContentsPolicy", { createHTML: (value) => value }) :
+			undefined;
 
     protected setText(value: string) {
         super.setText(value);
@@ -1257,7 +1282,11 @@ export class TextBlock extends BaseTextBlock {
                 element.innerText = this._processedText;
             }
             else {
-                element.innerHTML = sanitizeHTML(this._processedText);
+				if (TextBlock._ttMarkdownPolicy) {
+					element.innerHTML = TextBlock._ttMarkdownPolicy.createHTML(this._processedText) as unknown as string;
+				} else {
+					element.innerHTML = this._processedText;
+				}
             }
 
             if (element.firstElementChild instanceof HTMLElement) {
@@ -1939,27 +1968,29 @@ export class Image extends CardElement {
                 raiseImageLoadedEvent(this);
             }
             imageElement.onerror = (e: Event) => {
-                let card = this.getRootElement() as AdaptiveCard;
+                if (this.renderedElement) {
+                    let card = this.getRootElement() as AdaptiveCard;
 
-                this.renderedElement.innerHTML = sanitizeHTML("");
+                    clearElement(this.renderedElement);
 
-                if (card && card.designMode) {
-                    let errorElement = document.createElement("div");
-                    errorElement.style.display = "flex";
-                    errorElement.style.alignItems = "center";
-                    errorElement.style.justifyContent = "center";
-                    errorElement.style.backgroundColor = "#EEEEEE";
-                    errorElement.style.color = "black";
-                    errorElement.innerText = ":-(";
-                    errorElement.style.padding = "10px";
+                    if (card && card.designMode) {
+                        let errorElement = document.createElement("div");
+                        errorElement.style.display = "flex";
+                        errorElement.style.alignItems = "center";
+                        errorElement.style.justifyContent = "center";
+                        errorElement.style.backgroundColor = "#EEEEEE";
+                        errorElement.style.color = "black";
+                        errorElement.innerText = ":-(";
+                        errorElement.style.padding = "10px";
 
-                    this.applySize(errorElement);
+                        this.applySize(errorElement);
 
-                    this.renderedElement.appendChild(errorElement);
+                        this.renderedElement.appendChild(errorElement);
+                    }
                 }
 
                 raiseImageLoadedEvent(this);
-            }
+            };
             imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
@@ -2566,12 +2597,13 @@ export class Media extends CardElement {
                     e.preventDefault();
                     e.cancelBubble = true;
 
-                    let mediaPlayerElement = this.renderMediaPlayer();
+                    if (this.renderedElement) {
+                        let mediaPlayerElement = this.renderMediaPlayer();
+                        clearElement(this.renderedElement);
+                        this.renderedElement.appendChild(mediaPlayerElement);
 
-                    this.renderedElement.innerHTML = sanitizeHTML("");
-                    this.renderedElement.appendChild(mediaPlayerElement);
-
-                    mediaPlayerElement.play();
+                        mediaPlayerElement.play();
+                    }
                 }
                 else {
                     if (Media.onPlay) {
@@ -4534,7 +4566,7 @@ class ActionCollection {
     private _actionCard: HTMLElement = null;
 
     private refreshContainer() {
-        this._actionCardContainer.innerHTML = sanitizeHTML("");
+        clearElement(this._actionCardContainer);
 
         if (this._actionCard === null) {
             this._actionCardContainer.style.marginTop = "0px";

@@ -58,6 +58,6 @@
 		]
 	},
 	"dependencies": {
-		"dompurify": "^3.1.6"
+		"@types/trusted-types": "^2.0.7"
 	}
 }
