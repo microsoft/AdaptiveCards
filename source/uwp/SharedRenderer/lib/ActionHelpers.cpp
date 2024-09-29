@@ -1005,6 +1005,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
     void SetAutomationType(winrt::ActionRole const& actionRole, winrt::Button const& button)
     {
+        UNREFERENCED_PARAMETER(button);
         // Default to button role
         winrt::AutomationControlType roleType = winrt::AutomationControlType::Button;
         switch (actionRole)
@@ -1022,6 +1023,6 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                 roleType = winrt::AutomationControlType::MenuItem;
                 break;
         }
-        winrt::AutomationProperties::SetAutomationControlType(button, roleType);
+        //winrt::AutomationProperties::SetAutomationControlType(button, roleType);
     }
 }
