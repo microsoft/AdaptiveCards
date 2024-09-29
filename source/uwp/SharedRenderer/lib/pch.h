@@ -41,6 +41,11 @@
 #include "Util.h"
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
+#include "winrt/Microsoft.UI.Xaml.Automation.Peers.h"
+#include "winrt/Microsoft.UI.Xaml.Controls.h"
+#include "winrt/Microsoft.UI.Xaml.Controls.Primitives.h"
+#include "winrt/Microsoft.UI.Xaml.Media.h"
+#include "winrt/Microsoft.UI.Xaml.XamlTypeInfo.h"
 
 namespace XamlHelpers = ::AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers;
 

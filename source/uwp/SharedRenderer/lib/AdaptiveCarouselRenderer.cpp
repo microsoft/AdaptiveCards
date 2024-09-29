@@ -9,6 +9,8 @@
 #include "XamlBuilder.h"
 #include <windows.ui.xaml.data.h>
 
+using namespace winrt::Microsoft::UI::Xaml::Controls;
+
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::UIElement AdaptiveCarouselRenderer::Render(
@@ -30,11 +32,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
 // WinUI3 is currently the primary target for Carousel.
 // Carousel is compatible with UWP; however, pagination is not supported.
-#ifdef USE_WINUI3
+//#ifdef USE_WINUI3
         PipsPager pipsPager{};
         pipsPager.HorizontalAlignment(winrt::HorizontalAlignment::Center);
         pipsPager.NumberOfPages(carousel.Pages().Size());
-#endif
+//#endif
         auto hostConfig = context.HostConfig();
 
         // FlipView has its own background color property, so we need to clear the background color
