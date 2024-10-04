@@ -45,6 +45,7 @@
 #include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
 #else
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
+#include "winrt/Microsoft.UI.Xaml.Controls.h"
 #endif
 
 namespace winrt
@@ -65,6 +66,10 @@ namespace winrt
     using namespace xaml::Input;
     using namespace xaml::Media::Imaging;
     using namespace xaml::Shapes;
+
+#ifndef USE_WINUI3
+    using namespace winrt::Microsoft::UI::Xaml::Controls;
+#endif
 
     using namespace ::winrt::AdaptiveCards::ObjectModel::Xaml_OM;
 

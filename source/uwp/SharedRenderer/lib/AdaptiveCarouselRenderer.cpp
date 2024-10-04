@@ -9,8 +9,6 @@
 #include "XamlBuilder.h"
 #include <windows.ui.xaml.data.h>
 
-using namespace winrt::Microsoft::UI::Xaml::Controls;
-
 namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 {
     winrt::UIElement AdaptiveCarouselRenderer::Render(
@@ -30,13 +28,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             loopEnabled = carousel.AutoLoop().GetBoolean();
         }
 
-// WinUI3 is currently the primary target for Carousel.
-// Carousel is compatible with UWP; however, pagination is not supported.
-//#ifdef USE_WINUI3
         PipsPager pipsPager{};
         pipsPager.HorizontalAlignment(winrt::HorizontalAlignment::Center);
         pipsPager.NumberOfPages(carousel.Pages().Size());
-//#endif
         auto hostConfig = context.HostConfig();
 
         // FlipView has its own background color property, so we need to clear the background color
@@ -60,12 +54,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         if (currentRtl)
         {
             carouselUI.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
-//#ifdef USE_WINUI3
             pipsPager.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
-//#endif
         }
 
-//#ifdef USE_WINUI3
         carouselUI.SelectionChanged([carouselUI, pipsPager, loopEnabled](auto &&, auto &&) {
             auto val = carouselUI.SelectedIndex();
             if (loopEnabled &&
@@ -83,13 +74,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
         pipsPager.SelectedIndexChanged([carouselUI](PipsPager pager, IPipsPagerSelectedIndexChangedEventArgs) {
             carouselUI.SelectedIndex(pager.SelectedPageIndex());
         });
-#//endif
 
         stackPanel.Children().Append(carouselUI);
-
-//#ifdef USE_WINUI3
         stackPanel.Children().Append(pipsPager);
-//#endif
 
         winrt::AdaptiveFeatureRegistration featureRegistration = context.FeatureRegistration();
         boolean ancestorHasFallback = renderArgs.AncestorHasFallback();
