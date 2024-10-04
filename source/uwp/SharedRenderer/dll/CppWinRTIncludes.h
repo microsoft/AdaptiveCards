@@ -45,7 +45,7 @@
 #include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
 #else
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
-#include "winrt/Microsoft.UI.Xaml.Controls.h"
+#include <winrt/Microsoft.UI.Xaml.Controls.h>
 #endif
 
 namespace winrt
