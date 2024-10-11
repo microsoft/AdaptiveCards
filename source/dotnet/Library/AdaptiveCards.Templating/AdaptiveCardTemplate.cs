@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace AdaptiveCards.Templating
 {
@@ -23,6 +25,24 @@ namespace AdaptiveCards.Templating
         private IParseTree parseTree;
         private string jsonTemplateString;
         private ArrayList templateExpansionWarnings;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jsonTemplate"></param>
+        [RequiresDynamicCode("For AOT compatibility, use the overload that takes a string and call JsonSerializer.Serialize on user-defined objects")]
+        [RequiresUnreferencedCode("For AOT compatibility, use the overload that takes a string and call JsonSerializer.Serialize on user-defined objects")]
+        public AdaptiveCardTemplate(object jsonTemplate)
+            : this(ConvertToJson(jsonTemplate))
+        {
+        }
+
+        [RequiresDynamicCode("Calls JsonSerializer.Serialize")]
+        [RequiresUnreferencedCode("Calls JsonSerializer.Serialize")]
+        internal static string ConvertToJson(object obj)
+        {
+            return (obj is string json) ? json : JsonSerializer.Serialize(obj);
+        }
 
         /// <summary>
         /// <para>Creates an instance of AdaptiveCardTemplate</para>
@@ -50,13 +70,13 @@ namespace AdaptiveCards.Templating
         /// </code>
         /// </example>
         /// <param name="jsonTemplate">string in json or seriazable object</param>
-        public AdaptiveCardTemplate(object jsonTemplate)
+        public AdaptiveCardTemplate(string jsonTemplate)
         {
             if (jsonTemplate != null)
             {
-                jsonTemplateString = (jsonTemplate is string) ? jsonTemplate as string : JsonConvert.SerializeObject(jsonTemplate);
+                jsonTemplateString = jsonTemplate;
 
-                AntlrInputStream stream = new AntlrInputStream(jsonTemplateString);
+                AntlrInputStream stream = new AntlrInputStream(jsonTemplate);
                 ITokenSource lexer = new AdaptiveCardsTemplateLexer(stream);
                 ITokenStream tokens = new CommonTokenStream(lexer);
                 AdaptiveCardsTemplateParser parser = new AdaptiveCardsTemplateParser(tokens)
@@ -89,6 +109,8 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
+        [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "Calls to Serialize will only happen for non-AOT callers")]
+        [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "Calls to Serialize will only happen for non-AOT callers")]
         public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
         {
             if (parseTree == null)
@@ -99,26 +121,26 @@ namespace AdaptiveCards.Templating
             string rootJsonData = "";
             if (context?.Root != null)
             {
-                if (context.Root is string root)
+                if (context.Root is string json)
                 {
-                    rootJsonData = root;
+                    rootJsonData = json;
                 }
                 else
                 {
-                    rootJsonData = JsonConvert.SerializeObject(context.Root);
+                    rootJsonData = JsonSerializer.Serialize(context.Root);
                 }
             }
 
             string hostJsonData = "";
             if (context?.Host != null)
             {
-                if (context.Host is string host)
+                if (context.Host is string json)
                 {
-                    hostJsonData = host;
+                    hostJsonData = json;
                 }
                 else
                 {
-                    hostJsonData = JsonConvert.SerializeObject(context.Host);
+                    hostJsonData = JsonSerializer.Serialize(context.Host);
                 }
             }
 
@@ -150,10 +172,62 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
+        [RequiresUnreferencedCode("For AOT compatibility, use overloads of Expand that take EvaluationContext or string")]
+        [RequiresDynamicCode("For AOT compatibility, use overloads of Expand that take EvaluationContext or string")]
         public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
         {
             var context = new EvaluationContext(rootData);
             return Expand(context, nullSubstitutionOption);
+        }
+
+        /// <summary>
+        /// Create a root data context using <paramref name="rootJson"/>, and bind it to the instance of AdaptiveCardTemplate
+        /// </summary>
+        /// <remarks>
+        /// <para> Data can be also inlined in AdaptiveCardTemplate payload</para>
+        /// <para> Expand can be called multiple times with different or same <paramref name="rootJson"/></para>
+        /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
+        /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
+        /// <para> Default behavior is leaving templated string unchanged</para>
+        /// </remarks>
+        /// <param name="rootJson">Serializable object or a string in valid json format that will be used as data context</param>
+        /// <param name="nullSubstitutionOption">Defines behavior when no suitable data is found for a template entry</param>
+        /// <example>
+        /// <code>
+        /// var template = new AdaptiveCardTemplate(jsonTemplate);
+        /// template.Expand(rootData);
+        /// </code>
+        /// </example>
+        /// <seealso cref="EvaluationContext"/>
+        /// <returns>json as string</returns>
+        public string Expand(string rootJson, Func<string, object> nullSubstitutionOption = null)
+        {
+            var context = new EvaluationContext(rootJson);
+            return Expand(context, nullSubstitutionOption);
+        }
+
+        /// <summary>
+        /// Create a root data context using empty context, and bind it to the instance of AdaptiveCardTemplate
+        /// </summary>
+        /// <remarks>
+        /// <para> Data can be also inlined in AdaptiveCardTemplate payload</para>
+        /// <para> Expand can be called multiple times with different or same <paramref name="rootJson"/></para>
+        /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
+        /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
+        /// <para> Default behavior is leaving templated string unchanged</para>
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// var template = new AdaptiveCardTemplate(jsonTemplate);
+        /// template.Expand(rootData);
+        /// </code>
+        /// </example>
+        /// <seealso cref="EvaluationContext"/>
+        /// <returns>json as string</returns>
+        public string Expand()
+        {
+            var context = new EvaluationContext();
+            return Expand(context, null);
         }
 
         /// <summary>

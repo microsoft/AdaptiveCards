@@ -332,6 +332,18 @@ namespace UWPUnitTests
             Assert.AreEqual("Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed", renderedCard.Warnings[0].Message);
 
         }
+        [TestMethod]
+        public async Task FaultyBackgroundImageRenderTest()
+        {
+            AdaptiveCard card = new AdaptiveCard();
+            AdaptiveBackgroundImage backgroundImage = new AdaptiveBackgroundImage();
+            backgroundImage.Url = "${myBackgroundImage}";
+            card.BackgroundImage = backgroundImage;
+            var renderedCard = await RenderOnUIThread(card);
+            Assert.AreEqual(0, renderedCard.Errors.Count);
+            Assert.AreEqual(1, renderedCard.Warnings.Count);
+            Assert.AreEqual("Specified URI:${myBackgroundImage} for background image is not valid. Image loading has failed.", renderedCard.Warnings[0].Message);
+        }
 
         public async Task<RenderedAdaptiveCard> RenderOnUIThread(AdaptiveCard card, AdaptiveHostConfig hostConfig = null, bool overflowMaxActions = false)
         {

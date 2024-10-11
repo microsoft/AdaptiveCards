@@ -29,6 +29,7 @@
 #include "AdaptiveSubmitActionRenderer.h"
 #include "AdaptiveToggleVisibilityActionRenderer.h"
 #include "AdaptiveExecuteActionRenderer.h"
+#include <windows.foundation.h>
 
 std::string WStringToString(std::wstring_view in)
 {
@@ -535,11 +536,41 @@ bool IsBackgroundImageValid(winrt::AdaptiveBackgroundImage const& backgroundImag
     return false;
 }
 
+winrt::Uri UriTryCreate(winrt::hstring const &uriString, winrt::hstring const& baseUriString = L"")
+{
+    auto factory = winrt::
+        get_activation_factory<winrt::Windows::Foundation::Uri, winrt::Windows::Foundation::IUriRuntimeClassFactory>();
+    auto abiFactory = static_cast<ABI::Windows::Foundation::IUriRuntimeClassFactory *>(winrt::get_abi(factory));
+
+    winrt::Windows::Foundation::Uri uri{nullptr};
+    HRESULT hr = S_OK;
+    if (baseUriString.empty())
+    {
+        hr = abiFactory->CreateUri(
+            static_cast<HSTRING>(winrt::get_abi(uriString)),
+            reinterpret_cast<ABI::Windows::Foundation::IUriRuntimeClass**>(winrt::put_abi(uri)));
+    }
+    else
+    {
+        hr = abiFactory->CreateWithRelativeUri(
+            static_cast<HSTRING>(winrt::get_abi(baseUriString)),
+            static_cast<HSTRING>(winrt::get_abi(uriString)),
+            reinterpret_cast<ABI::Windows::Foundation::IUriRuntimeClass**>(winrt::put_abi(uri)));
+    }
+
+    if (FAILED(hr))
+    {
+        return winrt::Windows::Foundation::Uri { nullptr };
+    }
+
+    return uri;
+}
+
 winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
 {
     winrt::Uri uri{nullptr};
 
-    if (const auto uriFromAbsoluteUri = winrt::Uri{urlString})
+    if (const auto uriFromAbsoluteUri = UriTryCreate(urlString))
     {
         return uriFromAbsoluteUri;
     }
@@ -547,7 +578,7 @@ winrt::Uri GetUrlFromString(winrt::AdaptiveHostConfig const& hostConfig, winrt::
     {
         winrt::hstring imageBaseUrl = hostConfig.ImageBaseUrl();
 
-        if (const auto uriFromRelativeUri = winrt::Uri{imageBaseUrl, urlString})
+        if (const auto uriFromRelativeUri = UriTryCreate(urlString, imageBaseUrl))
         {
             return uriFromRelativeUri;
         }

@@ -358,36 +358,43 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::XamlHelpers
                                winrt::AdaptiveRenderContext const& renderContext)
     {
         // Creates the background image for all fill modes
-        auto tileControl = winrt::make<winrt::implementation::TileControl>();
-        auto imageUrl = GetUrlFromString(renderContext.HostConfig(), adaptiveBackgroundImage.Url());
-        bool IsSvg = IsSvgImage(imageUrl);
-
-        // In order to reuse the image creation code paths, we simply create an adaptive card
-        // image element and then build that into xaml and apply to the root.
-        if (const auto backgroundImage = CreateBackgroundImage(renderContext, tileControl, IsSvg, imageUrl))
+        if (const auto imageUrl = GetUrlFromString(renderContext.HostConfig(), adaptiveBackgroundImage.Url()))
         {
-            // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
-            tileControl.IsEnabled(false);
-            tileControl.BackgroundImage(adaptiveBackgroundImage);
-            if (!IsSvg)
+            auto tileControl = winrt::make<winrt::implementation::TileControl>();
+            bool IsSvg = IsSvgImage(imageUrl);
+
+            // In order to reuse the image creation code paths, we simply create an adaptive card
+            // image element and then build that into xaml and apply to the root.
+            if (const auto backgroundImage = CreateBackgroundImage(renderContext, tileControl, IsSvg, imageUrl))
             {
-                tileControl.LoadImageBrush(backgroundImage);
-            }
+                // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
+                tileControl.IsEnabled(false);
+                tileControl.BackgroundImage(adaptiveBackgroundImage);
+                if (!IsSvg)
+                {
+                    tileControl.LoadImageBrush(backgroundImage);
+                }
 
-            XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
+                XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
 
-            // The overlay applied to the background image is determined by a resouce, so create
-            // the overlay if that resources exists
-            auto resourceDictionary = renderContext.OverrideStyles();
-            if (const auto backgroundOverlayBrush =
+                // The overlay applied to the background image is determined by a resouce, so create
+                // the overlay if that resources exists
+                auto resourceDictionary = renderContext.OverrideStyles();
+                if (const auto backgroundOverlayBrush =
                     XamlHelpers::TryGetResourceFromResourceDictionaries(resourceDictionary, c_BackgroundImageOverlayBrushKey)
-                        .try_as<winrt::Brush>())
-            {
-                winrt::Rectangle overlayRectangle;
-                overlayRectangle.Fill(backgroundOverlayBrush);
+                    .try_as<winrt::Brush>())
+                {
+                    winrt::Rectangle overlayRectangle;
+                    overlayRectangle.Fill(backgroundOverlayBrush);
 
-                XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
+                    XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
+                }
             }
+        }
+        else
+        {
+            renderContext.AddWarning(winrt::WarningStatusCode::AssetLoadFailed,
+               L"Specified URI:" + adaptiveBackgroundImage.Url() + L" for background image is not valid. Image loading has failed.");
         }
     }
 
