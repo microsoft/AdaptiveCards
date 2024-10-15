@@ -43,16 +43,16 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <PackageCertificateKeyFile>AdaptiveCards.Sample.WPFVisualizer.PackageProject_TemporaryKey.pfx</PackageCertificateKeyFile>
     <EntryPointProjectUniqueName>..\WPFVisualizer\AdaptiveCards.Sample.WPFVisualizer.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>CDB52BC1A7F93B2E7D980BD9C235BDD6BFA59ECB</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>4f1e1c2a7a98d99669b29a9b0570028fdf6b4044</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="AdaptiveCards.Sample.WPFVisualizer.PackageProject_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AdaptiveCards.Sample.WPFVisualizer.PackageProject_TemporaryKey.pfx" />
     <Content Include="Images\BadgeLogo.scale-100.png" />
     <Content Include="Images\BadgeLogo.scale-200.png" />
     <Content Include="Images\BadgeLogo.scale-400.png" />
