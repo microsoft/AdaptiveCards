@@ -1,21 +1,16 @@
 {
-    "version": "2.0.0",
-	"command": "dotnet",
+    "version": "0.1.0",
+    "command": "dotnet",
+    "isShellCommand": true,
     "args": [],
     "tasks": [
-		{
-			"label": "build",
-			"type": "shell",
-			"command": "dotnet",
-			"args": [
-				"build",
-				"${workspaceRoot}/source/dotnet/Test/AdaptiveCards.Html.Test/AdaptiveCards.Html.Test.csproj"
-			],
-			"problemMatcher": "$msCompile",
-			"group": {
-				"_id": "build",
-				"isDefault": false
-			}
-		}
-	]
+        {
+            "taskName": "build",
+            "args": [
+                "${workspaceRoot}/source/dotnet/Test/AdaptiveCards.Html.Test/AdaptiveCards.Html.Test.csproj"
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        }
+    ]
 }
