@@ -1181,7 +1181,7 @@ export class TextBlock extends BaseTextBlock {
     // processed.
     private static readonly _ttMarkdownPolicy = (typeof window === 'undefined') ? undefined :
     	(window.trustedTypes && window.trustedTypes.createPolicy) ?
-    		window.trustedTypes.createPolicy("adaptivecards#markdownPassthroughPolicy", { createHTML: (value) => value }) :
+    		window.trustedTypes.createPolicy("adaptivecardsv1#markdownPassthroughPolicy", { createHTML: (value) => value }) :
 			undefined;
 
     // When "advanced" truncation is enabled (see GlobalSettings.useAdvancedCardBottomTruncation and
@@ -1190,7 +1190,7 @@ export class TextBlock extends BaseTextBlock {
     // TextBlock.restoreOriginalContent())
     private static readonly _ttRoundtripPolicy = (typeof window === 'undefined') ? undefined :
     	(window.trustedTypes && window.trustedTypes.createPolicy) ?
-    		window.trustedTypes.createPolicy("adaptivecards#restoreContentsPolicy", { createHTML: (value) => value }) :
+    		window.trustedTypes.createPolicy("adaptivecardsv1#restoreContentsPolicy", { createHTML: (value) => value }) :
 			undefined;
 
     protected setText(value: string) {
