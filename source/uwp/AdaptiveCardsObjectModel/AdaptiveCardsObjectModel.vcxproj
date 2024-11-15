@@ -53,8 +53,11 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
     <CppWinRTFastAbi>true</CppWinRTFastAbi>
     <CppWinRTOptimized>true</CppWinRTOptimized>
+	<UseCrtSDKReferenceStaticWarning>false</UseCrtSDKReferenceStaticWarning>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <!-- Build with the Hybrid CRT (Universal CRT + Static VS CRT (for what little the Universal CRT doesn't cover) -->
+  <Import Project="$(MSBuildThisFileDirectory)..\HybridCRT.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
