@@ -122,183 +122,83 @@
 			"style": "emphasis",
 			"items": [
 				{
-					"type": "ColumnSet",
-					"columns": [
-						{
-							"type": "Column",
-							"items": [
-								{
-									"type": "TextBlock",
-									"weight": "bolder",
-									"text": "DATE",
-									"wrap": true
-								}
-							],
-							"width": "auto"
-						},
-						{
-							"type": "Column",
-							"spacing": "large",
-							"items": [
-								{
-									"type": "TextBlock",
-									"weight": "bolder",
-									"text": "CATEGORY",
-									"wrap": true
-								}
-							],
-							"width": "stretch"
-						},
-						{
-							"type": "Column",
-							"items": [
-								{
-									"type": "TextBlock",
-									"weight": "bolder",
-									"text": "AMOUNT",
-									"wrap": true
-								}
-							],
-							"width": "auto"
-						}
-					]
+					"type": "TextBlock",
+					"weight": "bolder",
+					"text": "EXPENSE DETAILS",
+					"wrap": true
 				}
 			],
 			"bleed": true
 		},
 		{
+			"type": "ActionSet",
 			"$data": "${expenses}",
-			"type": "Container",
-			"items": [
+			"actions": [
 				{
-					"type": "ColumnSet",
-					"columns": [
-						{
-							"type": "Column",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "${formatDateTime(created_time, 'MM-dd')}",
-									"wrap": true
-								}
-							],
-							"width": "auto"
-						},
-						{
-							"type": "Column",
-							"spacing": "medium",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "${description}",
-									"wrap": true
-								}
-							],
-							"width": "stretch"
-						},
-						{
-							"type": "Column",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "$${formatNumber(total, 2)}",
-									"wrap": true
-								}
-							],
-							"width": "auto"
-						},
-						{
-							"type": "Column",
-							"spacing": "small",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "expand",
-								"targetElements": [
-									"cardContent${$index}",
-									"chevronDown${$index}",
-									"chevronUp${$index}"
-								]
-							},
-							"verticalContentAlignment": "center",
-							"items": [
-								{
-									"type": "Image",
-									"id": "chevronDown${$index}",
-									"url": "https://adaptivecards.io/content/down.png",
-									"width": "20px",
-									"altText": "${description} $${total} collapsed"
-								},
-								{
-									"type": "Image",
-									"id": "chevronUp${$index}",
-									"url": "https://adaptivecards.io/content/up.png",
-									"width": "20px",
-									"altText": "${description} $${total} expanded",
-									"isVisible": false
-								}
-							],
-							"width": "auto"
-						}
-					]
-				},
-				{
-					"type": "Container",
-					"id": "cardContent${$index}",
-					"isVisible": false,
-					"items": [
-						{
-							"type": "Container",
-							"items": [
-								{
-									"$data": "${custom_fields}",
-									"type": "TextBlock",
-									"text": "* ${value}",
-									"isSubtle": true,
-									"wrap": true
-								},
-								{
-									"type": "Container",
-									"items": [
-										{
-											"type": "Input.Text",
-											"id": "comment${$index}",
-											"label": "Add your comment here"
-										}
-									]
-								}
-							]
-						},
-						{
-							"type": "Container",
-							"items": [
-								{
-									"type": "ColumnSet",
-									"columns": [
-										{
-											"type": "Column",
-											"items": [
-												{
-													"type": "ActionSet",
-													"actions": [
-														{
-															"type": "Action.Submit",
-															"title": "Send",
-															"data": {
-																"id": "_qkQW8dJlUeLVi7ZMEzYVw",
-																"action": "comment",
-																"lineItem": 1
+					"type": "Action.ShowCard",
+					"title": "${formatDateTime(created_time, 'MM-dd')}: ${description} - $${formatNumber(total, 2)}",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "Container",
+								"items": [
+									{
+										"type": "Container",
+										"items": [
+											{
+												"$data": "${custom_fields}",
+												"type": "TextBlock",
+												"text": "* ${value}",
+												"isSubtle": true,
+												"wrap": true
+											},
+											{
+												"type": "Container",
+												"items": [
+													{
+														"type": "Input.Text",
+														"id": "comment${$index}",
+														"label": "Add your comment here"
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "Container",
+										"items": [
+											{
+												"type": "ColumnSet",
+												"columns": [
+													{
+														"type": "Column",
+														"items": [
+															{
+																"type": "ActionSet",
+																"actions": [
+																	{
+																		"type": "Action.Submit",
+																		"title": "Send",
+																		"data": {
+																			"id": "_qkQW8dJlUeLVi7ZMEzYVw",
+																			"action": "comment",
+																			"lineItem": 1
+																		}
+																	}
+																]
 															}
-														}
-													]
-												}
-											],
-											"width": "auto"
-										}
-									]
-								}
-							]
-						}
-					]
+														],
+														"width": "auto"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
 				}
 			]
 		},
@@ -399,59 +299,33 @@
 			"bleed": true
 		},
 		{
-			"type": "ColumnSet",
-			"columns": [
+			"type": "ActionSet",
+			"actions": [
 				{
-					"type": "Column",
-					"selectAction": {
-						"type": "Action.ToggleVisibility",
-						"targetElements": ["cardContent4", "showHistory", "hideHistory"]
-					},
-					"verticalContentAlignment": "center",
-					"items": [
-						{
-							"type": "TextBlock",
-							"id": "showHistory",
-							"horizontalAlignment": "right",
-							"color": "accent",
-							"text": "Show history",
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
-							"id": "hideHistory",
-							"horizontalAlignment": "right",
-							"color": "accent",
-							"text": "Hide history",
-							"wrap": true,
-							"isVisible": false
-						}
-					],
-					"width": 1
-				}
-			]
-		},
-		{
-			"type": "Container",
-			"id": "cardContent4",
-			"isVisible": false,
-			"items": [
-				{
-					"type": "Container",
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "* Expense submitted by **${created_by_name}** on {{DATE(${formatDateTime(created_date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
-							"isSubtle": true,
-							"wrap": true
-						},
-						{
-							"type": "TextBlock",
-							"text": "* Expense ${expenses[0].status} by **${expenses[0].approver}** on {{DATE(${formatDateTime(approval_date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
-							"isSubtle": true,
-							"wrap": true
-						}
-					]
+					"type": "Action.ShowCard",
+					"title": "Show history",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "Container",
+								"items": [
+									{
+										"type": "TextBlock",
+										"text": "* Expense submitted by **${created_by_name}** on {{DATE(${formatDateTime(created_date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
+										"isSubtle": true,
+										"wrap": true
+									},
+									{
+										"type": "TextBlock",
+										"text": "* Expense ${expenses[0].status} by **${expenses[0].approver}** on {{DATE(${formatDateTime(approval_date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
+										"isSubtle": true,
+										"wrap": true
+									}
+								]
+							}
+						]
+					}
 				}
 			]
 		},
