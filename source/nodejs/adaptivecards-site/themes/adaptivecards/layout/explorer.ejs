@@ -1,21 +1,20 @@
+<!-- This is the schema explorer index page -->
+
 <div id="content-wrapper" class="w3-row explorer" style="max-width:1564px">
 
 	<nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block"
 		style="width: 200px">
 		<div class="sidebar__inner">
-			<ul class="toc-tree" role="tree">
-				<% page.schema.forEach(function(root) { %>
-				<li role="treeitem" aria-expanded="true"><span><i class="fa fa-angle-down"></i> <%= root.title %></span>
-					<ul role="group">
-						<% root.children.forEach(function(child) { %>
-						<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>' role="treeitem">
-							<a href="<%- url_for(child.htmlPath) %>" aria-label="<%= child.accessibleName %>"><%= child.name %></a>
-						</li>
-						<% }) %>
-					</ul>
-				</li>
+			<% page.schema.forEach(function(root) { %>
+			<ul role="listbox" aria-label="<%= root.title %>" class="samples-sidebar-list">
+				<span><%= root.title %></span>
+				<% root.children.forEach(function(child) { %>
+					<a role="option"
+						aria-setsize='<%= root.children.length.toString() %>'
+						href="<%- url_for(child.htmlPath) %>" aria-label="<%= child.accessibleName %>"><%= child.name %></a>
 				<% }) %>
 			</ul>
+			<% }) %>
 		</div>
 	</nav>
 

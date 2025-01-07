@@ -2,9 +2,10 @@
 
 	<div id="videoModal" class="w3-modal w3-card-4">
 		<div class="w3-modal-content w3-animate-zoom">
-			<video id="overviewVideo" tabIndex="0" controls="" width="100" style="width: 100%" poster="<%- url_for('content/poster-video.png') %>">
+			<video id="overviewVideo" tabIndex="0" controls="" width="100" style="width: 100%" poster="<%- url_for('content/poster-video.png') %>" crossorigin>
 				<source src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
 					type="video/mp4" />
+				<track src="https://raw.githubusercontent.com/microsoft/AdaptiveCards/5ac07e8adb8d7dcd7480973321e57d279d1f7d2c/assets/ProductVideoSubtitles.vtt" kind="captions" label="English (vtt)">
 			</video>
 			<span id="closeVideo" tabIndex="0" aria-label="Close video" class="w3-button w3-xlarge w3-transparent w3-display-topright"
 				title="Close video">×</span>
