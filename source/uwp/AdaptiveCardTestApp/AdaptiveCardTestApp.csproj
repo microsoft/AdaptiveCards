@@ -19,7 +19,7 @@
     <PackageCertificateKeyFile>AdaptiveCardTestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>61e6930fdc582b41491df055c2b2a0cbbf8637b0</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>77aa3eab56609f0cade526d72f0798858b01d650</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
