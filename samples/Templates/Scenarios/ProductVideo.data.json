@@ -13,7 +13,7 @@
 	"ThumbnailUrl": "https://adaptivecards.io/content/poster-video.png",
 	"Title": "Divers - Future of Productivity",
 	"ID": "6b518eae-b0d9-4951-b6da-1e5f58a43daa",
-	"VideoUrl": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4",
+	"VideoUrl": "https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp4",
 	"VideoDurationInSeconds": 388,
 	"VideoProcessingStatus": 2,
 	"ViewCount": -1,

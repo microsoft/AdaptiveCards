@@ -20,7 +20,7 @@
 							"sources": [
 								{
 									"mimeType": "audio/mpeg",
-									"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp3"
+									"url": "https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp3"
 								}
 							]
 						}
@@ -39,7 +39,7 @@
 							"sources": [
 								{
 									"mimeType": "audio/mpeg",
-									"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp3"
+									"url": "https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp3"
 								}
 							]
 						},

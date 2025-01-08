@@ -93,5 +93,5 @@ Otherwise you can use a payload that is accessible via HTTP. Make sure CORS is s
 If it fails to render, check the browser debug tools under the Network tab.
 
 ```
-{% adaptivecard https://adaptivecardsblob.blob.core.windows.net/releaseshelper/releasescard.json %}
+{% adaptivecard https://cdn.adaptivecards.io/releaseshelper/releasescard.json %}
 ```

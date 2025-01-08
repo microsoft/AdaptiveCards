@@ -837,7 +837,7 @@ namespace AdaptiveCards.Test
         ""sources"": [
             {
                 ""mimeType"": ""video/mp4"",
-                ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+                ""url"": ""https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp4""
             }
         ]
     },
@@ -848,7 +848,7 @@ namespace AdaptiveCards.Test
         ""sources"": [
             {
                 ""mimeType"": ""video/mp4"",
-                ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+                ""url"": ""https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp4""
             }
         ]
     }
@@ -868,7 +868,7 @@ namespace AdaptiveCards.Test
 
             var source = mediaElementFull.Sources[0] as AdaptiveMediaSource;
             Assert.AreEqual("video/mp4", source.MimeType);
-            Assert.AreEqual("http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4", source.Url);
+            Assert.AreEqual("https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp4", source.Url);
         }
 
         [TestMethod]
