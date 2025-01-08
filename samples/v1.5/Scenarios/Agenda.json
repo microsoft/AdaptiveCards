@@ -217,7 +217,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "https://adaptivecardsblob.blob.core.windows.net/assets/location_gray.png",
+											"url": "https://cdn.adaptivecards.io/assets/location_gray.png",
 											"altText": "Location"
 										}
 									],
@@ -331,7 +331,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "https://adaptivecardsblob.blob.core.windows.net/assets/car.png",
+											"url": "https://cdn.adaptivecards.io/assets/car.png",
 											"altText": "Travel by car"
 										}
 									],
@@ -414,7 +414,7 @@
 									"items": [
 										{
 											"type": "Image",
-											"url": "https://adaptivecardsblob.blob.core.windows.net/assets/location_gray.png",
+											"url": "https://cdn.adaptivecards.io/assets/location_gray.png",
 											"altText": "Location"
 										}
 									],

@@ -35,7 +35,7 @@
 			<div class="w3-card" style="background-color: #0072CC">
 				<video id="vid" playsinline autoplay muted style="width: 100%; margin-bottom: -8px"
 					data-loop-delay="5000"
-					src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveIntroVideo.mp4"></video>
+					src="https://cdn.adaptivecards.io/assets/AdaptiveIntroVideo.mp4"></video>
 			</div>
 		</div>
 
@@ -43,7 +43,7 @@
 			<div class="w3-row">
 				<div role="heading" aria-level="2" class="platform-header"><%- site.data.home.en.made_for_title %></div>
 				<ul class="platform-list">
-					<% for(var link of site.data.home.en.made_for) { %>	
+					<% for(var link of site.data.home.en.made_for) { %>
 						<li>
 							<div class="w3-col s4 m3 l12"><a
 								href="<%- link.href %>" aria-label="<%- site.data.home.en.made_for_title %> <%- link.title %>"><i
@@ -130,7 +130,7 @@
 
 	<div class="w3-padding-32"></div>
 
-	<%- partial("_partial/quote", { 
+	<%- partial("_partial/quote", {
 		quote: site.data.home.en.quotes.joe
 	}) %>
 
