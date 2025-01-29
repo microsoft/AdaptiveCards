@@ -12,12 +12,6 @@ steps:
       secureFile: 'PerfApp_TemporaryKey.pfx'
 
   - task: DownloadSecureFile@1
-    name: uwpUiTestAppTempKey
-    displayName: 'Download UWPUITestApp Temporary Key'
-    inputs:
-      secureFile: 'UWPUITestApp_TemporaryKey.pfx'
-
-  - task: DownloadSecureFile@1
     name: uwpUnitTestsTempKey
     displayName: 'Download UWPUnitTests Temporary Key'
     inputs:
@@ -35,6 +29,5 @@ steps:
       script: |
        Move-Item -Path $(acTestAppTempKey.secureFilePath) -Destination '$(Build.SourcesDirectory)/source/uwp/AdaptiveCardTestApp/AdaptiveCardTestApp_TemporaryKey.pfx'
        Move-Item -Path $(perfAppTempKey.secureFilePath) -Destination '$(Build.SourcesDirectory)/source/uwp/PerfApp/PerfApp_TemporaryKey.pfx'
-       Move-Item -Path $(uwpUiTestAppTempKey.secureFilePath) -Destination '$(Build.SourcesDirectory)/source/uwp/UWPUITestApp/UWPUITestApp_TemporaryKey.pfx'
        Move-Item -Path $(uwpUnitTestsTempKey.secureFilePath) -Destination '$(Build.SourcesDirectory)/source/uwp/UWPUnitTests/UWPUnitTests_TemporaryKey.pfx'
        Move-Item -Path $(acVisualizerTempKey.secureFilePath) -Destination '$(Build.SourcesDirectory)/source/uwp/Visualizer/AdaptiveCardVisualizer_TemporaryKey.pfx'
