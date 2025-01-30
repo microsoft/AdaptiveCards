@@ -24,9 +24,6 @@ pool:
   name: Azure Pipelines
   vmImage: windows-2019
 
-steps:
-- template: templates/uwp-download-secure-files.yml
-
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1
   displayName: Use NuGet 5.x
@@ -50,7 +47,7 @@ steps:
   displayName: Generate Test Signing Certificate
   inputs:
     targetType: filePath
-    filePath: source/uwp/UWPUITestApp/GenerateTestPFX.ps1
+    filePath: source/Build/GenerateTestPFX.ps1
 
 - task: VSBuild@1
   name: VSBuild3

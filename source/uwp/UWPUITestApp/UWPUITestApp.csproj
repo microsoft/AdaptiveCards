@@ -194,7 +194,7 @@
       <Link>LinkedTestCards\Input.Text.PasswordStyle.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UWPUITestApp_TemporaryKey.pfx" />
+    <None Include="Assets\UWPUITestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCardsObjectModel\AdaptiveCardsObjectModel.vcxproj">
