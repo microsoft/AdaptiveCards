@@ -39,7 +39,7 @@ steps:
   inputs:
     command: 'restore'
     feedsToUse: config
-    nugetConfigPath: source/uwp/winui3/nuget.config
+    nugetConfigPath: source/nuget.config
     restoreSolution: $(solution)
     verbosityRestore: Detailed
 
