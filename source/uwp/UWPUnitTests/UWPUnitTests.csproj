@@ -16,9 +16,8 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>UWPUnitTests_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Assets\UWPUnitTests_TemporaryKey.pfx</PackageCertificateKeyFile>
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">$(VisualStudioVersion)</UnitTestPlatformVersion>
-    <PackageCertificateThumbprint>7943b9d5394f1c44b017daf84231dfb013f43364</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -141,7 +140,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="UWPUnitTests_TemporaryKey.pfx" />
+    <None Include="Assets\UWPUnitTests_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\AdaptiveCardTestApp\Assets\Adaptive10.png">

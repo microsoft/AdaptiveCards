@@ -6,7 +6,7 @@ This directory contains the renderers and tooling for the UWP and Windows AppSDK
 
 ## Requirements
 
-1. Visual Studio 2019 with C++ tooling
+1. Visual Studio 2019 (UWP)/Visual Studio 2022 (WinUI3) with C++ tooling, Windows 10 SDK 10.0.18362.0, Windows 11 SDK 10.0.22621.0, .NET SDK 6.0.5  
 
 ## Why C++?
 
