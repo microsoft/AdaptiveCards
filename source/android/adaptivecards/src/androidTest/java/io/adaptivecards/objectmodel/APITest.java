@@ -43,9 +43,9 @@ public class APITest
                 "\"url\": \"https://picsum.photos/id/237/200/200\", \"verticalAlignment\": \"center\"," +
                 "\"horizontalAlignment\": \"center\"},\"body\": [{\"type\": \"Media\"," +
                 "\"poster\": \"https://adaptivecards.io/content/poster-video.png\",\"sources\": [{" +
-                "\"mimeType\": \"video/mp4\",\"url\": \"https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4\"" +
+                "\"mimeType\": \"video/mp4\",\"url\": \"https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp4\"" +
                 "}]},{\"type\": \"Media\",\"poster\": \"https://adaptivecards.io/content/poster-audio.jpg\"," +
-                "\"sources\": [{\"mimeType\": \"audio/mpeg\",\"url\": \"https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp3\"" +
+                "\"sources\": [{\"mimeType\": \"audio/mpeg\",\"url\": \"https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp3\"" +
                 "}]},{\"type\": \"ImageSet\",\"imageSize\": \"medium\",\"images\": [{\"type\": \"Image\"," +
                 "\"url\": \"https://picsum.photos/200/200?image=100\"},{\"type\": \"Image\"," +
                 "\"url\": \"https://picsum.photos/300/200?image=200\"},{\"type\": \"Image\"," +
@@ -63,9 +63,9 @@ public class APITest
         String[] expectedUrls = {
             "https://picsum.photos/id/237/200/200",
             "https://adaptivecards.io/content/poster-video.png",
-            "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4",
+            "https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp4",
             "https://adaptivecards.io/content/poster-audio.jpg",
-            "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp3",
+            "https://cdn.adaptivecards.io/assets/AdaptiveCardsOverviewVideo.mp3",
             "https://picsum.photos/200/200?image=100",
             "https://picsum.photos/300/200?image=200",
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzO",
