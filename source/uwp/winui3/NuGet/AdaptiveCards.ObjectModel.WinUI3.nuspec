@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>AdaptiveCards.ObjectModel.WinUI3</id>
-        <version>3.0.0</version>
+        <version>1.0.2</version>
         <authors>Microsoft</authors>
         <summary>Adaptive Cards Object Model library for WinUI3</summary>
         <description>Used to work with the object model for Adaptive Cards</description>
