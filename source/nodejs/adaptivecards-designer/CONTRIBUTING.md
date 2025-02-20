@@ -48,7 +48,7 @@ When the designer is in preview mode, we will display the card as it is rendered
 In design mode, the card designer surface is more complicated, because all card elements have an paired element called a `DesignerPeer` (See `src/designer-peers.ts`). That is, when we render the card in design mode, there will be a DesignerPeer overlaid on top of each element.
 ![image](https://github.com/user-attachments/assets/f9ecf217-6fe7-4ac5-a1a6-18429b2b1250)
 
-The peers allow us to enable a drag and drop interface for the designer. For some element peers, we also have additional buttons attached that add functionality (Example: `ColumnSetPeer` include an "Add a column" button).
+The peers allow us to enable a drag and drop interface for the designer. For some element peers, we also have additional buttons attached that add functionality (Example: `ColumnSetPeer` include an "Add a column" button). Note that new peers need to be registered within `CardElementPeerRegistry` (See `card-designer-surface.ts`).
 
 The goal of design mode is to allow developers to design the card **without** manually modifyin the JSON editor. When an element has been moved, deleted, or modified from the card surface, the JSON editor will reflect the changes.
 
@@ -61,10 +61,36 @@ For instance, we have a container for the Widgets Board which allows for differe
 Containers can also specify their own Host Config, and these are stored at `samples/HostConfig/`.
 
 ## Templating
+Users are able to provide templating data via the Sample Data Editor.
+![image](https://github.com/user-attachments/assets/072ecf88-3aa1-471e-b2e6-b0369e768e04)
+
+When the card is rendered from the card designer surface, the template payload from the editor will be provided to the renderer.
+
+Template data can also be utilized from the Element Properties pane:
+![image](https://github.com/user-attachments/assets/2d35b9f4-002e-46a8-94b5-974ef36160e4)
+
+More information on the element properties pane is below, but the specifics for the Data Binding button can be found in the `StringPropertyEditor` class.
 
 ## Card elements pane
+The card elements pane showcases all available elements, and it is only displays elements available for that specific version.
+![image](https://github.com/user-attachments/assets/5a0b259f-e66f-40de-bacc-c2eb2359ef08)
+
+Each element can be dragged to the designer surface or double clicked to add it to the current card. Most of the implemenentation is handled within `card-designer.ts`. See `_draggedPaletteItem` and `_toolPaletteToolbox`.
 
 ## Element properties pane
+The element properties pane allows users to modify the various element properties without updating the JSON directly.
+
+Populating this pane is handled by DesignerPeers. Each peer adds their properties to a `propertySheet` where the values are a `PropertyEditor` type. For instance, the Carousel has an additional property of type `BooleanPropertyEditor` that corresponds to the `loop` property.
+
+<img width="411" alt="image" src="https://github.com/user-attachments/assets/b5b4f033-f96c-4dc0-b644-cefa1bd90a24" />
 
 ## `adaptivecards-controls` usage
+Many of the controls utilized in the designer come from the `adaptivecards-controls` library. Occasionally, a fix for the designer will require you to modify that package.
 
+## Reference Pull Requests
+- [Add new element to the designer](https://github.com/microsoft/AdaptiveCards/pull/7654)
+- [Add controls to the toolbar](https://github.com/microsoft/AdaptiveCards/pull/7741)
+- [Add a new container](https://github.com/microsoft/AdaptiveCards/pull/6612)
+- [Add a new property to the element properties pane](https://github.com/microsoft/AdaptiveCards/pull/8271)
+- [Update adaptivecards-controls](https://github.com/microsoft/AdaptiveCards/pull/7937)
+- [Update designer peer ordering logic](https://github.com/microsoft/AdaptiveCards/pull/7514)
