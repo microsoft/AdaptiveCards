@@ -4,8 +4,6 @@ The Adaptive Card Designer provides a rich, interactive design-time experience f
 
 Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/designer)
 
-![Designer Screenshot](https://adaptivecards.io/images/designer.png)
-
 ## What is this package?
 
 This package allows you to easily integrate the adaptive cards designer into your own experiences. 
