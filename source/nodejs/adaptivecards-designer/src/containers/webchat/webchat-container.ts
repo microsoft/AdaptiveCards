@@ -20,6 +20,6 @@ export class WebChatContainer extends SingleThemeHostContainer {
     }
 
     get targetVersion(): Adaptive.Version {
-        return Adaptive.Versions.v1_3;
+        return Adaptive.Versions.v1_6;
     }
 }
