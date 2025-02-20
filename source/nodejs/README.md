@@ -15,15 +15,17 @@ Removed JS packages:
 
 ## Prerequisites
 
-- Node 20+
+- Install Node 20+
 
 ## Authenticate with npm registry
 
-1. `vsts-npm-auth -config .npmrc` in `source/nodejs`
+1. `cd source/nodejs`
+2. `npm install -g vsts-npm-auth`
+3. `vsts-npm-auth -config .npmrc`
 
 ## Bootstrap the repo
 
-We use lerna to manage package linking and building. 
+We use [lerna](https://lerna.js.org/) to manage package linking and building. 
 
 1. `cd source/nodejs`
 2. `npm install`
