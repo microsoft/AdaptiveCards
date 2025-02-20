@@ -38,12 +38,19 @@ We use lerna to manage package linking and building.
 2. `npm start`
 3. OR to test preview features: `npm run start:preview`
 
+Note: The documentation side can also be used to validate designer changes.
+
 ## Start the documentation site (http://adaptivecards.io)
 
 1. `cd adaptivecards-site`
 2. `npx lerna run release`
 3. `npm start`
 4. Open up the browser to point to: `localhost:[portnumber]` printed after the command above returns under "Hexo is running at".
+
+If you do not see your changes, you are likely pulling from the cache. Please try:
+1. `npx lerna run clean`
+2. `npx lerna run release --skip-nx-cache`
+3. `npm start`
 
 ## Adding a new package
 
