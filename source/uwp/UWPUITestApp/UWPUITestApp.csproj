@@ -19,8 +19,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppxPackageOnBuild>True</GenerateAppxPackageOnBuild>
-    <PackageCertificateThumbprint>de8b49c8e9c64c3f747145f7b7e7476aa06bb599</PackageCertificateThumbprint>
-    <PackageCertificateKeyFile>UWPUITestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Assets\UWPUITestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -195,7 +194,7 @@
       <Link>LinkedTestCards\Input.Text.PasswordStyle.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UWPUITestApp_TemporaryKey.pfx" />
+    <None Include="Assets\UWPUITestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCardsObjectModel\AdaptiveCardsObjectModel.vcxproj">
