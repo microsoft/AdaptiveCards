@@ -13,7 +13,7 @@
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</PackageProjectUrl>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
 
     <LangVersion>12</LangVersion>
@@ -54,7 +54,7 @@
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
     <PackageReference Include="Microsoft.Bot.AdaptiveExpressions.Core" Version="4.22.9" />
     <PackageReference Include="PolySharp" Version="1.14.1" />
-    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>
