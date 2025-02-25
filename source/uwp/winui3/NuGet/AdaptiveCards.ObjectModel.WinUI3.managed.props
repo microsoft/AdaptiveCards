@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AdaptiveCardsObjectModelWinUI3WinMD>$(MSBuildThisFileDirectory)..\..\lib\uap10.0\AdaptiveCards.ObjectModel.WinUI3.winmd</AdaptiveCardsObjectModelWinUI3WinMD>
+        <AdaptiveCardsObjectModelWinUI3DllName>AdaptiveCards.ObjectModel.WinUI3.dll</AdaptiveCardsObjectModelWinUI3DllName>
+    </PropertyGroup>
+</Project>
