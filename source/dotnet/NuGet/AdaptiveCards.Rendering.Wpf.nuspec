@@ -15,7 +15,7 @@
     <dependencies>
       <group targetFramework=".NETFramework4.5.2">
         <dependency id="AdaptiveCards" version="3.0.2" exclude="Build,Analyzers" />
-        <dependency id="Newtonsoft.Json" version="11.0.2" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net6.0-windows7.0">
         <dependency id="AdaptiveCards" version="3.0.2" exclude="Build,Analyzers" />
