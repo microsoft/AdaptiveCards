@@ -277,7 +277,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         winrt::AutomationProperties::SetName(frameworkElement, altText);
 
         return ActionHelpers::HandleSelectAction(
-            adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
+            adaptiveCardElement, selectAction, renderContext, renderArgs, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
     winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(winrt::Uri const imageUrl,

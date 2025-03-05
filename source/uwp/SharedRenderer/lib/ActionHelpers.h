@@ -50,12 +50,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
     void WireButtonClickToAction(winrt::Button const& button,
                                  winrt::IAdaptiveActionElement const& action,
-                                 winrt::AdaptiveRenderContext const& renderContext);
+                                 winrt::AdaptiveRenderContext const& renderContext,
+                                 winrt::AdaptiveRenderArgs const& renderArgs);
 
     winrt::UIElement WrapInTouchTarget(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                                           winrt::UIElement const& elementToWrap,
                                                           winrt::IAdaptiveActionElement const& action,
                                                           winrt::AdaptiveRenderContext const& renderContext,
+                                                          winrt::AdaptiveRenderArgs const& renderArgs,
                                                           bool fullWidth,
                                                           const std::wstring& style,
                                                           winrt::hstring const& altText,
@@ -64,6 +66,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
     winrt::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                                            winrt::IAdaptiveActionElement const& selectAction,
                                                            winrt::AdaptiveRenderContext const& renderContext,
+                                                           winrt::AdaptiveRenderArgs const& renderArgs,
                                                            winrt::UIElement const& uiElement,
                                                            bool supportsInteractivity,
                                                            bool fullWidthTouchTarget);

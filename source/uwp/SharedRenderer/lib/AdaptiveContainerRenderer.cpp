@@ -105,7 +105,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto hostConfig = renderContext.HostConfig();
 
             return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
-                cardElement, selectAction, renderContext, containerBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
+                cardElement, selectAction, renderContext, renderArgs, containerBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)
         {
