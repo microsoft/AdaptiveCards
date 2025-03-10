@@ -19,7 +19,7 @@ export class Strings {
             commands: {
                 bindData: {
                     displayText: () => "...",
-                    accessibleText: (propertyLabel: string) => "Data Binding"
+                    accessibleText: (propertyLabel: string) => `Options for ${propertyLabel} Data Binding`
                 }
             }
         },
