@@ -461,6 +461,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                                       actionUIElement,
                                                       inlineAction,
                                                       renderContext,
+                                                      renderArgs,
                                                       false,
                                                       L"Adaptive.Input.Text.InlineAction",
                                                       L"",
@@ -493,6 +494,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
                                        winrt::UIElement const& elementToWrap,
                                        winrt::IAdaptiveActionElement const& action,
                                        winrt::AdaptiveRenderContext const& renderContext,
+                                       winrt::AdaptiveRenderArgs const& renderArgs,
                                        bool fullWidth,
                                        const std::wstring& style,
                                        winrt::hstring const& altText,
@@ -587,7 +589,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
         // can we do explicit check? or need to call check_pointer()?
         if (action)
         {
-            WireButtonClickToAction(button, action, renderContext);
+            WireButtonClickToAction(button, action, renderContext, renderArgs);
         }
 
         return button;
@@ -595,8 +597,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
 
     void WireButtonClickToAction(winrt::Button const& button,
                                  winrt::IAdaptiveActionElement const& action,
-                                 winrt::AdaptiveRenderContext const& renderContext)
+                                 winrt::AdaptiveRenderContext const& renderContext,
+                                 winrt::AdaptiveRenderArgs const& renderArgs)
     {
+        renderContext.LinkSubmitActionToCard(action, renderArgs);
         auto actionInvoker = renderContext.ActionInvoker();
 
         auto token = button.Click([action, actionInvoker](winrt::IInspectable const&, winrt::RoutedEventArgs const&)
@@ -606,13 +610,14 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers
     winrt::UIElement HandleSelectAction(winrt::IAdaptiveCardElement const& adaptiveCardElement,
                                         winrt::IAdaptiveActionElement const& selectAction,
                                         winrt::AdaptiveRenderContext const& renderContext,
+                                        winrt::AdaptiveRenderArgs const& renderArgs,
                                         winrt::UIElement const& uiElement,
                                         bool supportsInteractivity,
                                         bool fullWidthTouchTarget)
     {
         if (selectAction && supportsInteractivity)
         {
-            return WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", L"", true);
+            return WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, renderArgs, fullWidthTouchTarget, L"Adaptive.SelectAction", L"", true);
         }
         else
         {
