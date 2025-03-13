@@ -131,8 +131,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <PackageCertificateKeyFile>PerfApp_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>42535185206990c017507a5d72b3127ef25f2e9b</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>Assets\PerfApp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -206,7 +205,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="..\..\..\samples\v1.5\Elements\AdaptiveCard.json" />
-    <None Include="PerfApp_TemporaryKey.pfx" />
+    <None Include="Assets\PerfApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
