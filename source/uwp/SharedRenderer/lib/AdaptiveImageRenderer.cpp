@@ -318,19 +318,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
             }
 
-            auto storeOp = dataWriter.StoreAsync();
-
-            if (const auto strongThis = weakThis.get())
-            {
-                strongThis->m_writeAsyncOperations.push_back(storeOp);
-
-                co_await storeOp;
-
-                auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
-                stream.Seek(0);
-
-                co_return stream;
-            }
+            dataWriter.StoreAsync().get();
+			auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
+			stream.Seek(0);
+			co_return stream;
         }
 
         // Otherwise, no resolver...
