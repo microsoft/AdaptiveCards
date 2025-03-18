@@ -318,7 +318,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
             }
 
-            dataWriter.StoreAsync().get();
+            co_await dataWriter.StoreAsync();
 			auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
 			stream.Seek(0);
 			co_return stream;
