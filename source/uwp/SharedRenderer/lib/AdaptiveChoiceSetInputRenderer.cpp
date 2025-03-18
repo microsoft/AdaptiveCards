@@ -157,6 +157,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             {
                 winrt::RadioButton radioButton{};
 
+                radioButton.GroupName(adaptiveChoiceSetInput.Id());
+
                 XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", radioButton);
                 if (values.size() == 1)
                 {
