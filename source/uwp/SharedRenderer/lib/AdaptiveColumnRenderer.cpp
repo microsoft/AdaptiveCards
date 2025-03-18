@@ -106,7 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto hostConfig = renderContext.HostConfig();
 
             auto columnControl = ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
-                cardElement, selectAction, renderContext, columnAsUIElement, XamlHelpers::SupportsInteractivity(hostConfig), false);
+                cardElement, selectAction, renderContext, renderArgs, columnAsUIElement, XamlHelpers::SupportsInteractivity(hostConfig), false);
 
             return columnControl;
         }
