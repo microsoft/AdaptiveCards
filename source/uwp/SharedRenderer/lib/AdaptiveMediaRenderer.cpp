@@ -40,7 +40,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             winrt::hstring altText = adaptiveMedia.AltText();
 
             auto touchTargetUIElement = ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::WrapInTouchTarget(
-                cardElement, posterContainer, nullptr, renderContext, true, L"Adaptive.SelectAction", altText, false);
+                cardElement, posterContainer, nullptr, renderContext, renderArgs, true, L"Adaptive.SelectAction", altText, false);
 
             // Create a panel to hold the poster and the media element
             winrt::StackPanel mediaStackPanel{};

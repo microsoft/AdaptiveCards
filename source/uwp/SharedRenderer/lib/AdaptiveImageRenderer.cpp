@@ -277,7 +277,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
         winrt::AutomationProperties::SetName(frameworkElement, altText);
 
         return ActionHelpers::HandleSelectAction(
-            adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
+            adaptiveCardElement, selectAction, renderContext, renderArgs, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
     winrt::IAsyncOperation<winrt::IRandomAccessStream> XamlBuilder::ResolveToStreamAsync(winrt::Uri const imageUrl,
@@ -318,19 +318,10 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                 dataWriter.WriteBytes(std::vector<byte>{data.begin(), data.end()});
             }
 
-            auto storeOp = dataWriter.StoreAsync();
-
-            if (const auto strongThis = weakThis.get())
-            {
-                strongThis->m_writeAsyncOperations.push_back(storeOp);
-
-                co_await storeOp;
-
-                auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
-                stream.Seek(0);
-
-                co_return stream;
-            }
+            co_await dataWriter.StoreAsync();
+			auto stream = dataWriter.DetachStream().try_as<winrt::InMemoryRandomAccessStream>();
+			stream.Seek(0);
+			co_return stream;
         }
 
         // Otherwise, no resolver...
