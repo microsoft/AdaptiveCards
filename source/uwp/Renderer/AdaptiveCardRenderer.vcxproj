@@ -111,6 +111,11 @@
       <AdditionalLibraryDirectories>$(VC_LibraryPath_VC_OneCore_CurrentPlatform_spectre);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)' == 'ARM'">
+      <ClCompile>
+          <DisableSpecificWarnings>4189</DisableSpecificWarnings>
+      </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -135,8 +140,6 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <WarningVersion Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">19.11</WarningVersion>
-      <WarningVersion Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">19.11</WarningVersion>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
