@@ -135,8 +135,6 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <WarningVersion Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">19.11</WarningVersion>
-      <WarningVersion Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">19.11</WarningVersion>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
