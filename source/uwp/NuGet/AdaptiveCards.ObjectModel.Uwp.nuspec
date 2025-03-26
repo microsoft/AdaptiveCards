@@ -27,11 +27,6 @@
         <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.pri" target="runtimes\win10-x64\native"/>
         <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.pdb" target="runtimes\win10-x64\native"/>
 
-        <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.dll" target="runtimes\win10-arm\native"/>
-        <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.lib" target="runtimes\win10-arm\native"/>
-        <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.pri" target="runtimes\win10-arm\native"/>
-        <file src="..\ARM\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.pdb" target="runtimes\win10-arm\native"/>
-
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.dll" target="runtimes\win10-arm64\native"/>
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.lib" target="runtimes\win10-arm64\native"/>
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.Uwp.pri" target="runtimes\win10-arm64\native"/>
