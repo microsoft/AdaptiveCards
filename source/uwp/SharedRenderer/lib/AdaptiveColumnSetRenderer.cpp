@@ -156,7 +156,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             XamlHelpers::AppendXamlElementToPanel(xamlGrid, gridContainer, columnSetHeightType);
 
             return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
-                cardElement, selectAction, renderContext, columnSetBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
+                cardElement, selectAction, renderContext, renderArgs, columnSetBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)
         {
