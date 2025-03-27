@@ -25,8 +25,6 @@ pool:
   vmImage: windows-2019
 
 steps:
-- template: templates/uwp-download-secure-files.yml
-
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1
   displayName: Use NuGet 5.x
@@ -44,6 +42,13 @@ steps:
     nugetConfigPath: source/nuget.config
     restoreSolution: $(solution)
     verbosityRestore: Detailed
+
+# Signing
+- task: PowerShell@2
+  displayName: Generate Test Signing Certificate
+  inputs:
+    targetType: filePath
+    filePath: source/uwp/Build/GenerateTestPFX.ps1
 
 - task: VSBuild@1
   name: VSBuild3
