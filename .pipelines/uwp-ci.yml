@@ -24,6 +24,7 @@ pool:
   name: Azure Pipelines
   vmImage: windows-2019
 
+steps:
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1
   displayName: Use NuGet 5.x
