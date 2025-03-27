@@ -48,7 +48,7 @@ steps:
   displayName: Generate Test Signing Certificate
   inputs:
     targetType: filePath
-    filePath: source/Build/GenerateTestPFX.ps1
+    filePath: source/uwp/Build/GenerateTestPFX.ps1
 
 - task: VSBuild@1
   name: VSBuild3
