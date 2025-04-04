@@ -94,3 +94,114 @@ Many of the controls utilized in the designer come from the `adaptivecards-contr
 - [Add a new property to the element properties pane](https://github.com/microsoft/AdaptiveCards/pull/8271)
 - [Update adaptivecards-controls](https://github.com/microsoft/AdaptiveCards/pull/7937)
 - [Update designer peer ordering logic](https://github.com/microsoft/AdaptiveCards/pull/7514)
+
+## Architecture
+
+### High-level CardDesigner class interaction
+```mermaid
+flowchart TD
+    CardDesigner[class CardDesigner] --> ToolBar[class ToolBar]
+    CardDesigner --> SidePanel[class SidePanel]
+    CardDesigner --> HostContainer[class HostContainer]
+    CardDesigner --> Surface[class CardDesignerSurface]
+    CardDesigner --> SampleCatalogue[class SampleCatalogue]
+    CardDesigner --> OpenSample[class OpenSampleDialog]
+    CardDesigner --> HelpDialog[class HelpDialog]
+```
+
+### High-level SidePanel class interaction
+Note: The Toolbox control can contain any HTML content
+```mermaid
+flowchart TD
+    SidePanel --> Toolbox[class Toolbox]
+    SidePanel --> ToolboxInfo[class ToolboxInfo]
+    ToolboxInfo --> Splitter[class Splitter]
+
+    Toolbox --> Monaco[Monaco editor]
+    Toolbox --> Treeview[class TreeView]
+    Toolbox --> AdaptiveCard[Rendered AdaptiveCard]
+    Toolbox --> ElementPaletteItem[class ElementPaletteItem]
+
+    ElementPaletteItem --> BasePalette[class BasePaletteItem]
+    BasePalette --> DraggableElement[class DraggableElement]
+
+```
+
+### High-level Toolbar class interaction
+```mermaid
+flowchart TD
+    Toolbar --> ToolbarButton[class ToolbarButton]
+    Toolbar --> ToolbarChoicePicker[class ToolbarChoicePicker]
+    ToolbarButton -- extends --> ToolbarElement[class ToolbarElement]
+    ToolbarChoicePicker -- extends --> ToolbarElement
+
+    Treeview --> DataTreeItem[class DataTreeItem]
+    Treeview --> BaseTreeItem[class BaseTreeItem]
+
+    HostContainer -- parent class to --> MultiTheme[MultiThemeHostContainer]
+    HostContainer -- parent class to --> SingleTheme[SingleThemeHostContainer]
+
+    MultiTheme --> CustomHost[Specific hosts, e.g. Outlook]
+    SingleTheme --> CustomHost
+
+```
+
+### High-level CardDesignerSurface class interaction
+```mermaid
+flowchart TD
+    Surface --> ElementRegistry[class CardElementPeerRegistry]
+    Surface --> ActionRegistry[class ActionPeerRegistry]
+    Surface --> DesignContext[class DesignContext]
+    Surface --> DesignedCard[Designed AdaptiveCard]
+    Surface --> DesignerPeer[class DesignerPeer]
+    Surface --> DragHandle[class DragHandle]
+
+    ElementRegistry -- extends --> DesignerRegistry[class DesignerPeerRegistry]
+    ActionRegistry -- extends --> DesignerRegistry
+    DesignerRegistry -- creates --> DesignerPeer
+```
+
+### High-level DesingerPeer class interaction
+```mermaid
+flowchart TD
+    DesignerPeer --> PropertyEditor[class <type>PropertyEditor]
+    DesignerPeer --> DesginerPeerTreeItem[class DesignerPeerTreeItem]
+    DesignerPeer -- creates --> PropertySheet[class PropertySheet]
+
+    PropertyEditor -- extends --> PropertySheetEntry[class PropertySheetEntry]
+```
+
+## Repo structure
+
+Designer specific code is within `source/nodejs/adaptivecards-designer/src` folder. Here's the breakdown of relevant contents:
+```yaml
+├── assets # images used within the package
+├── containers
+│   ├── ** # Each supported container will have their own directory. Each includes their container implementation and css
+│   ├── host-container.ts # Base host container implementation
+│   ├── multi-theme-host-container.ts # Implementation for host containers that support multiple themes
+│   └── single-theme-host-container.ts # Implementation for host containers with one theme
+├── hostConfigs
+│   └── Host Configs for the containers are pulled from ~/samples/HostConfig. This directory should not be modified
+├── adaptive-card-schema.ts # Copy of the adaptive card schema
+├── adaptivecards-designer.css # Styling for the designer
+├── adaptivecards-designer.ts # Exports our default containers and device emulations
+├── base-tree-item.ts # Base class for building all tree views
+├── card-designer-surface.ts # Responsible for the rendering of the currently designed card and moving the designer peers across the surface
+├── card-desginer.ts # Main entry point for the designer. Handles the state of all components
+├── data-tree-item.ts # Utilized to build data tree views when users are selecting new data for templated properties
+├── data.ts # Helpers for templating data handling
+├── designer-peer-treeitem.ts # Utilized to build the tree view in the card structure pane
+├── designer-peers.ts # Implementation of designer peers and their property sheets
+├── draggable-element.ts # Implementation for elements that can be dragged on the designer surface (DesignerPeer extends this class)
+├── *-dialog.ts # Various popup dialogs utilized in the designer
+├── peer-command.ts # Supports actions on designer peers (e.g. "Add a column")
+├── shared.ts # GlobalSettings that can enable/disable features
+├── side-panel.ts # Utilized to dock content to side of the designer. Typically contains toolboxes/splitter
+├── splitter.ts # Support multiple toolboxes within one side panel
+├── string.ts
+├── tool-box.ts # Standard way to host docked content. Content can be any HTML
+├── tool-palette.ts # Contains palette item classes used to create the card elements toolbox
+├── toolbar.ts # Implementation for the toolbar and its elements
+└── tree-view.ts # Base class. Utilized to build the card structure
+```
