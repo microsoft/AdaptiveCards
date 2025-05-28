@@ -44,7 +44,7 @@ namespace ImageRendererServer.Controllers
 
                 // Get the JSON from the card URL
                 var client = new HttpClient();
-                var response = await client.GetAsync(cardUrl, cts.Token);
+                var response = await client.GetAsync(cardUrl, cts.Token);  // CodeQL [SM03781] InDomain is used to validate the URL domain, so this is safe. Adding suppression for CodeQL since known pattern not currently supported for SSRF query yet.
                 var json = await response.Content.ReadAsStringAsync();
 
                 // Make sure the payload has a version property
