@@ -6,7 +6,6 @@
     <!-- Set Platform to AnyCPU to allow consumption of the projection assembly from any architecture. -->
     <Platform>AnyCPU</Platform>
     <RootNamespace>AdaptiveCards.ObjectModel.WinUI3</RootNamespace>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>

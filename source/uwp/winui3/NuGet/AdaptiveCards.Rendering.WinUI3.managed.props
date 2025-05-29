@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AdaptiveCardsRenderingWinUI3WinMD>$(MSBuildThisFileDirectory)..\..\lib\uap10.0\AdaptiveCards.Rendering.WinUI3.winmd</AdaptiveCardsRenderingWinUI3WinMD>
+        <AdaptiveCardsRenderingWinUI3DllName>AdaptiveCards.Rendering.WinUI3.dll</AdaptiveCardsRenderingWinUI3DllName>
+    </PropertyGroup>
+</Project>
