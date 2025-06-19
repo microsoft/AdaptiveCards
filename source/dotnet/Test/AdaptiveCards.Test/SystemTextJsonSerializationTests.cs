@@ -89,5 +89,80 @@ namespace AdaptiveCards.Test
             Assert.IsTrue(newtonsoftJson.Contains("1.0"));
             Assert.IsTrue(systemTextJson.Contains("1.0") || systemTextJson.Contains("\"1.0\""));
         }
+
+        [TestMethod]
+        public void TestSystemTextJsonRoundTripCompatibility()
+        {
+            // Create a more complex card
+#pragma warning disable 0618
+            var originalCard = new AdaptiveCard();
+#pragma warning restore 0618
+            originalCard.Version = "1.0";
+            originalCard.FallbackText = "Round trip test";
+            originalCard.Speak = "This is a test card";
+            originalCard.Lang = "en";
+            
+            // Add a text block
+            originalCard.Body.Add(new AdaptiveTextBlock("Hello World")
+            {
+                Size = AdaptiveTextSize.Large,
+                Weight = AdaptiveTextWeight.Bolder,
+                Color = AdaptiveTextColor.Accent,
+                Wrap = true
+            });
+
+            // Add a submit action
+            originalCard.Actions.Add(new AdaptiveSubmitAction
+            {
+                Title = "Submit",
+                Id = "submitAction"
+            });
+
+            // Test round trip: Card -> JSON -> Card
+            var json = originalCard.ToJsonSystemText();
+            Console.WriteLine("Generated JSON:");
+            Console.WriteLine(json);
+            
+            var parseResult = AdaptiveCard.FromJsonSystemText(json);
+            var deserializedCard = parseResult.Card;
+
+            Console.WriteLine($"Original Actions Count: {originalCard.Actions.Count}");
+            Console.WriteLine($"Deserialized Actions Count: {deserializedCard.Actions.Count}");
+
+            // Validate basic properties
+            Assert.AreEqual(originalCard.Version.ToString(), deserializedCard.Version.ToString());
+            Assert.AreEqual(originalCard.FallbackText, deserializedCard.FallbackText);
+            Assert.AreEqual(originalCard.Speak, deserializedCard.Speak);
+            Assert.AreEqual(originalCard.Lang, deserializedCard.Lang);
+
+            // Validate body elements
+            Assert.AreEqual(originalCard.Body.Count, deserializedCard.Body.Count);
+            Assert.IsTrue(deserializedCard.Body[0] is AdaptiveTextBlock);
+            
+            var originalTextBlock = (AdaptiveTextBlock)originalCard.Body[0];
+            var deserializedTextBlock = (AdaptiveTextBlock)deserializedCard.Body[0];
+            
+            Assert.AreEqual(originalTextBlock.Text, deserializedTextBlock.Text);
+            Assert.AreEqual(originalTextBlock.Size, deserializedTextBlock.Size);
+            Assert.AreEqual(originalTextBlock.Weight, deserializedTextBlock.Weight);
+            Assert.AreEqual(originalTextBlock.Color, deserializedTextBlock.Color);
+            Assert.AreEqual(originalTextBlock.Wrap, deserializedTextBlock.Wrap);
+
+            // Validate actions
+            Console.WriteLine($"About to validate actions: Original={originalCard.Actions.Count}, Deserialized={deserializedCard.Actions.Count}");
+            Assert.AreEqual(originalCard.Actions.Count, deserializedCard.Actions.Count);
+            
+            if (deserializedCard.Actions.Count > 0)
+            {
+                Console.WriteLine($"First action type: {deserializedCard.Actions[0].GetType().Name}");
+                Assert.IsTrue(deserializedCard.Actions[0] is AdaptiveSubmitAction);
+                
+                var originalAction = (AdaptiveSubmitAction)originalCard.Actions[0];
+                var deserializedAction = (AdaptiveSubmitAction)deserializedCard.Actions[0];
+                
+                Assert.AreEqual(originalAction.Title, deserializedAction.Title);
+                Assert.AreEqual(originalAction.Id, deserializedAction.Id);
+            }
+        }
     }
 }

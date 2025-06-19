@@ -321,6 +321,8 @@ namespace AdaptiveCards
         /// <returns>The JSON representation of this AdaptiveCard.</returns>
         public string ToJsonSystemText()
         {
+            var dto = AdaptiveCards.SystemTextJson.AdaptiveCardDtoConverter.ToDto(this);
+            
             var options = new System.Text.Json.JsonSerializerOptions
             {
                 WriteIndented = true,
@@ -328,7 +330,7 @@ namespace AdaptiveCards
                 DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
             };
             
-            return System.Text.Json.JsonSerializer.Serialize(this, options);
+            return System.Text.Json.JsonSerializer.Serialize(dto, options);
         }
 
         /// <summary>
@@ -348,9 +350,8 @@ namespace AdaptiveCards
                     PropertyNameCaseInsensitive = true
                 };
 
-                options.Converters.Add(new AdaptiveCardSystemTextJsonConverter());
-
-                parseResult.Card = System.Text.Json.JsonSerializer.Deserialize<AdaptiveCard>(json, options);
+                var dto = System.Text.Json.JsonSerializer.Deserialize<AdaptiveCards.SystemTextJson.AdaptiveCardDto>(json, options);
+                parseResult.Card = AdaptiveCards.SystemTextJson.AdaptiveCardDtoConverter.FromDto(dto);
             }
             catch (System.Text.Json.JsonException ex)
             {
