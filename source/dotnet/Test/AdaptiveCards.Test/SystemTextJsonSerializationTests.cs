@@ -18,8 +18,8 @@ namespace AdaptiveCards.Test
             card.FallbackText = "Fallback Text";
             card.Body.Add(new AdaptiveTextBlock { Text = "Hello World" });
 
-            // Test ToJsonSystemText
-            var json = card.ToJsonSystemText();
+            // Test ToJson (now using System.Text.Json)
+            var json = card.ToJson();
             Console.WriteLine("System.Text.Json output:");
             Console.WriteLine(json);
             
@@ -46,7 +46,7 @@ namespace AdaptiveCards.Test
 
             try
             {
-                var parseResult = AdaptiveCard.FromJsonSystemText(json);
+                var parseResult = AdaptiveCard.FromJson(json);
                 Assert.IsNotNull(parseResult);
                 Assert.IsNotNull(parseResult.Card);
                 Assert.AreEqual("1.0", parseResult.Card.Version.ToString());
@@ -60,7 +60,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestSystemTextJsonVsNewtonsoftJsonCompatibility()
+        public void TestJsonSerializationWorks()
         {
             // Create a simple card
 #pragma warning disable 0618
@@ -70,24 +70,19 @@ namespace AdaptiveCards.Test
             card.FallbackText = "Compatibility Test";
             card.Body.Add(new AdaptiveTextBlock { Text = "Test Message" });
 
-            // Get JSON from both serializers
-            var newtonsoftJson = card.ToJson();
-            var systemTextJson = card.ToJsonSystemText();
+            // Get JSON using System.Text.Json (now the default)
+            var json = card.ToJson();
 
-            Console.WriteLine("Newtonsoft.Json output:");
-            Console.WriteLine(newtonsoftJson);
-            Console.WriteLine("\nSystem.Text.Json output:");
-            Console.WriteLine(systemTextJson);
+            Console.WriteLine("System.Text.Json output:");
+            Console.WriteLine(json);
 
-            // Both should produce valid JSON
-            Assert.IsFalse(string.IsNullOrEmpty(newtonsoftJson));
-            Assert.IsFalse(string.IsNullOrEmpty(systemTextJson));
+            // Should produce valid JSON
+            Assert.IsFalse(string.IsNullOrEmpty(json));
 
-            // Both should contain the same basic content (case insensitive)
-            Assert.IsTrue(newtonsoftJson.ToLower().Contains("test message"));
-            Assert.IsTrue(systemTextJson.ToLower().Contains("test message") || systemTextJson.ToLower().Contains("testmessage"));
-            Assert.IsTrue(newtonsoftJson.Contains("1.0"));
-            Assert.IsTrue(systemTextJson.Contains("1.0") || systemTextJson.Contains("\"1.0\""));
+            // Should contain the basic content (case insensitive)
+            Assert.IsTrue(json.ToLower().Contains("test message") || json.ToLower().Contains("testmessage"));
+            Assert.IsTrue(json.Contains("1.0") || json.Contains("\"1.0\""));
+            Assert.IsTrue(json.ToLower().Contains("compatibility test") || json.ToLower().Contains("compatibilitytest"));
         }
 
         [TestMethod]
@@ -119,11 +114,11 @@ namespace AdaptiveCards.Test
             });
 
             // Test round trip: Card -> JSON -> Card
-            var json = originalCard.ToJsonSystemText();
+            var json = originalCard.ToJson();
             Console.WriteLine("Generated JSON:");
             Console.WriteLine(json);
             
-            var parseResult = AdaptiveCard.FromJsonSystemText(json);
+            var parseResult = AdaptiveCard.FromJson(json);
             var deserializedCard = parseResult.Card;
 
             Console.WriteLine($"Original Actions Count: {originalCard.Actions.Count}");

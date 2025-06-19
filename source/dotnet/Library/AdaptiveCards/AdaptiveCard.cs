@@ -286,64 +286,6 @@ namespace AdaptiveCards
 
             try
             {
-                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
-                {
-                    ContractResolver = new WarningLoggingContractResolver(parseResult, new ParseContext()),
-                    Converters = { new StrictIntConverter() },
-                    Error = delegate (object sender, ErrorEventArgs args)
-                    {
-                        if (args.ErrorContext.Error.GetType() == typeof(JsonSerializationException))
-                        {
-                            args.ErrorContext.Handled = true;
-                        }
-                    }
-                });
-            }
-            catch (JsonException ex)
-            {
-                throw new AdaptiveSerializationException(ex.Message, ex);
-            }
-            return parseResult;
-        }
-
-        /// <summary>
-        /// Serialize this AdaptiveCard to JSON.
-        /// </summary>
-        /// <returns>The JSON representation of this AdaptiveCard.</returns>
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
-        }
-
-        /// <summary>
-        /// Serialize this AdaptiveCard to JSON using System.Text.Json.
-        /// </summary>
-        /// <returns>The JSON representation of this AdaptiveCard.</returns>
-        public string ToJsonSystemText()
-        {
-            var dto = AdaptiveCards.SystemTextJson.AdaptiveCardDtoConverter.ToDto(this);
-            
-            var options = new System.Text.Json.JsonSerializerOptions
-            {
-                WriteIndented = true,
-                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-            };
-            
-            return System.Text.Json.JsonSerializer.Serialize(dto, options);
-        }
-
-        /// <summary>
-        /// Parse an AdaptiveCard from JSON using System.Text.Json.
-        /// </summary>
-        /// <param name="json">A JSON-serialized Adaptive Card.</param>
-        /// <returns>The result of parsing <paramref name="json"/>.</returns>
-        public static AdaptiveCardParseResult FromJsonSystemText(string json)
-        {
-            var parseResult = new AdaptiveCardParseResult();
-
-            try
-            {
                 var options = new System.Text.Json.JsonSerializerOptions
                 {
                     PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
@@ -361,6 +303,25 @@ namespace AdaptiveCards
             return parseResult;
         }
 
+        /// <summary>
+        /// Serialize this AdaptiveCard to JSON.
+        /// </summary>
+        /// <returns>The JSON representation of this AdaptiveCard.</returns>
+        public string ToJson()
+        {
+            var dto = AdaptiveCards.SystemTextJson.AdaptiveCardDtoConverter.ToDto(this);
+            
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            };
+            
+            return System.Text.Json.JsonSerializer.Serialize(dto, options);
+        }
+
+        
         /// <summary>
         /// Get resource information for all images and media present in this card.
         /// </summary>

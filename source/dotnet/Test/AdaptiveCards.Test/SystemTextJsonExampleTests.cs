@@ -34,8 +34,8 @@ namespace AdaptiveCards.Test
                 Id = "submitButton"
             });
 
-            // Test System.Text.Json serialization
-            string systemTextJson = card.ToJsonSystemText();
+            // Test JSON serialization with System.Text.Json
+            string systemTextJson = card.ToJson();
             
             // Validate the JSON contains expected content
             Assert.IsTrue(systemTextJson.Contains("Hello, World!"));
@@ -43,8 +43,8 @@ namespace AdaptiveCards.Test
             Assert.IsTrue(systemTextJson.Contains("1.0"));
             Assert.IsTrue(systemTextJson.Contains("AdaptiveCard"));
             
-            // Test System.Text.Json deserialization
-            var parseResult = AdaptiveCard.FromJsonSystemText(systemTextJson);
+            // Test JSON deserialization with System.Text.Json
+            var parseResult = AdaptiveCard.FromJson(systemTextJson);
             var deserializedCard = parseResult.Card;
             
             // Validate deserialized card
@@ -69,7 +69,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestSystemTextJsonCompatibilityWithNewtonsoftJson()
+        public void TestSystemTextJsonSerialization()
         {
             // Create a card
 #pragma warning disable 0618
@@ -78,24 +78,18 @@ namespace AdaptiveCards.Test
             card.FallbackText = "Compatibility test";
             card.Body.Add(new AdaptiveTextBlock("Test message"));
 
-            // Serialize with both libraries
-            string newtonsoftJson = card.ToJson();
-            string systemTextJson = card.ToJsonSystemText();
+            // Serialize with System.Text.Json (now the default)
+            string json = card.ToJson();
 
-            // Both should contain the same key information
-            Assert.IsTrue(newtonsoftJson.Contains("Test message"));
-            Assert.IsTrue(systemTextJson.Contains("Test message"));
-            Assert.IsTrue(newtonsoftJson.Contains("1.0"));
-            Assert.IsTrue(systemTextJson.Contains("1.0"));
-            Assert.IsTrue(newtonsoftJson.Contains("Compatibility test"));
-            Assert.IsTrue(systemTextJson.Contains("Compatibility test"));
+            // Should contain the key information
+            Assert.IsTrue(json.Contains("Test message"));
+            Assert.IsTrue(json.Contains("1.0"));
+            Assert.IsTrue(json.Contains("Compatibility test"));
 
-            // Both should be valid JSON (can be parsed by the other serializer)
-            var newtonsoftParseResult = AdaptiveCard.FromJson(systemTextJson);
-            var systemTextParseResult = AdaptiveCard.FromJsonSystemText(newtonsoftJson);
+            // JSON should be valid and parseable
+            var parseResult = AdaptiveCard.FromJson(json);
 
-            Assert.IsNotNull(newtonsoftParseResult.Card);
-            Assert.IsNotNull(systemTextParseResult.Card);
+            Assert.IsNotNull(parseResult.Card);
         }
     }
 }
