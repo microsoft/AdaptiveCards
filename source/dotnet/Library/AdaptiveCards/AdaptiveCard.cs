@@ -316,6 +316,51 @@ namespace AdaptiveCards
         }
 
         /// <summary>
+        /// Serialize this AdaptiveCard to JSON using System.Text.Json.
+        /// </summary>
+        /// <returns>The JSON representation of this AdaptiveCard.</returns>
+        public string ToJsonSystemText()
+        {
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            };
+            
+            return System.Text.Json.JsonSerializer.Serialize(this, options);
+        }
+
+        /// <summary>
+        /// Parse an AdaptiveCard from JSON using System.Text.Json.
+        /// </summary>
+        /// <param name="json">A JSON-serialized Adaptive Card.</param>
+        /// <returns>The result of parsing <paramref name="json"/>.</returns>
+        public static AdaptiveCardParseResult FromJsonSystemText(string json)
+        {
+            var parseResult = new AdaptiveCardParseResult();
+
+            try
+            {
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                    PropertyNameCaseInsensitive = true
+                };
+
+                options.Converters.Add(new AdaptiveCardSystemTextJsonConverter());
+
+                parseResult.Card = System.Text.Json.JsonSerializer.Deserialize<AdaptiveCard>(json, options);
+            }
+            catch (System.Text.Json.JsonException ex)
+            {
+                throw new AdaptiveSerializationException(ex.Message, ex);
+            }
+            
+            return parseResult;
+        }
+
+        /// <summary>
         /// Get resource information for all images and media present in this card.
         /// </summary>
         /// <returns>Resource information for the entire card.</returns>
