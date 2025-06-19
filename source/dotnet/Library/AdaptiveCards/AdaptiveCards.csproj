@@ -63,6 +63,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.*" />
     <PackageReference Include="System.Net.Http" Version="4.3.*" />

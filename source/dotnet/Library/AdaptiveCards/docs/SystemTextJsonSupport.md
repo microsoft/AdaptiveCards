@@ -1,10 +1,43 @@
 # System.Text.Json Support for AdaptiveCards
 
-This document demonstrates the new System.Text.Json serialization support added to the AdaptiveCards .NET library.
+This document demonstrates the System.Text.Json serialization support in the AdaptiveCards .NET library.
+
+## 🚨 BREAKING CHANGE NOTICE
+
+**As of this version, AdaptiveCards has migrated from Newtonsoft.Json to System.Text.Json for all JSON operations.**
 
 ## Overview
 
-The AdaptiveCards library now supports both Newtonsoft.Json (existing) and System.Text.Json (new) for serialization and deserialization. This provides developers with more flexibility and allows migration to the modern .NET JSON APIs.
+The AdaptiveCards library now uses **System.Text.Json** as the primary JSON serialization engine. This change provides:
+
+- **Better Performance**: Significant improvements over Newtonsoft.Json
+- **Modern .NET Support**: Full compatibility with current .NET applications  
+- **Reduced Dependencies**: Less reliance on external libraries
+- **Enhanced Security**: Built-in .NET serialization
+
+## Migration Guide
+
+### For Most Users: No Code Changes Required
+
+If you were using the standard AdaptiveCards API, **no changes are needed**:
+
+```csharp
+// This code continues to work exactly the same
+var card = new AdaptiveCard("1.0");
+card.Body.Add(new AdaptiveTextBlock("Hello, World!"));
+
+// ToJson() now uses System.Text.Json internally
+string json = card.ToJson();
+
+// FromJson() now uses System.Text.Json internally  
+var result = AdaptiveCard.FromJson(json);
+```
+
+### What Changed
+
+- `ToJson()` and `FromJson()` methods now use System.Text.Json internally
+- JSON output may have minor formatting differences (property order, whitespace)
+- Better performance for serialization/deserialization operations
 
 ## Usage
 
@@ -35,11 +68,8 @@ card.Actions.Add(new AdaptiveSubmitAction
     Id = "submitButton"
 });
 
-// Serialize using Newtonsoft.Json (existing)
-string newtonsoftJson = card.ToJson();
-
-// Serialize using System.Text.Json (new)
-string systemTextJson = card.ToJsonSystemText();
+// Serialize using System.Text.Json (now the default)
+string json = card.ToJson();
 ```
 
 ### Deserializing Cards
@@ -56,13 +86,9 @@ string json = @"{
     ]
 }";
 
-// Deserialize using Newtonsoft.Json (existing)
-var newtonsoftResult = AdaptiveCard.FromJson(json);
-var newtonsoftCard = newtonsoftResult.Card;
-
-// Deserialize using System.Text.Json (new)
-var systemTextResult = AdaptiveCard.FromJsonSystemText(json);
-var systemTextCard = systemTextResult.Card;
+// Deserialize using System.Text.Json (now the default)
+var result = AdaptiveCard.FromJson(json);
+var card = result.Card;
 ```
 
 ## JSON Output Comparison
