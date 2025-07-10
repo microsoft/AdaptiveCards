@@ -427,7 +427,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                     }
                 }
 
-                if (auto strongThis = weakThis.get(); isAutoSize)
+                if (auto strongThis = weakThis.get(); strongThis && isAutoSize)
                 {
                     strongThis->SetAutoSize(
                         properties.uiElement,
