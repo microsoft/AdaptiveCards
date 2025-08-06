@@ -288,15 +288,28 @@ namespace AdaptiveCards.Test
                 }
             };
 
+            // Create a custom binder that only allows specific types for security
+            var binder = new SafeTypeBinder(new[] {
+                typeof(AdaptiveCard),
+                typeof(AdaptiveTextBlock),
+                typeof(AdaptiveImage),
+                typeof(AdaptiveColumnSet),
+                typeof(AdaptiveColumn)
+            });
 
-            // make card into JObject with types included
+            // make card into JObject with types included - using a secure binder
             JObject cardObject = JObject.FromObject(card, new Newtonsoft.Json.JsonSerializer()
             {
-                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
+                SerializationBinder = binder
             });
 
             // now bring it back
-            AdaptiveCard card2 = cardObject.ToObject<AdaptiveCard>();
+            AdaptiveCard card2 = cardObject.ToObject<AdaptiveCard>(new Newtonsoft.Json.JsonSerializer()
+            {
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
+                SerializationBinder = binder
+            });
 
             // card2 will now have AdditionalProperties because $type is not known and it seems $type is not ignored by Newtonsoft JsonExtensionData
             // so we cannot easily compare the strings. We must remove $type additional property for each element we expect and nothing more
@@ -1333,6 +1346,33 @@ namespace AdaptiveCards.Test
             var deserializedCard = AdaptiveCard.FromJson(expected).Card;
             var deserializedActual = deserializedCard.ToJson();
             Assert.AreEqual(expected, deserializedActual);
+        }
+
+        private class SafeTypeBinder : Newtonsoft.Json.Serialization.ISerializationBinder
+        {
+            private readonly IReadOnlyDictionary<string, Type> _knownTypes;
+
+            public SafeTypeBinder(Type[] allowedTypes)
+            {
+                _knownTypes = allowedTypes.ToDictionary(t => t.FullName);
+            }
+
+            public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+            {
+                assemblyName = null;
+                typeName = serializedType.FullName;
+            }
+
+            public Type BindToType(string assemblyName, string typeName)
+            {
+                if (_knownTypes.TryGetValue(typeName, out Type type))
+                {
+                    return type;
+                }
+
+                // Return null to prevent deserialization of unknown types
+                return null;
+            }
         }
     }
 }
