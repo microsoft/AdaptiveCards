@@ -1,34 +1,26 @@
-// swift-tools-version:5.4
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version:5.9
 import PackageDescription
 
 let package = Package(
     name: "AdaptiveCards",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14) // Update if you want newer APIs
     ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "AdaptiveCards",
             targets: ["AdaptiveCards", "ObjectModel"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        // Add any new dependencies here.
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "ObjectModel",
             path: "source/shared/cpp/ObjectModel",
-            exclude: [
-                "CMakeLists.txt"
-            ]
-            ),
+            exclude: ["CMakeLists.txt"]
+        ),
         .target(
             name: "AdaptiveCards",
             dependencies: ["ObjectModel"],
@@ -46,16 +38,16 @@ let package = Package(
             ],
             publicHeadersPath: "include",
             cxxSettings: [
-                .headerSearchPath("../../../../shared/cpp/ObjectModel") 
+                .headerSearchPath("../../../../shared/cpp/ObjectModel")
             ],
             linkerSettings:[
-                LinkerSetting.linkedFramework("AVFoundation"),
-                LinkerSetting.linkedFramework("AVKit"),
-                LinkerSetting.linkedFramework("UIKit"),
-                LinkerSetting.linkedFramework("CoreGraphics"),
-                LinkerSetting.linkedFramework("QuartzCore")
+                .linkedFramework("AVFoundation"),
+                .linkedFramework("AVKit"),
+                .linkedFramework("UIKit"),
+                .linkedFramework("CoreGraphics"),
+                .linkedFramework("QuartzCore")
             ]
-            ),
+        ),
         .testTarget(
             name:"AdaptiveCardsTest",
             dependencies: ["ObjectModel", "AdaptiveCards"],
@@ -67,13 +59,13 @@ let package = Package(
                 .headerSearchPath("../../../../shared/cpp/ObjectModel")
             ],
             linkerSettings:[
-                LinkerSetting.linkedFramework("AVFoundation"),
-                LinkerSetting.linkedFramework("AVKit"),
-                LinkerSetting.linkedFramework("UIKit"),
-                LinkerSetting.linkedFramework("CoreGraphics"),
-                LinkerSetting.linkedFramework("QuartzCore")
+                .linkedFramework("AVFoundation"),
+                .linkedFramework("AVKit"),
+                .linkedFramework("UIKit"),
+                .linkedFramework("CoreGraphics"),
+                .linkedFramework("QuartzCore")
             ]
         )
     ],
-    cxxLanguageStandard: CXXLanguageStandard.cxx17
+    cxxLanguageStandard: .cxx17
 )
