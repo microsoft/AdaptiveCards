@@ -30,7 +30,7 @@ body > #headerAreaHolder {
 
 .ac-blue {
   color: #fff !important;
-  background-color: #0050c5 !important;
+  background-color: var(--blue) !important;
 }
 
 .breadcrumbs {
@@ -646,19 +646,19 @@ button .fa-check {
 
 .ac-blue {
   color: #fff !important;
-  background-color: #0b78d0 !important;
+  background-color: var(--blue) !important;
 }
 
 .homepage a:link,
 .homepage a:visited {
-  color: #0b78d0;
+  color: var(--blue);
   font-size: 15px;
   line-height: 29px;
   font-weight: 600;
 }
 
 .homepage a:hover {
-  color: blue;
+  color: var(--blue-light);
 }
 
 .schema-content a:link,
