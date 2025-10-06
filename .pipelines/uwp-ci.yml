@@ -50,6 +50,14 @@ steps:
     targetType: filePath
     filePath: source/uwp/Build/GenerateTestPFX.ps1
 
+- task: PowerShell@2
+  displayName: 'Install Windows SDK'
+  inputs:
+    targetType: 'inline'
+    script: |
+      choco install windows-sdk-10-version-1809-all
+      choco install windows-sdk-10-version-2004-all
+
 - task: VSBuild@1
   name: VSBuild3
   displayName: Build solution

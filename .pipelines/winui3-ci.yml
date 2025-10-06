@@ -43,6 +43,14 @@ steps:
     restoreSolution: $(solution)
     verbosityRestore: Detailed
 
+
+- task: PowerShell@2
+  displayName: 'Install Windows SDK'
+  inputs:
+    targetType: 'inline'
+    script: |
+      choco install windows-sdk-10-version-1809-all
+
 - task: VSBuild@1
   name: VSBuild4
   displayName: Build solution
