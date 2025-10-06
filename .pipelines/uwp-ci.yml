@@ -56,6 +56,7 @@ steps:
     targetType: 'inline'
     script: |
       choco install windows-sdk-10-version-1809-all
+      choco install windows-sdk-10-version-1903-all
 
 - task: VSBuild@1
   name: VSBuild3
