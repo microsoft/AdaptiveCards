@@ -74,9 +74,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             SKIP_TEST_OUTSIDE_PACIFIC_TIME();
             TextBlock blck;
             // seoul
-            std::string testString = "{{TIME(2017-10-28T11:25:00+09:00)}}";
-            blck.SetText(testString);
-            Assert::AreEqual<std::string>("{{TIME(2017-10-28T11:25:00+09:00)}}", blck.GetText());
+			Assert::AreEqual<std::string>("{{TIME(2017-10-28T11:25:00+09:00)}}", blck.GetText());
 
             DateTimePreparser preparser = blck.GetTextForDateParsing();
             Assert::AreEqual<std::string>(preparser.GetTextTokens().front()->GetText(), "07:25 PM");
@@ -93,6 +91,19 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             DateTimePreparser preparser = blck.GetTextForDateParsing();
             Assert::AreEqual<std::string>(preparser.GetTextTokens().front()->GetText(), "07:27 PM");
+            Assert::IsTrue(preparser.GetTextTokens().front()->GetFormat() == DateTimePreparsedTokenFormat::RegularString);
+        }
+		TEST_METHOD(TransformToTimeWithoutOffsetTest)
+        {
+            SKIP_TEST_OUTSIDE_PACIFIC_TIME();
+            TextBlock blck;
+            // New York
+            std::string testString = "{{TIME(2017-10-27T22:27)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<std::string>("{{TIME(2017-10-27T22:27:00)}}", blck.GetText());
+
+            DateTimePreparser preparser = blck.GetTextForDateParsing();
+            Assert::AreEqual<std::string>(preparser.GetTextTokens().front()->GetText(), "10:27 PM");
             Assert::IsTrue(preparser.GetTextTokens().front()->GetFormat() == DateTimePreparsedTokenFormat::RegularString);
         }
     };
@@ -132,15 +143,31 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             SKIP_TEST_OUTSIDE_PACIFIC_TIME();
             TextBlock blck;
-            std::string testString = "{{DATE(2017-10-28T11:25:00+09:00, COMPACT)}}";
+            std::string testString = "{{DATE(2023-10-01T12:00:00+13:00, COMPACT)}}";
             // New York
             blck.SetText(testString);
-            Assert::AreEqual<std::string>("{{DATE(2017-10-28T11:25:00+09:00, COMPACT)}}", blck.GetText());
+            Assert::AreEqual<std::string>("{{DATE(2023-10-01T12:00:00+13:00, COMPACT)}}", blck.GetText());
 
             DateTimePreparser preparser = blck.GetTextForDateParsing();
             std::shared_ptr<DateTimePreparsedToken> token(preparser.GetTextTokens().front());
-            Assert::AreEqual<std::string>(token->GetText(), "{{DATE(2017-10-28T11:25:00+09:00, COMPACT)}}");
-            Assert::IsTrue(token->GetDay() == 27 && token->GetMonth() == 9 && token->GetYear() == 2017);
+            Assert::AreEqual<std::string>(token->GetText(), "{{DATE(2017-10-28T12:00:00+13:00, COMPACT)}}");
+            Assert::IsTrue(token->GetDay() == 29 && token->GetMonth() == 8 && token->GetYear() == 2023);
+            Assert::IsTrue(token->GetFormat() == DateTimePreparsedTokenFormat::DateCompact);
+        }
+
+		TEST_METHOD(TransformToDateWithLargeNegativeOffset)
+        {
+            SKIP_TEST_OUTSIDE_PACIFIC_TIME();
+            TextBlock blck;
+            std::string testString = "{{DATE(2023-10-01T12:00:00-13:00, COMPACT)}}";
+            // New York
+            blck.SetText(testString);
+            Assert::AreEqual<std::string>("{{DATE(2023-10-01T12:00:00-13:00, COMPACT)}}", blck.GetText());
+
+            DateTimePreparser preparser = blck.GetTextForDateParsing();
+            std::shared_ptr<DateTimePreparsedToken> token(preparser.GetTextTokens().front());
+            Assert::AreEqual<std::string>(token->GetText(), "{{DATE(2023-10-01T12:00:00-13:00, COMPACT)}}");
+            Assert::IsTrue(token->GetDay() == 2 && token->GetMonth() == 9 && token->GetYear() == 2023);
             Assert::IsTrue(token->GetFormat() == DateTimePreparsedTokenFormat::DateCompact);
         }
 
@@ -181,6 +208,22 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::string testString = "{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}";
             blck.SetText(testString);
             Assert::AreEqual<std::string>("{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}", blck.GetText());
+        }
+
+		TEST_METHOD(TransformToDateWithoutOffsetTest)
+        {
+            SKIP_TEST_OUTSIDE_PACIFIC_TIME();
+            TextBlock blck;
+            // New York
+            std::string testString = "{{DATE(2017-10-27T22:27, COMPACT)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<std::string>("{{DATE(2017-10-27T22:27:00, COMPACT)}}", blck.GetText());
+
+			DateTimePreparser preparser = blck.GetTextForDateParsing();
+            std::shared_ptr<DateTimePreparsedToken> token(preparser.GetTextTokens().front());
+            Assert::AreEqual<std::string>(token->GetText(), "{{DATE(2017-10-27T22:27:00,COMPACT)}}");
+            Assert::IsTrue(token->GetDay() == 27 && token->GetMonth() == 9 && token->GetYear() == 2017);
+            Assert::IsTrue(token->GetFormat() == DateTimePreparsedTokenFormat::DateCompact);
         }
 
     };
@@ -423,6 +466,28 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::string testString = "{{DATE(1994-02-29T06:08:00Z)}}";
             blck.SetText(testString);
             Assert::AreEqual<std::string>("{{DATE(1994-02-29T06:08:00Z)}}", blck.GetText());
+        }
+		TEST_METHOD(PostiveOffsetLeadingToDateChange)
+        {
+            TextBlock blck;
+            std::string testString = "{{DATE(1994-02-29T12:00:00+13:00)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<std::string>("{{DATE(1994-02-29T12:00:00+13:00)}}", blck.GetText());
+
+			DateTimePreparser preparser = blck.GetTextForDateParsing();
+            Assert::AreEqual<std::string>(preparser.GetTextTokens().front()->GetText(), "01:00 AM");
+            Assert::IsTrue(preparser.GetTextTokens().front()->GetFormat() == DateTimePreparsedTokenFormat::RegularString);
+        }
+		TEST_METHOD(NegativeOffsetLeadingToTimeChange)
+        {
+            TextBlock blck;
+            std::string testString = "{{TIME(1994-02-29T12:00:00+13:00)}}";
+            blck.SetText(testString);
+            Assert::AreEqual<std::string>("{{TIME(1994-02-29T12:00:00+13:00)}}", blck.GetText());
+
+			DateTimePreparser preparser = blck.GetTextForDateParsing();
+            Assert::AreEqual<std::string>(preparser.GetTextTokens().front()->GetText(), "01:00 AM");
+            Assert::IsTrue(preparser.GetTextTokens().front()->GetFormat() == DateTimePreparsedTokenFormat::RegularString);
         }
     };
 }
