@@ -28,7 +28,11 @@
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-arm64\native"/>
         <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-arm64\native"/>
 
+        <!-- .NET 6.0 projection -->
         <file src="..\AnyCPU\ObjectModelCsProjection\$Configuration$\net6.0-windows10.0.17763.0\ObjectModelCsProjection.dll" target="lib\net6.0-windows10.0.17763.0\ObjectModelCsProjection.dll"/>
+
+        <!-- .NET 8.0 projection -->
+        <file src="..\AnyCPU\ObjectModelCsProjection\$Configuration$\net8.0-windows10.0.17763.0\ObjectModelCsProjection.dll" target="lib\net8.0-windows10.0.17763.0\ObjectModelCsProjection.dll"/>
 
         <file src="EULA-Windows.txt" target="\"/>
         <file src="AdaptiveCards.ObjectModel.WinUI3.native.targets" target="build\native\AdaptiveCards.ObjectModel.WinUI3.targets"/>
