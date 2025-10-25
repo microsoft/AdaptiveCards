@@ -11,6 +11,9 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     
+    <!-- Suppress warning about win10-* RIDs in dependencies for .NET 8.0+ -->
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
+    
     <!-- AOT Compatibility Analysis -->
     <IsAotCompatible>true</IsAotCompatible>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
