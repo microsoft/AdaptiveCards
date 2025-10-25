@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AdaptiveCards.ObjectModel.WinUI3;
 using Windows.Data.Json;
 
-
 namespace WinUI3ObjectModelTest
 {
     [TestClass]
