@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>AdaptiveCards.ObjectModel.WinUI3</id>
@@ -16,17 +16,17 @@
     <files>
         <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.winmd" target="lib\uap10.0"/>
 
-        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win-x86\native"/>
 
-        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win-x64\native"/>
 
-        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win10-arm64\native"/>
-        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win10-arm64\native"/>
-        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.dll" target="runtimes\win-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.lib" target="runtimes\win-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardsObjectModel\AdaptiveCards.ObjectModel.WinUI3.pdb" target="runtimes\win-arm64\native"/>
 
         <file src="..\AnyCPU\ObjectModelCsProjection\$Configuration$\net6.0-windows10.0.17763.0\ObjectModelCsProjection.dll" target="lib\net6.0-windows10.0.17763.0\ObjectModelCsProjection.dll"/>
 
