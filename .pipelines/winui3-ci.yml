@@ -35,7 +35,7 @@ steps:
 - task: NuGetAuthenticate@1
   name: NuGetAuthenticate2
   inputs:
-    forceReinstallCredentialProvider: tru
+    forceReinstallCredentialProvider: true
 
 
 - task: UseDotNet@2
