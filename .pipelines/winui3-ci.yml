@@ -31,14 +31,14 @@ steps:
   inputs:
     versionSpec: 6.4.x
 
+- task: NuGetAuthenticate@1
+  name: NuGetAuthenticate2
+
 - task: UseDotNet@2
   displayName: 'Install .NET 8 SDK'
   inputs:
     version: '8.0.x'
     packageType: 'sdk'
-
-- task: NuGetAuthenticate@1
-  name: NuGetAuthenticate2
 
 - task: NuGetCommand@2
   displayName: NuGet restore
