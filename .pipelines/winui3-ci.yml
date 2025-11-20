@@ -62,7 +62,7 @@ steps:
   displayName: Build solution
   inputs:
     solution: $(solution)
-    vsVersion: 16.0
+    vsVersion: 17.0
     platform: $(buildPlatform)
     configuration: $(buildConfiguration)
     maximumCpuCount: true
