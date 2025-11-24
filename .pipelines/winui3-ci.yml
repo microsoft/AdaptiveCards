@@ -50,7 +50,7 @@ steps:
     targetType: 'inline'
     script: |
       choco install windows-sdk-10-version-1809-all
-      choco install windows-sdk-10-version-22000-all
+      winget install --id Microsoft.WindowsSDK.10.0.22000 -e --silent --accept-package-agreements --accept-source-agreements
 
 - task: VSBuild@1
   name: VSBuild4
