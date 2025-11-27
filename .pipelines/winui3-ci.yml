@@ -22,17 +22,41 @@ variables:
 
 pool:
   name: Azure Pipelines
-  vmImage: windows-2019
+  vmImage: windows-latest
 
 steps:
-- task: NuGetToolInstaller@1
-  name: NuGetToolInstaller1
-  displayName: Use NuGet 6.4.x
+- task: PowerShell@2
+  displayName: 'Install Windows SDK'
   inputs:
-    versionSpec: 6.4.x
+    targetType: 'inline'
+    script: |
+      choco install windows-sdk-10-version-1809-all
+
+      $winget = (Get-Command winget -ErrorAction SilentlyContinue)
+      if (-not $winget) {
+        Write-Host 'winget not found. Installing App Installer (DesktopAppInstaller) silently...'
+        
+        Invoke-WebRequest -Uri "https://aka.ms/getwinget" -OutFile "$env:Temp\AppInstaller.msixbundle"
+        Add-AppxPackage -Path "$env:Temp\AppInstaller.msixbundle"
+      }
+      
+      winget install --id Microsoft.WindowsSDK.10.0.22000 -e --silent --accept-package-agreements --accept-source-agreements
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 8.x'
+  inputs:
+    version: 8.x
+
+- task: NuGetToolInstaller@0
+  name: NuGetToolInstaller1
+  displayName: Use NuGet 5.x
+  inputs:
+    versionSpec: 5.x
 
 - task: NuGetAuthenticate@1
-  name: NuGetAuthenticate2
+  displayName: 'NuGet Authenticate'
+  inputs:
+    nuGetServiceConnections: 'AdaptiveCards-Dependencies'
 
 - task: NuGetCommand@2
   displayName: NuGet restore
@@ -43,20 +67,12 @@ steps:
     restoreSolution: $(solution)
     verbosityRestore: Detailed
 
-
-- task: PowerShell@2
-  displayName: 'Install Windows SDK'
-  inputs:
-    targetType: 'inline'
-    script: |
-      choco install windows-sdk-10-version-1809-all
-
 - task: VSBuild@1
   name: VSBuild4
   displayName: Build solution
   inputs:
     solution: $(solution)
-    vsVersion: 16.0
+    vsVersion: 17.0
     platform: $(buildPlatform)
     configuration: $(buildConfiguration)
     maximumCpuCount: true

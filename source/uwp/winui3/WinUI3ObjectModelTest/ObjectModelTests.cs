@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AdaptiveCards.ObjectModel.WinUI3;
 using Windows.Data.Json;
 
-
 namespace WinUI3ObjectModelTest
 {
     [TestClass]
@@ -1014,7 +1013,7 @@ namespace WinUI3ObjectModelTest
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Actions.Add(openUrlAction);
 
-            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"mode\":\"secondary\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"mode\":\"secondary\",\"role\":\"Link\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);
