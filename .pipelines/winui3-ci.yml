@@ -44,7 +44,9 @@ steps:
     versionSpec: 5.x
 
 - task: NuGetAuthenticate@1
-  displayName: Authenticate to NuGet
+  displayName: 'NuGet Authenticate'
+  inputs:
+    nuGetServiceConnections: 'AdaptiveCards-Dependencies'
 
 - task: NuGetCommand@2
   displayName: NuGet restore
