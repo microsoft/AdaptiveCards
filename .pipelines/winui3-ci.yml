@@ -32,15 +32,7 @@ steps:
     script: |
       choco install windows-sdk-10-version-1809-all
 
-      $winget = (Get-Command winget -ErrorAction SilentlyContinue)
-      if (-not $winget) {
-        Write-Host 'winget not found. Installing App Installer (DesktopAppInstaller) silently...'
-        
-        Invoke-WebRequest -Uri "https://aka.ms/getwinget" -OutFile "$env:Temp\AppInstaller.msixbundle"
-        Add-AppxPackage -Path "$env:Temp\AppInstaller.msixbundle"
-      }
-      
-      winget install --id Microsoft.WindowsSDK.10.0.22000 -e --silent --accept-package-agreements --accept-source-agreements
+      choco install windows-sdk-11-version-22h2-all
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 8.x'
