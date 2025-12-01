@@ -4,7 +4,7 @@
         <AdaptiveCards-Platform Condition="'$(Platform)' == 'Win32'">x86</AdaptiveCards-Platform>
         <AdaptiveCards-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</AdaptiveCards-Platform>
     </PropertyGroup>
-    <ItemGroup Condition="'$(TargetPlatformIdentifier)' == 'UAP'">
+	<ItemGroup Condition="'$(UseWinUI)' == 'true' OR $(TargetFramework.Contains('windows'))">
         <Reference Include="$(MSBuildThisFileDirectory)..\..\lib\uap10.0\AdaptiveCards.ObjectModel.WinUI3.winmd">
             <Implementation>AdaptiveCards.ObjectModel.WinUI3.dll</Implementation>
         </Reference>
