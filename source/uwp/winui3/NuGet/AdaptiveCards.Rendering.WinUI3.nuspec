@@ -19,17 +19,17 @@
     <files>
         <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.winmd" target="lib\uap10.0"/>
 
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win10-x86\native"/>
-        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win10-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win-x86\native"/>
+        <file src="..\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win-x86\native"/>
 
-        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win10-x64\native"/>
-        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win10-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win-x64\native"/>
+        <file src="..\x64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win-x64\native"/>
 
-        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win10-arm64\native"/>
-        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win10-arm64\native"/>
-        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win10-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.dll" target="runtimes\win-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.lib" target="runtimes\win-arm64\native"/>
+        <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.WinUI3.pdb" target="runtimes\win-arm64\native"/>
 
         <!-- .NET 6.0 projection -->
         <file src="..\AnyCPU\RendererCsProjection\$Configuration$\net6.0-windows10.0.17763.0\RendererCsProjection.dll" target="lib\net6.0-windows10.0.17763.0\RendererCsProjection.dll" />
