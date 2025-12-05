@@ -71,7 +71,39 @@ namespace AdaptiveCards.Templating
         /// </example>
         /// <param name="jsonTemplate">string in json or seriazable object</param>
         public AdaptiveCardTemplate(string jsonTemplate)
+            : this(jsonTemplate, validate: false) { }
+            
+        /// <summary>
+        /// <para>Creates an instance of AdaptiveCardTemplate</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>Once created, it will contain a parsed tree based on jsonTemplate</para>
+        /// <para>Data is bound by calling <c>Expand</c> on the object</para>
+        /// <para>The intance can be rebound with different data by calling <c>Expand</c></para>
+        /// <see cref="Expand(EvaluationContext, Func{string, object})"/>
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// var jsonTemplate = "
+        /// {
+        ///    "type": "AdaptiveCard",
+        ///    "version": "1.0",
+        ///    "body": [
+        ///        {
+        ///            "type": "TextBlock",
+        ///            "text": "Hello ${person.firstName}"
+        ///        }
+        ///    ]
+        ///}"
+        /// var template = new AdaptiveCardTemplate(jsonTemplate);
+        /// </code>
+        /// </example>
+        /// <param name="jsonTemplate">string in json or seriazable object</param>
+        public AdaptiveCardTemplate(string jsonTemplate, bool validate)   
         {
+            if (validate && string.IsNullOrWhiteSpace(jsonTemplate))
+                throw new ArgumentException("The value cannot be an empty string or composed entirely of whitespace.", nameof(jsonTemplate));
+            
             if (jsonTemplate != null)
             {
                 jsonTemplateString = jsonTemplate;
@@ -83,6 +115,11 @@ namespace AdaptiveCards.Templating
                 {
                     BuildParseTree = true
                 };
+
+                if (validate)
+                {
+                    parser.ErrorHandler = new BailErrorStrategy();
+                }                   
 
                 parseTree = parser.json();
             }
