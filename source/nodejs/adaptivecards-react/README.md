@@ -65,3 +65,24 @@ import {ProvidesHostConfigContext, AdaptiveCardUsingHostConfigContext } from "ad
         </...>    
       </ProvidesHostConfigContext>
 ```
+
+- extend AdativeCard with [custom elements](https://learn.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/extensibility):
+
+```tsx
+import { CardElement, CardObjectRegistry, GlobalRegistry, SerializationContext } from "adaptivecards";
+
+// populate element registry
+const elementRegistry = new CardObjectRegistry<CardElement>();
+GlobalRegistry.populateWithDefaultElements(elementRegistry);
+elementRegistry.register(CustomElement.JsonTypeName, CustomElement);
+
+// customize serialization context
+const serializationContext = new SerializationContext();
+serializationContext.setElementRegistry(elementRegistry);
+
+// ...
+
+// pass context to the adaptive card host
+    <AdaptiveCard payload={card} hostConfig={hostConfig} serializationContext={serializationContext} />
+
+```
