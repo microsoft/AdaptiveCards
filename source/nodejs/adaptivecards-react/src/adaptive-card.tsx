@@ -43,7 +43,7 @@ const propTypes = {
 };
 
 const defaultOpenUrlHandler = (action: AdaptiveCards.OpenUrlAction) => {
-    window.open(action.url, '_blank');
+    window.open(action.url, '_blank', 'noopener,noreferrer');
 };
 
 const setUpMarkdownIt = () => {
