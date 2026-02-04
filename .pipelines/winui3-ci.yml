@@ -52,8 +52,7 @@ steps:
   displayName: NuGet restore
   inputs:
     command: 'restore'
-    feedsToUse: config
-    nugetConfigPath: source/nuget.config
+    feedsToUse: 'AdaptiveCards-public'
     restoreSolution: $(solution)
     verbosityRestore: Detailed
 
