@@ -52,7 +52,7 @@ steps:
   displayName: NuGet restore
   inputs:
     command: 'restore'
-    feedsToUse: 'AdaptiveCards-public'
+    feedsToUse: select
     restoreSolution: $(solution)
     verbosityRestore: Detailed
 
