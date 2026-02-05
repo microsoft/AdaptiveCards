@@ -52,7 +52,8 @@ steps:
   displayName: NuGet restore
   inputs:
     command: 'restore'
-    feedsToUse: select
+    feedsToUse: config
+    nugetConfigPath: source/nuget.config
     restoreSolution: $(solution)
     verbosityRestore: Detailed
 
