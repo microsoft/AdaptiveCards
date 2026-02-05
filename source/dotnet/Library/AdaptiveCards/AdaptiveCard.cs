@@ -286,23 +286,20 @@ namespace AdaptiveCards
 
             try
             {
-                parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
+                var options = new System.Text.Json.JsonSerializerOptions
                 {
-                    ContractResolver = new WarningLoggingContractResolver(parseResult, new ParseContext()),
-                    Converters = { new StrictIntConverter() },
-                    Error = delegate (object sender, ErrorEventArgs args)
-                    {
-                        if (args.ErrorContext.Error.GetType() == typeof(JsonSerializationException))
-                        {
-                            args.ErrorContext.Handled = true;
-                        }
-                    }
-                });
+                    PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var dto = System.Text.Json.JsonSerializer.Deserialize<AdaptiveCards.SystemTextJson.AdaptiveCardDto>(json, options);
+                parseResult.Card = AdaptiveCards.SystemTextJson.AdaptiveCardDtoConverter.FromDto(dto);
             }
-            catch (JsonException ex)
+            catch (System.Text.Json.JsonException ex)
             {
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
+            
             return parseResult;
         }
 
@@ -312,9 +309,19 @@ namespace AdaptiveCards
         /// <returns>The JSON representation of this AdaptiveCard.</returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+            var dto = AdaptiveCards.SystemTextJson.AdaptiveCardDtoConverter.ToDto(this);
+            
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            };
+            
+            return System.Text.Json.JsonSerializer.Serialize(dto, options);
         }
 
+        
         /// <summary>
         /// Get resource information for all images and media present in this card.
         /// </summary>
