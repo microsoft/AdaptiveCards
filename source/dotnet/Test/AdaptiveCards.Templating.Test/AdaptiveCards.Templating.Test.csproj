@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
-    <PackageReference Include="Microsoft.Bot.AdaptiveExpressions.Core" Version="4.22.9" />
+    <PackageReference Include="Microsoft.Bot.AdaptiveExpressions.Core" Version="4.23.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.3.1" />
     <PackageReference Include="MSTest.TestFramework" Version="3.3.1" />
