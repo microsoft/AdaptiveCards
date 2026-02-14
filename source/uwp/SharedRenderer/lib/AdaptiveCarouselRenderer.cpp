@@ -95,13 +95,21 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             }
 
             uint32_t carouselMinHeight = styledCollection.MinHeight();
+            auto fixedHeightInPixel = carousel.HeightInPixels();
 
+            // Ensure MinHeight doesn't exceed fixed height to prevent AG_E_LAYOUT_CYCLE
             if (carouselMinHeight > 0)
             {
-                gridContainer.MinHeight(carouselMinHeight);
+                if (fixedHeightInPixel && carouselMinHeight > fixedHeightInPixel)
+                {
+                    gridContainer.MinHeight(static_cast<double>(fixedHeightInPixel));
+                }
+                else
+                {
+                    gridContainer.MinHeight(carouselMinHeight);
+                }
             }
 
-            auto fixedHeightInPixel = carousel.HeightInPixels();
             if (fixedHeightInPixel)
             {
                 carouselUI.MaxHeight(static_cast<double>(fixedHeightInPixel));

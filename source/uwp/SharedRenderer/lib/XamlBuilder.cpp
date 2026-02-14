@@ -62,7 +62,16 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
 
             if (cardMinHeight > 0)
             {
-                rootAsFrameworkElement.MinHeight(cardMinHeight);
+                // If fixed dimensions are set, ensure MinHeight doesn't exceed MaxHeight to prevent AG_E_LAYOUT_CYCLE
+                if (xamlBuilder && xamlBuilder->m_fixedDimensions && cardMinHeight > xamlBuilder->m_fixedHeight)
+                {
+                    // Clamp MinHeight to not exceed the fixed height constraint
+                    rootAsFrameworkElement.MinHeight(xamlBuilder->m_fixedHeight);
+                }
+                else
+                {
+                    rootAsFrameworkElement.MinHeight(cardMinHeight);
+                }
             }
 
             auto selectAction = adaptiveCard.SelectAction();
