@@ -132,7 +132,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                     // Use Loaded event to set initial height — fires once after the element
                     // is in the visual tree and has been measured, but not during a layout pass.
-                    carouselUI.Loaded([carouselUI, isUpdatingHeight](auto&&, auto&&) {
+                    auto loadedToken = carouselUI.Loaded([carouselUI, isUpdatingHeight](auto&&, auto&&) {
                         if (*isUpdatingHeight)
                             return;
                         *isUpdatingHeight = true;
@@ -143,7 +143,8 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     // Use SizeChanged to adjust if the FlipView width changes (e.g. window resize).
                     // SizeChanged fires after layout completes, so it won't cause a layout cycle
                     // as long as we guard against re-entrancy.
-                    carouselUI.SizeChanged([carouselUI, isUpdatingHeight](auto&&, winrt::SizeChangedEventArgs const&) {
+                    auto sizeChangedToken =
+                        carouselUI.SizeChanged([carouselUI, isUpdatingHeight](auto&&, winrt::SizeChangedEventArgs const&) {
                         if (*isUpdatingHeight)
                             return;
                         *isUpdatingHeight = true;
@@ -152,13 +153,20 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     });
 
                     // Update height when the selected page changes, since pages may differ in size.
-                    carouselUI.SelectionChanged([carouselUI, isUpdatingHeight](auto&&, auto&&) {
+                    auto selectionChangedToken = carouselUI.SelectionChanged([carouselUI, isUpdatingHeight](auto&&, auto&&) {
                         if (*isUpdatingHeight)
                             return;
                         *isUpdatingHeight = true;
                         SetFlipViewMaxHeight(carouselUI);
                         *isUpdatingHeight = false;
                     });
+
+                    carouselUI.Unloaded([ carouselUI, loadedToken, sizeChangedToken, selectionChangedToken ](auto&&, auto&&) {
+                        carouselUI.Loaded(loadedToken);
+                        carouselUI.SizeChanged(sizeChangedToken);
+                        carouselUI.SelectionChanged(selectionChangedToken);
+                    });
+
                 }
             }
 
