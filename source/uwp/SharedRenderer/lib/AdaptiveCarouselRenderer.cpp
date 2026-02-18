@@ -122,13 +122,47 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 if (carouselPageUI != nullptr)
                 {
                     carouselUI.Items().Append(carouselPageUI);
-
-                    if (fixedHeightInPixel == 0)
-                    {
-                        carouselPageUI.try_as<FrameworkElement>().LayoutUpdated(
-                            [carouselUI](auto&&, auto&&) { SetFlipViewMaxHeight(carouselUI); });
-                    }
                }
+            }
+
+            // If no fixed height was specified, compute the max height from page content
+            // after the FlipView has been loaded (not during layout) to avoid layout cycles.
+            if (fixedHeightInPixel == 0)
+            {
+                auto isUpdatingHeight = std::make_shared<bool>(false);
+
+                // Use Loaded event to set initial height — fires once after the element
+                // is in the visual tree and has been measured, but not during a layout pass.
+                carouselUI.Loaded([carouselUI, isUpdatingHeight](auto&&, auto&&)
+                {
+                    if (*isUpdatingHeight)
+                        return;
+                    *isUpdatingHeight = true;
+                    SetFlipViewMaxHeight(carouselUI);
+                    *isUpdatingHeight = false;
+                });
+
+                // Use SizeChanged to adjust if the FlipView width changes (e.g. window resize).
+                // SizeChanged fires after layout completes, so it won't cause a layout cycle
+                // as long as we guard against re-entrancy.
+                carouselUI.SizeChanged([carouselUI, isUpdatingHeight](auto&&, winrt::SizeChangedEventArgs const&)
+                {
+                    if (*isUpdatingHeight)
+                        return;
+                    *isUpdatingHeight = true;
+                    SetFlipViewMaxHeight(carouselUI);
+                    *isUpdatingHeight = false;
+                });
+
+                // Update height when the selected page changes, since pages may differ in size.
+                carouselUI.SelectionChanged([carouselUI, isUpdatingHeight](auto&&, auto&&)
+                {
+                    if (*isUpdatingHeight)
+                        return;
+                    *isUpdatingHeight = true;
+                    SetFlipViewMaxHeight(carouselUI);
+                    *isUpdatingHeight = false;
+                });
             }
 
             if (carousel.InitialPage())
@@ -192,11 +226,23 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void SetFlipViewMaxHeight(FlipView const& flipView)
     {
         auto selectIndex = flipView.SelectedIndex();
+
+        // FIX: Validate selectedIndex is within bounds
+        if (selectIndex < 0 || static_cast<uint32_t>(selectIndex) >= flipView.Items().Size())
+        {
+            return;
+        }
+
         auto carouselPageUI = flipView.Items().GetAt(selectIndex).try_as<FrameworkElement>();
 
-        if (flipView.IsLoaded())
+        // FIX: Check if carouselPageUI is null before using it
+        if (carouselPageUI != nullptr && flipView.IsLoaded())
         {
             float width = static_cast<float>(flipView.ActualWidth());
+            if (width <= 0)
+            {
+                return;
+            }
             const winrt::Size noVerticalLimit{width, std::numeric_limits<float>::infinity()};
             carouselPageUI.Measure(noVerticalLimit);
             auto maxHeight = carouselPageUI.DesiredSize().Height;

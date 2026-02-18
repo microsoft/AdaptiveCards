@@ -8,6 +8,7 @@
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
+
     struct RenderedElementStruct
     {
         winrt::UIElement renderedUI {nullptr};
@@ -39,6 +40,8 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
                                                                      winrt::AdaptiveRenderContext const& renderContext,
                                                                      XamlBuilder* xamlBuilder,
                                                                      winrt::ContainerStyle defaultContainerStyle = winrt::ContainerStyle::Default);
+
+        static void DumpXamlTree(winrt::DependencyObject const& obj, int indent = 0);
 
         void AddListener(IXamlBuilderListener* listener);
         void RemoveListener(IXamlBuilderListener* listener);

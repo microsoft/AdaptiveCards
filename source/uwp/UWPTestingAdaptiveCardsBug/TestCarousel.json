@@ -1,0 +1,242 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.6",
+  "body": [
+    {
+      "type": "Carousel",
+      "rtl": false,
+      "pages": [
+        {
+          "type": "CarouselPage",
+          "rtl": false,
+          "items": [
+            {
+              "type": "Container",
+              "items": [
+                {
+                  "type": "ColumnSet",
+                  "spacing": "None",
+                  "columns": [
+                    {
+                      "type": "Column",
+                      "width": "100px",
+                      "items": [
+                        {
+                          "type": "Image",
+                          "url": "https://picsum.photos/seed/screen-01/200/200",
+                          "altText": "Open screen recorder",
+                          "horizontalAlignment": "Center",
+                          "width": "76px",
+                          "height": "64px"
+                        }
+                      ],
+                      "horizontalAlignment": "Center",
+                      "verticalContentAlignment": "Center",
+                      "spacing": "None"
+                    },
+                    {
+                      "type": "Column",
+                      "width": "auto",
+                      "items": [
+                        {
+                          "type": "TextBlock",
+                          "text": "Record from screen",
+                          "weight": "Bolder",
+                          "spacing": "Small",
+                          "wrap": true
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "Capture your screen with audio in one tap.",
+                          "wrap": true,
+                          "spacing": "None",
+                          "isSubtle": false,
+                          "size": "Small",
+                          "style": "default",
+                          "fontType": "Default"
+                        }
+                      ],
+                      "verticalContentAlignment": "Center",
+                      "horizontalAlignment": "Left"
+                    }
+                  ],
+                  "minHeight": "110px",
+                  "horizontalAlignment": "Left",
+                  "height": "stretch"
+                }
+              ],
+              "backgroundImage": {
+                "url": "https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=1200&q=60",
+                "horizontalAlignment": "Center",
+                "verticalAlignment": "Center"
+              },
+              "minHeight": "110px",
+              "selectAction": {
+                "type": "Action.OpenUrl",
+                "tooltip": "Open screen recorder",
+                "url": "https://example.com/record/screen",
+                "role": "Link"
+              },
+              "spacing": "None",
+              "height": "stretch",
+              "horizontalAlignment": "Center",
+              "verticalContentAlignment": "Center"
+            },
+            {
+              "type": "Container",
+              "items": [
+                {
+                  "type": "ColumnSet",
+                  "spacing": "None",
+                  "columns": [
+                    {
+                      "type": "Column",
+                      "width": "100px",
+                      "items": [
+                        {
+                          "type": "Image",
+                          "url": "https://picsum.photos/seed/camera-02/200/200",
+                          "altText": "Open camera recorder",
+                          "horizontalAlignment": "Center",
+                          "width": "76px",
+                          "height": "64px"
+                        }
+                      ],
+                      "horizontalAlignment": "Center",
+                      "verticalContentAlignment": "Center",
+                      "spacing": "None"
+                    },
+                    {
+                      "type": "Column",
+                      "width": "auto",
+                      "items": [
+                        {
+                          "type": "TextBlock",
+                          "text": "Record from camera",
+                          "weight": "Bolder",
+                          "spacing": "Small",
+                          "wrap": true
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "Use your webcam to record a quick clip.",
+                          "wrap": true,
+                          "spacing": "None",
+                          "isSubtle": false,
+                          "size": "Small",
+                          "style": "default",
+                          "fontType": "Default"
+                        }
+                      ],
+                      "verticalContentAlignment": "Center",
+                      "horizontalAlignment": "Left"
+                    }
+                  ],
+                  "minHeight": "110px",
+                  "horizontalAlignment": "Left",
+                  "height": "stretch"
+                }
+              ],
+              "backgroundImage": {
+                "url": "https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=1200&q=60",
+                "horizontalAlignment": "Center",
+                "verticalAlignment": "Center"
+              },
+              "minHeight": "110px",
+              "selectAction": {
+                "type": "Action.OpenUrl",
+                "tooltip": "Open camera recorder",
+                "role": "Link",
+                "url": "https://example.com/record/camera"
+              },
+              "spacing": "Small",
+              "horizontalAlignment": "Center",
+              "verticalContentAlignment": "Center"
+            }
+          ]
+        },
+        {
+          "type": "CarouselPage",
+          "rtl": false,
+          "items": [
+            {
+              "type": "Container",
+              "items": [
+                {
+                  "type": "ColumnSet",
+                  "spacing": "Medium",
+                  "columns": [
+                    {
+                      "type": "Column",
+                      "width": "100px",
+                      "items": [
+                        {
+                          "type": "Image",
+                          "url": "https://picsum.photos/seed/editor-03/200/200",
+                          "altText": "Open editor mode",
+                          "horizontalAlignment": "Center",
+                          "width": "76px",
+                          "height": "64px"
+                        }
+                      ],
+                      "horizontalAlignment": "Left",
+                      "verticalContentAlignment": "Center",
+                      "height": "stretch"
+                    },
+                    {
+                      "type": "Column",
+                      "width": "auto",
+                      "items": [
+                        {
+                          "type": "TextBlock",
+                          "text": "Record from editor",
+                          "wrap": true,
+                          "weight": "Bolder",
+                          "spacing": "Small"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "Create a recording while editing your document.",
+                          "wrap": true,
+                          "spacing": "None",
+                          "isSubtle": false,
+                          "style": "default",
+                          "fontType": "Default",
+                          "size": "Small",
+                          "weight": "Default"
+                        }
+                      ],
+                      "verticalContentAlignment": "Center",
+                      "horizontalAlignment": "Left"
+                    }
+                  ],
+                  "minHeight": "110px",
+                  "horizontalAlignment": "Left",
+                  "verticalContentAlignment": "Top",
+                  "height": "stretch"
+                }
+              ],
+              "backgroundImage": {
+                "url": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=60"
+              },
+              "minHeight": "110px",
+              "selectAction": {
+                "type": "Action.OpenUrl",
+                "tooltip": "Open editor mode",
+                "url": "https://example.com/record/editor",
+                "role": "Link"
+              }
+            },
+            {
+              "type": "Container",
+              "height": "stretch",
+              "minHeight": "110px"
+            }
+          ],
+          "verticalContentAlignment": "Top"
+        }
+      ]
+    }
+  ]
+}

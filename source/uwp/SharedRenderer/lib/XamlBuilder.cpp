@@ -9,6 +9,8 @@
 
 namespace AdaptiveCards::Rendering::Xaml_Rendering
 {
+
+
     XamlBuilder::XamlBuilder()
     {
         m_imageLoadTracker = winrt::make_self<ImageLoadTracker>();
@@ -23,6 +25,198 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
     void XamlBuilder::ImagesLoadingHadError()
     {
         FireImagesLoadingHadError();
+    }
+
+        void XamlBuilder::DumpXamlTree(winrt::DependencyObject const& obj, int indent)
+    {
+        if (!obj)
+        {
+            return;
+        }
+
+        std::wstringstream ss;
+        for (int i = 0; i < indent; ++i)
+        {
+            ss << L"  ";
+        }
+
+        // Get the runtime class name (e.g. "Windows.UI.Xaml.Controls.Grid")
+        auto typeName = winrt::get_class_name(obj);
+        ss << typeName.c_str();
+
+        // If it's a FrameworkElement, append detailed layout properties
+        if (auto fe = obj.try_as<winrt::FrameworkElement>())
+        {
+            auto name = fe.Name();
+            if (!name.empty())
+            {
+                ss << L" Name=\"" << name.c_str() << L"\"";
+            }
+            ss << L" W=" << fe.Width() << L" H=" << fe.Height();
+            ss << L" MinW=" << fe.MinWidth() << L" MinH=" << fe.MinHeight();
+            ss << L" MaxW=" << fe.MaxWidth() << L" MaxH=" << fe.MaxHeight();
+            ss << L" HAlign=" << static_cast<int>(fe.HorizontalAlignment());
+            ss << L" VAlign=" << static_cast<int>(fe.VerticalAlignment());
+
+            // Show margin (can cause layout issues)
+            auto margin = fe.Margin();
+            if (margin.Left != 0 || margin.Top != 0 || margin.Right != 0 || margin.Bottom != 0)
+            {
+                ss << L" Margin=" << margin.Left << L"," << margin.Top << L"," << margin.Right << L"," << margin.Bottom;
+            }
+
+            // Show padding for Controls
+            if (auto control = obj.try_as<winrt::Control>())
+            {
+                auto padding = control.Padding();
+                if (padding.Left != 0 || padding.Top != 0 || padding.Right != 0 || padding.Bottom != 0)
+                {
+                    ss << L" Padding=" << padding.Left << L"," << padding.Top << L"," << padding.Right << L","
+                       << padding.Bottom;
+                }
+            }
+
+            // Show actual size if already measured
+            if (fe.ActualWidth() > 0 || fe.ActualHeight() > 0)
+            {
+                ss << L" ActualW=" << fe.ActualWidth() << L" ActualH=" << fe.ActualHeight();
+            }
+        }
+
+        // If it's a TextBlock, append Text
+        if (auto tb = obj.try_as<winrt::TextBlock>())
+        {
+            auto text = tb.Text();
+            // Truncate long text for readability
+            if (text.size() > 50)
+            {
+                ss << L" Text=\"" << std::wstring_view(text).substr(0, 50) << L"...\"";
+            }
+            else
+            {
+                ss << L" Text=\"" << text.c_str() << L"\"";
+            }
+            ss << L" TextWrapping=" << static_cast<int>(tb.TextWrapping());
+        }
+
+        // If it's a Panel, show child count and orientation for StackPanel
+        if (auto panel = obj.try_as<winrt::Panel>())
+        {
+            ss << L" Children=" << panel.Children().Size();
+        }
+        if (auto sp = obj.try_as<winrt::StackPanel>())
+        {
+            ss << L" Orientation=" << (sp.Orientation() == winrt::Orientation::Horizontal ? L"Horizontal" : L"Vertical");
+        }
+
+        // If it's a Grid, show row/column definitions
+        if (auto grid = obj.try_as<winrt::Grid>())
+        {
+            auto rows = grid.RowDefinitions();
+            if (rows.Size() > 0)
+            {
+                ss << L" Rows=[";
+                for (uint32_t r = 0; r < rows.Size(); ++r)
+                {
+                    auto rd = rows.GetAt(r);
+                    auto gl = rd.Height();
+                    if (r > 0)
+                        ss << L",";
+                    if (gl.GridUnitType == winrt::GridUnitType::Auto)
+                        ss << L"Auto";
+                    else if (gl.GridUnitType == winrt::GridUnitType::Star)
+                        ss << gl.Value << L"*";
+                    else
+                        ss << gl.Value << L"px";
+                }
+                ss << L"]";
+            }
+            auto cols = grid.ColumnDefinitions();
+            if (cols.Size() > 0)
+            {
+                ss << L" Cols=[";
+                for (uint32_t c = 0; c < cols.Size(); ++c)
+                {
+                    auto cd = cols.GetAt(c);
+                    auto gl = cd.Width();
+                    if (c > 0)
+                        ss << L",";
+                    if (gl.GridUnitType == winrt::GridUnitType::Auto)
+                        ss << L"Auto";
+                    else if (gl.GridUnitType == winrt::GridUnitType::Star)
+                        ss << gl.Value << L"*";
+                    else
+                        ss << gl.Value << L"px";
+                }
+                ss << L"]";
+            }
+        }
+
+        // Border specifics
+        if (auto border = obj.try_as<winrt::Border>())
+        {
+            auto padding = border.Padding();
+            if (padding.Left != 0 || padding.Top != 0 || padding.Right != 0 || padding.Bottom != 0)
+            {
+                ss << L" Padding=" << padding.Left << L"," << padding.Top << L"," << padding.Right << L"," << padding.Bottom;
+            }
+        }
+
+        // FlipView / ItemsControl specifics (key for carousel layout cycle)
+        if (auto itemsControl = obj.try_as<winrt::ItemsControl>())
+        {
+            ss << L" Items=" << itemsControl.Items().Size();
+        }
+
+        // ScrollViewer specifics (can cause layout cycles)
+        if (auto sv = obj.try_as<winrt::ScrollViewer>())
+        {
+            ss << L" HScroll=" << static_cast<int>(sv.HorizontalScrollBarVisibility());
+            ss << L" VScroll=" << static_cast<int>(sv.VerticalScrollBarVisibility());
+            ss << L" HScrollMode=" << static_cast<int>(sv.HorizontalScrollMode());
+            ss << L" VScrollMode=" << static_cast<int>(sv.VerticalScrollMode());
+        }
+
+        ss << L"\n";
+        OutputDebugStringW(ss.str().c_str());
+
+        // Walk logical children
+        if (auto panel = obj.try_as<winrt::Panel>())
+        {
+            for (auto&& child : panel.Children())
+            {
+                DumpXamlTree(child, indent + 1);
+            }
+        }
+        else if (auto border = obj.try_as<winrt::Border>())
+        {
+            DumpXamlTree(border.Child(), indent + 1);
+        }
+        else if (auto contentControl = obj.try_as<winrt::ContentControl>())
+        {
+            if (auto content = contentControl.Content().try_as<winrt::DependencyObject>())
+            {
+                DumpXamlTree(content, indent + 1);
+            }
+        }
+        // Walk FlipView/ItemsControl items (they aren't Panel children)
+        else if (auto itemsControl = obj.try_as<winrt::ItemsControl>())
+        {
+            for (uint32_t i = 0; i < itemsControl.Items().Size(); ++i)
+            {
+                if (auto item = itemsControl.Items().GetAt(i).try_as<winrt::DependencyObject>())
+                {
+                    DumpXamlTree(item, indent + 1);
+                }
+            }
+        }
+        else if (auto sv = obj.try_as<winrt::ScrollViewer>())
+        {
+            if (auto content = sv.Content().try_as<winrt::DependencyObject>())
+            {
+                DumpXamlTree(content, indent + 1);
+            }
+        }
     }
 
     winrt::FrameworkElement XamlBuilder::BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCard const& adaptiveCard,

@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="AdaptiveCards.ObjectModel.Uwp" version="1.2.3" targetFramework="native" />
+  <package id="AdaptiveCards.Rendering.Uwp" version="3.2.8" targetFramework="native" />
+</packages>

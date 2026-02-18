@@ -1,0 +1,60 @@
+﻿<Page
+    x:Class="UWPTestingAdaptiveCardsBug.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWPTestingAdaptiveCardsBug"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left side: JSON input -->
+        <Grid Grid.Column="0" Margin="0,0,6,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Paste Adaptive Card JSON:" Grid.Row="0" Margin="0,0,0,4" FontWeight="Bold"/>
+            <TextBox x:Name="jsonInputBox"
+                 Grid.Row="1"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 FontFamily="Consolas"
+                 FontSize="12"/>
+            <Button x:Name="showButton"
+                Content="Render Card"
+                Click="ShowButton_Click"
+                Grid.Row="2"
+                Margin="0,8,0,0"
+                HorizontalAlignment="Stretch"/>
+            <!-- Error/Status Display -->
+            <TextBlock x:Name="errorText"
+                Grid.Row="3"
+                Foreground="Red"
+                TextWrapping="Wrap"
+                Margin="0,8,0,0"
+                FontFamily="Consolas"
+                FontSize="11"/>
+        </Grid>
+
+        <!-- Right side: Rendered card output -->
+        <ScrollViewer Grid.Column="1" Margin="6,0,0,0" VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="cardGrid"
+                  BorderBrush="Gray"
+                  BorderThickness="1"
+                  Padding="8"
+                  Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

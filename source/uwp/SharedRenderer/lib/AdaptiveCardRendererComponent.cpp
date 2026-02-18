@@ -117,6 +117,14 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 auto xamlTreeRoot =
                     ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, *renderContext, m_xamlBuilder.get());
                 renderedCard->SetFrameworkElement(xamlTreeRoot);
+
+                if (xamlTreeRoot)
+                {
+                    OutputDebugStringW(L"\n========== Adaptive Card XAML Tree ==========\n");
+                    ::AdaptiveCards::Rendering::Xaml_Rendering::XamlBuilder::DumpXamlTree(xamlTreeRoot);
+                    OutputDebugStringW(L"==============================================\n");
+                }
+
             }
             catch (...)
             {
