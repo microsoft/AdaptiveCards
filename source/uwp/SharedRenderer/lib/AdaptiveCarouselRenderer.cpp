@@ -113,6 +113,9 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             auto newRenderArgs =
                 winrt::make<winrt::implementation::AdaptiveRenderArgs>(containerStyle, renderArgs.ParentElement(), renderArgs);
 
+            // Shared guard to prevent re-entrant height updates
+            auto isUpdatingHeight = std::make_shared<bool>(false);
+
             for (auto page : carousel.Pages())
             {
                 auto [carouselPageUI, carouselPage] =
@@ -122,46 +125,63 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 if (carouselPageUI != nullptr)
                 {
                     carouselUI.Items().Append(carouselPageUI);
+
+                    // If no fixed height, listen for size changes on each page's content.
+                    // This handles the case where images load asynchronously and cause the
+                    // page content to resize after the FlipView has already been laid out.
+                    if (fixedHeightInPixel == 0)
+                    {
+                        if (auto pageAsFrameworkElement = carouselPageUI.try_as<FrameworkElement>())
+                        {
+                            pageAsFrameworkElement.SizeChanged(
+                                [carouselUI, isUpdatingHeight](auto&&, winrt::SizeChangedEventArgs const&)
+                                {
+                                    if (*isUpdatingHeight)
+                                        return;
+                                    *isUpdatingHeight = true;
+                                    SetFlipViewMaxHeight(carouselUI);
+                                    *isUpdatingHeight = false;
+                                });
+                        }
+                    }
                }
             }
 
-            // If no fixed height was specified, compute the max height from page content
-            // after the FlipView has been loaded (not during layout) to avoid layout cycles.
+            // If no fixed height was specified, also handle FlipView-level events for
+            // initial layout and page changes.
             if (fixedHeightInPixel == 0)
             {
-                auto isUpdatingHeight = std::make_shared<bool>(false);
+                auto isUpdatingHeightOuter = isUpdatingHeight;
 
                 // Use Loaded event to set initial height — fires once after the element
                 // is in the visual tree and has been measured, but not during a layout pass.
-                carouselUI.Loaded([carouselUI, isUpdatingHeight](auto&&, auto&&)
+                carouselUI.Loaded([carouselUI, isUpdatingHeightOuter](auto&&, auto&&)
                 {
-                    if (*isUpdatingHeight)
+                    if (*isUpdatingHeightOuter)
                         return;
-                    *isUpdatingHeight = true;
+                    *isUpdatingHeightOuter = true;
                     SetFlipViewMaxHeight(carouselUI);
-                    *isUpdatingHeight = false;
+                    *isUpdatingHeightOuter = false;
                 });
 
                 // Use SizeChanged to adjust if the FlipView width changes (e.g. window resize).
-                // SizeChanged fires after layout completes, so it won't cause a layout cycle
-                // as long as we guard against re-entrancy.
-                carouselUI.SizeChanged([carouselUI, isUpdatingHeight](auto&&, winrt::SizeChangedEventArgs const&)
+                carouselUI.SizeChanged([carouselUI, isUpdatingHeightOuter](auto&&, winrt::SizeChangedEventArgs const&)
                 {
-                    if (*isUpdatingHeight)
+                    if (*isUpdatingHeightOuter)
                         return;
-                    *isUpdatingHeight = true;
+                    *isUpdatingHeightOuter = true;
                     SetFlipViewMaxHeight(carouselUI);
-                    *isUpdatingHeight = false;
+                    *isUpdatingHeightOuter = false;
                 });
 
                 // Update height when the selected page changes, since pages may differ in size.
-                carouselUI.SelectionChanged([carouselUI, isUpdatingHeight](auto&&, auto&&)
+                carouselUI.SelectionChanged([carouselUI, isUpdatingHeightOuter](auto&&, auto&&)
                 {
-                    if (*isUpdatingHeight)
+                    if (*isUpdatingHeightOuter)
                         return;
-                    *isUpdatingHeight = true;
+                    *isUpdatingHeightOuter = true;
                     SetFlipViewMaxHeight(carouselUI);
-                    *isUpdatingHeight = false;
+                    *isUpdatingHeightOuter = false;
                 });
             }
 
@@ -227,27 +247,21 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     {
         auto selectIndex = flipView.SelectedIndex();
 
-        // FIX: Validate selectedIndex is within bounds
-        if (selectIndex < 0 || static_cast<uint32_t>(selectIndex) >= flipView.Items().Size())
-        {
-            return;
-        }
-
         auto carouselPageUI = flipView.Items().GetAt(selectIndex).try_as<FrameworkElement>();
 
-        // FIX: Check if carouselPageUI is null before using it
-        if (carouselPageUI != nullptr && flipView.IsLoaded())
+        if (!carouselPageUI)
+            return;
+
+        if (flipView.IsLoaded())
         {
             float width = static_cast<float>(flipView.ActualWidth());
-            if (width <= 0)
-            {
-                return;
-            }
+            
             const winrt::Size noVerticalLimit{width, std::numeric_limits<float>::infinity()};
             carouselPageUI.Measure(noVerticalLimit);
             auto maxHeight = carouselPageUI.DesiredSize().Height;
             auto previousMaxHeight = flipView.MaxHeight();
-            if ((std::numeric_limits<float>::infinity() == previousMaxHeight) || previousMaxHeight < maxHeight)
+            if (maxHeight > 0 &&
+                ((std::numeric_limits<float>::infinity() == previousMaxHeight) || previousMaxHeight < maxHeight))
             {
                 flipView.MaxHeight(maxHeight);
             }
