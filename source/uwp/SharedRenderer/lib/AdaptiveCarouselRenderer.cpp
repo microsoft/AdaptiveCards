@@ -123,16 +123,29 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                 {
                     carouselUI.Items().Append(carouselPageUI);
                 }
+            }
 
-                // If no fixed height was specified, compute the max height from page content
-                // after the FlipView has been loaded (not during layout) to avoid layout cycles.
-                if (fixedHeightInPixel == 0)
-                {
-                    auto isUpdatingHeight = std::make_shared<bool>(false);
+            // If no fixed height was specified, compute the max height from page content
+            // after the FlipView has been loaded (not during layout) to avoid layout cycles.
+            if (fixedHeightInPixel == 0)
+            {
+                auto isUpdatingHeight = std::make_shared<bool>(false);
 
-                    // Use Loaded event to set initial height — fires once after the element
-                    // is in the visual tree and has been measured, but not during a layout pass.
-                    auto loadedToken = carouselUI.Loaded([carouselUI, isUpdatingHeight](auto&&, auto&&) {
+                // Use Loaded event to set initial height — fires once after the element
+                // is in the visual tree and has been measured, but not during a layout pass.
+                auto loadedToken = carouselUI.Loaded([carouselUI, isUpdatingHeight](auto&&, auto&&) {
+                    if (*isUpdatingHeight)
+                        return;
+                    *isUpdatingHeight = true;
+                    SetFlipViewMaxHeight(carouselUI);
+                    *isUpdatingHeight = false;
+                });
+
+                // Use SizeChanged to adjust if the FlipView width changes (e.g. window resize).
+                // SizeChanged fires after layout completes, so it won't cause a layout cycle
+                // as long as we guard against re-entrancy.
+                auto sizeChangedToken =
+                    carouselUI.SizeChanged([carouselUI, isUpdatingHeight](auto&&, winrt::SizeChangedEventArgs const&) {
                         if (*isUpdatingHeight)
                             return;
                         *isUpdatingHeight = true;
@@ -140,34 +153,20 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                         *isUpdatingHeight = false;
                     });
 
-                    // Use SizeChanged to adjust if the FlipView width changes (e.g. window resize).
-                    // SizeChanged fires after layout completes, so it won't cause a layout cycle
-                    // as long as we guard against re-entrancy.
-                    auto sizeChangedToken =
-                        carouselUI.SizeChanged([carouselUI, isUpdatingHeight](auto&&, winrt::SizeChangedEventArgs const&) {
-                        if (*isUpdatingHeight)
-                            return;
-                        *isUpdatingHeight = true;
-                        SetFlipViewMaxHeight(carouselUI);
-                        *isUpdatingHeight = false;
-                    });
+                // Update height when the selected page changes, since pages may differ in size.
+                auto selectionChangedToken = carouselUI.SelectionChanged([carouselUI, isUpdatingHeight](auto&&, auto&&) {
+                    if (*isUpdatingHeight)
+                        return;
+                    *isUpdatingHeight = true;
+                    SetFlipViewMaxHeight(carouselUI);
+                    *isUpdatingHeight = false;
+                });
 
-                    // Update height when the selected page changes, since pages may differ in size.
-                    auto selectionChangedToken = carouselUI.SelectionChanged([carouselUI, isUpdatingHeight](auto&&, auto&&) {
-                        if (*isUpdatingHeight)
-                            return;
-                        *isUpdatingHeight = true;
-                        SetFlipViewMaxHeight(carouselUI);
-                        *isUpdatingHeight = false;
-                    });
-
-                    carouselUI.Unloaded([ carouselUI, loadedToken, sizeChangedToken, selectionChangedToken ](auto&&, auto&&) {
-                        carouselUI.Loaded(loadedToken);
-                        carouselUI.SizeChanged(sizeChangedToken);
-                        carouselUI.SelectionChanged(selectionChangedToken);
-                    });
-
-                }
+                carouselUI.Unloaded([carouselUI, loadedToken, sizeChangedToken, selectionChangedToken](auto&&, auto&&) {
+                    carouselUI.Loaded(loadedToken);
+                    carouselUI.SizeChanged(sizeChangedToken);
+                    carouselUI.SelectionChanged(selectionChangedToken);
+                });
             }
 
             if (carousel.InitialPage())
