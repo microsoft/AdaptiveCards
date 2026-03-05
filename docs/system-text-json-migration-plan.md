@@ -113,6 +113,57 @@ Consider marking ``SerializableDictionary`` as ``[Obsolete]`` and planning remov
 | Tests passing | **169/170** (1 pre-existing skip) |
 | New STJ-specific tests added | **33** |
 
+## Shipping Checklist
+
+Before publishing new NuGet packages with the STJ migration, maintainers should:
+
+### 1. Version bump
+
+This is a **breaking change** — bump the major version:
+
+- ``AdaptiveCards.nuspec``: ``3.1.0`` → ``4.0.0`` (or appropriate major bump)
+- ``AdaptiveCards.Rendering.Wpf.nuspec``: ``2.8.0`` → ``3.0.0``
+- Update the ``AdaptiveCards`` dependency version in the WPF nuspec to match
+
+### 2. Release notes
+
+Add a ``<releaseNotes>`` element to the nuspec files summarizing:
+
+- Migrated from Newtonsoft.Json to System.Text.Json 8.0.5
+- Breaking changes to ``AdditionalProperties`` type, ``AsJson()`` return type, converter base classes
+- Link to the migration guide: ``docs/system-text-json-migration-guide.md``
+
+### 3. Signing
+
+The WPF rendering project requires ``35MSSharedLib1024.snk`` for strong-name signing.
+This file is not in the repo. Ensure the signing key is available in the build pipeline
+or disable signing for unsigned builds.
+
+### 4. CI validation
+
+Ensure the CI pipeline builds ALL projects (not just the test project):
+
+- ``AdaptiveCards.csproj`` (netstandard2.0)
+- ``AdaptiveCards.Net6.csproj`` (net6.0)
+- ``AdaptiveCards.Rendering.Wpf.csproj`` (net462)
+- ``AdaptiveCards.Rendering.Wpf.Net6.csproj`` (net6.0-windows)
+- ``AdaptiveCards.Test.csproj`` (net6.0)
+- All sample projects
+
+### 5. NuGet pack
+
+```bash
+nuget pack source/dotnet/NuGet/AdaptiveCards.nuspec
+nuget pack source/dotnet/NuGet/AdaptiveCards.Rendering.Wpf.nuspec
+```
+
+### 6. Validation before publish
+
+- Install the new package in a test project
+- Verify ``AdaptiveCard.FromJson()`` and ``ToJson()`` work
+- Verify no ``Newtonsoft.Json`` transitive dependency is pulled in
+- Verify the migration guide is accurate for the shipped package
+
 ## Key Files
 
 | File | Role |
