@@ -1,9 +1,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 @import 'adaptivecards-vars';
-@import 'swiper/swiper.scss';
-@import 'swiper/modules/pagination.scss';
-@import 'swiper/modules/navigation.scss';
+// Note: swiper CSS (swiper/css, swiper/css/pagination, swiper/css/navigation) must be imported by the consumer.
+// Swiper 12.x dropped SCSS support; see carousel.ts for details.
 
 .swiper-pagination-bullet {
     text-align: center;
