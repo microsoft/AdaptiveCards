@@ -289,21 +289,19 @@ namespace WpfVisualizer
         {
             var fullError = err.ToString();
 
-            // Show in a copyable message box
-            MessageBox.Show(this, fullError, "Render Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-            // Also copy to clipboard
-            try { Clipboard.SetText(fullError); } catch { }
-
-            var textBlock = new TextBlock
+            // Use a TextBox instead of TextBlock so users can select and copy the error text
+            var textBox = new TextBox
             {
                 Text = fullError,
                 TextWrapping = TextWrapping.Wrap,
-                Style = Resources["Error"] as Style
+                IsReadOnly = true,
+                BorderThickness = new Thickness(0),
+                Background = System.Windows.Media.Brushes.Transparent,
+                Foreground = System.Windows.Media.Brushes.DarkRed,
+                MaxHeight = 200,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
             };
-            var button = new Button { Content = textBlock };
-            button.Click += Button_Click;
-            cardError.Children.Add(button);
+            cardError.Children.Add(textBox);
 
             var iPos = err.Message.IndexOf("line ");
             if (iPos > 0)
