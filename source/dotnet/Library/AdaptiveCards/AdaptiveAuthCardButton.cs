@@ -34,7 +34,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The value associated with the button. The meaning of value depends on the button's type.
         /// </summary>
-        [JsonRequired]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         public string Value { get; set; }
     }

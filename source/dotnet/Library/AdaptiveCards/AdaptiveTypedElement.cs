@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -12,14 +12,13 @@ namespace AdaptiveCards
     /// <summary>
     /// Base for almost all representable elements in AdaptiveCards.
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     public abstract class AdaptiveTypedElement
     {
         /// <summary>
         /// The AdaptiveCard element that this class implements.
         /// </summary>
-        [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonPropertyOrder(-100)]
+        [JsonRequired]
         // don't serialize type with xml, because we use element name or attribute for type
         [XmlIgnore]
         public abstract string Type { get; set; }
@@ -29,11 +28,11 @@ namespace AdaptiveCards
         /// </summary>
         [JsonExtensionData]
 #if NETSTANDARD1_3
-        public IDictionary<string, object> AdditionalProperties { get; set; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, JsonElement> AdditionalProperties { get; set; } = new Dictionary<string, JsonElement>(StringComparer.OrdinalIgnoreCase);
 #else
-        // Dictionary<> is not supported with XmlSerialization because Dictionary is not serializable, SerializableDictionary<> is
+        // Dictionary<string, JsonElement> used for additional properties with JsonExtensionData
         [XmlElement]
-        public SerializableDictionary<string, object> AdditionalProperties { get; set; } = new SerializableDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, JsonElement> AdditionalProperties { get; set; } = new Dictionary<string, JsonElement>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Determines whether the <see cref="AdditionalProperties"/> property should be serialized.
@@ -45,7 +44,7 @@ namespace AdaptiveCards
         /// The fallback property controls behavior when an unexpected element or error is encountered.
         /// </summary>
         [JsonConverter(typeof(AdaptiveFallbackConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlElement]
         [DefaultValue(null)]
         public AdaptiveFallbackElement Fallback { get; set; }
@@ -61,7 +60,8 @@ namespace AdaptiveCards
         /// <summary>
         /// A unique ID associated with the element. For Inputs, the ID will be used as the key for Action.Submit response.
         /// </summary>
-        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyOrder(-9)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Id { get; set; }
@@ -69,10 +69,11 @@ namespace AdaptiveCards
         /// <summary>
         ///  A collection representing features and feature versions that this element requires.
         /// </summary>
-        [JsonProperty(Order = 1, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyOrder(1)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlIgnore]
         [DefaultValue(null)]
-        public IDictionary<string, string> Requires;
+        public IDictionary<string, string> Requires { get; set; }
 
 
         /// <summary>

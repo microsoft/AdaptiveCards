@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -25,7 +25,7 @@ namespace AdaptiveCards
         /// Background image to use when displaying this container.
         /// </summary>
         [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [DefaultValue(null)]
         [XmlElement(nameof(BackgroundImage))]
         public AdaptiveBackgroundImage BackgroundImage { get; set; }
@@ -33,8 +33,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Elements within this container.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlElement(typeof(AdaptiveTextBlock))]
         [XmlElement(typeof(AdaptiveRichTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
@@ -52,12 +51,13 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveActionSet))]
         [XmlElement(typeof(AdaptiveTable))]
         [XmlElement(typeof(AdaptiveUnknownElement))]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
         /// <summary>
         /// Sets the text flow direction
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlIgnore]
         [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;
