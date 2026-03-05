@@ -29,7 +29,6 @@ for the consumer migration guide.
 
 - Created `AdaptiveCardSerializationContext` - replaces `WarningLoggingContractResolver` with constructor injection
 - Created `AdaptiveCollectionElementConverterFactory` - forces STJ to treat `IEnumerable<AdaptiveElement>` types as objects
-- Created `NanDoubleConverter` - handles `double.NaN` serialization for `AdaptiveNumberInput`
 
 ### Converters Rewritten (14 total)
 
