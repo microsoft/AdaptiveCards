@@ -16,8 +16,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 DoubleUpDown numberPicker = new DoubleUpDown();
 
-                if (!Double.IsNaN(input.Value))
-                    numberPicker.Value = input.Value;
+                if (input.Value.HasValue && !Double.IsNaN(input.Value.Value))
+                    numberPicker.Value = input.Value.Value;
 
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
