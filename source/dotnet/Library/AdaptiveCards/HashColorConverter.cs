@@ -2,35 +2,40 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     /// Helper class to validate and convert color strings.
     /// </summary>
-    public class HashColorConverter : JsonConverter, ILogWarnings
+    public class HashColorConverter : JsonConverter<string>, ILogWarnings
     {
         /// <summary>
         /// A list of warnings encountered during processing.
         /// </summary>
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
-        readonly JsonSerializer defaultSerializer = new JsonSerializer();
+        /// <summary>
+        /// Initializes a new instance with an empty warnings list.
+        /// </summary>
+        public HashColorConverter() { }
 
-        /// <inheritdoc />
-        public override bool CanConvert(Type objectType)
+        /// <summary>
+        /// Initializes a new instance with a shared warnings list.
+        /// </summary>
+        public HashColorConverter(List<AdaptiveWarning> warnings)
         {
-            // Only use this converter for string types that match our format
-            return (objectType == typeof(string));
+            Warnings = warnings ?? new List<AdaptiveWarning>();
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonToken.String)
+            if (reader.TokenType == JsonTokenType.String)
             {
-                var colorString = defaultSerializer.Deserialize(reader, objectType) as string;
+                var colorString = reader.GetString();
                 // We need to have a string in the format #AARRGGBB or #RRGGBB
                 if (ColorUtil.IsValidColor(colorString))
                 {
@@ -46,17 +51,19 @@ namespace AdaptiveCards
                 }
             }
 
-            Warnings.Add(new AdaptiveWarning(-1, $"The Value \"{reader.Value}\" for field \"{reader.Path}\" of type \"{reader.TokenType}\" was not specified as a proper color in the format #AARRGGBB or #RRGGBB, it will be ignored."));
+            Warnings.Add(new AdaptiveWarning(-1, $"The Value for a color field was not specified as a proper color in the format #AARRGGBB or #RRGGBB, it will be ignored."));
+            // Skip the current token if we haven't consumed it
+            if (reader.TokenType != JsonTokenType.String)
+            {
+                reader.Skip();
+            }
             return null;
         }
 
         /// <inheritdoc />
-        public override bool CanWrite { get { return false; } }
-
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            writer.WriteStringValue(value);
         }
     }
 

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -22,7 +22,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Placeholder text to display when the input is empty.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Placeholder { get; set; }
@@ -30,7 +30,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The initial value for the field.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Value { get; set; }
@@ -38,7 +38,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Hint of style of input, if client doesn't support the style it will become simple text input.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveTextInputStyle), "text")]
         public AdaptiveTextInputStyle Style { get; set; }
@@ -46,7 +46,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Controls whether multiple lines of text are allowed.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool IsMultiline { get; set; }
@@ -54,7 +54,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Hint of maximum number of characters to collect (may be ignored by some clients).
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(0)]
         public int MaxLength { get; set; }
@@ -62,7 +62,8 @@ namespace AdaptiveCards
         /// <summary>
         /// <see cref="AdaptiveAction"/> to invoke inline.
         /// </summary>
-        [JsonProperty("inlineAction", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyName("inlineAction")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlElement(typeof(AdaptiveOpenUrlAction))]
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
@@ -80,7 +81,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Regular expression used for validating the input.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Regex { get; set; }

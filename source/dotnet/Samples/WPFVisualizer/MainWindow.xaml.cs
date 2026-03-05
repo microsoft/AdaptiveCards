@@ -5,7 +5,7 @@ using AdaptiveCards.Templating;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using Microsoft.Win32;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -244,7 +244,7 @@ namespace WpfVisualizer
                 // Merge the Action.Submit Data property with the inputs
                 inputs.Merge(submitAction.Data);
 
-                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
+                MessageBox.Show(this, JsonSerializer.Serialize(inputs, new JsonSerializerOptions { WriteIndented = true }), "SubmitAction");
             }
             else if (e.Action is AdaptiveExecuteAction executeAction)
             {
@@ -253,13 +253,13 @@ namespace WpfVisualizer
                 // Merge the Action.Execute Data property with the inputs
                 inputs.Merge(executeAction.Data);
 
-                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented) + "\nverb: " + executeAction.Verb, "ExecuteAction");
+                MessageBox.Show(this, JsonSerializer.Serialize(inputs, new JsonSerializerOptions { WriteIndented = true }) + "\nverb: " + executeAction.Verb, "ExecuteAction");
             }
         }
 
         private void OnMediaClick(RenderedAdaptiveCard sender, AdaptiveMediaEventArgs e)
         {
-            MessageBox.Show(this, JsonConvert.SerializeObject(e.Media), "Host received a Media");
+            MessageBox.Show(this, JsonSerializer.Serialize(e.Media), "Host received a Media");
         }
 
         private void ShowWarning(string message)
@@ -466,7 +466,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var json = JsonConvert.SerializeObject(Renderer.HostConfig, Formatting.Indented);
+                var json = JsonSerializer.Serialize(Renderer.HostConfig, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(dlg.FileName, json);
             }
         }

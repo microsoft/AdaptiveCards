@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -9,7 +8,6 @@ namespace AdaptiveCards
     /// <summary>
     /// Data.Query data structure for filtered choicesets.
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [XmlType("Data.Query")]
     public class AdaptiveDataQuery
     {
@@ -22,7 +20,6 @@ namespace AdaptiveCards
         /// <summary>
         /// Specifies that it's a Data.Query object.
         /// </summary>
-        [JsonProperty]
         [XmlIgnore]
         public string Type { get; set; } = "Data.Query";
 
@@ -36,21 +33,18 @@ namespace AdaptiveCards
         /// <summary>
         /// Populates the input 
         /// </summary>
-        [JsonProperty]
         [XmlAttribute]
         public string Value { get; set; }
 
         /// <summary>
         /// Populates the suggested page size or number of items to request
         /// </summary>
-        [JsonProperty]
         [XmlAttribute]
         public int Count { get; set; }
 
         /// <summary>
         /// Populates the skip value for paging
         /// </summary>
-        [JsonProperty]
         [XmlAttribute]
         public int Skip { get; set; }
     }

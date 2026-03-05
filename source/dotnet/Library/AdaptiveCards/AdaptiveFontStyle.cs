@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls the font type of the TextBlock Elements
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveFontType>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveFontType>))]
     public enum AdaptiveFontType
     {
         /// <summary>

@@ -12,8 +12,8 @@ using System.Xml.Serialization;
 using KellermanSoftware.CompareNetObjects;
 using KellermanSoftware.CompareNetObjects.TypeComparers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace AdaptiveCards.Test
 {
@@ -59,10 +59,7 @@ namespace AdaptiveCards.Test
                         }
 
                         string json = File.ReadAllText(file);
-                        var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
-                        {
-                            Converters = { new StrictIntConverter() }
-                        });
+                        var card = AdaptiveCard.FromJson(json).Card;
 
                         // test XML serialization round-trips
                         StringBuilder sb = new StringBuilder();
@@ -74,7 +71,7 @@ namespace AdaptiveCards.Test
                         Assert.IsTrue(result.AreEqual, $"XML serialization different: {Path.GetFullPath(file)}: {result.DifferencesString}");
 
                         // test JSON serialization round-trips
-                        var card3 = JsonConvert.DeserializeObject<AdaptiveCard>(JsonConvert.SerializeObject(card));
+                        var card3 = JsonSerializer.Deserialize<AdaptiveCard>(JsonSerializer.Serialize(card));
                         result = compareLogic.Compare(card, card3);
                         Assert.IsTrue(result.AreEqual, $"JSON Serialization different: {Path.GetFullPath(file)}: {result.DifferencesString}");
                     }
@@ -121,14 +118,14 @@ namespace AdaptiveCards.Test
 
         public override bool IsTypeMatch(Type type1, Type type2)
         {
-            return type1 == typeof(JObject) && type2 == typeof(JObject);
+            return type1 == typeof(JsonObject) && type2 == typeof(JsonObject);
         }
 
         public override void CompareType(CompareParms parms)
         {
             // Weird hack to replace %20 in certain image URLs
-            var st1 = JsonConvert.SerializeObject((JObject)parms.Object1);
-            var st2 = JsonConvert.SerializeObject((JObject)parms.Object2);
+            var st1 = JsonSerializer.Serialize((JsonObject)parms.Object1);
+            var st2 = JsonSerializer.Serialize((JsonObject)parms.Object2);
             if (st1 != st2)
             {
                 Difference difference = new Difference
