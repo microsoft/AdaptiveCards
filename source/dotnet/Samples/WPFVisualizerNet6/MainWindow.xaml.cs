@@ -287,9 +287,17 @@ namespace WpfVisualizer
 
         private void ShowError(Exception err)
         {
+            var fullError = err.ToString();
+
+            // Show in a copyable message box
+            MessageBox.Show(this, fullError, "Render Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            // Also copy to clipboard
+            try { Clipboard.SetText(fullError); } catch { }
+
             var textBlock = new TextBlock
             {
-                Text = err.Message + "\nSource : " + err.Source,
+                Text = fullError,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Error"] as Style
             };

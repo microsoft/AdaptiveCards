@@ -68,6 +68,39 @@ for the consumer migration guide.
 - **1,717 lines** added, **1,581 lines** removed
 - **3 files** deleted, **4 files** created
 
+## Known Issues & Future Work
+
+### AdaptiveInternalID is not thread-safe (pre-existing)
+
+``AdaptiveInternalID`` uses a static ``uint`` counter (``CurrentInternalID++``) that is
+not thread-safe. Two threads calling ``Next()`` simultaneously could get the same ID.
+This was true before the STJ migration and is outside the scope of this change.
+
+During the migration, we discovered that ``InternalID`` was only being set by the
+Newtonsoft ``AdaptiveTypedElementConverter`` during deserialization. Elements created via
+code or deserialized through other paths (e.g., the ``AdaptiveCollectionElementConverterFactory``
+or STJ's default POCO deserializer) had ``InternalID = null``, which caused the WPF
+renderer to crash with ``ArgumentNullException`` at ``ParentCards.Add(card.InternalID, ...)``.
+
+**Fix applied:** ``InternalID`` is now initialized to ``AdaptiveInternalID.Next()`` in the
+property declaration on ``AdaptiveTypedElement``, guaranteeing every element gets a unique
+ID at construction time regardless of how it was created.
+
+**Recommended future improvement:** Replace the static ``uint`` counter with a thread-safe
+mechanism (e.g., ``Interlocked.Increment``) or use ``Guid.NewGuid()`` for true uniqueness.
+
+### ILogWarnings interface is vestigial
+
+The ``ILogWarnings`` interface is implemented by 11 converters but never accessed
+polymorphically. Warnings flow through constructor injection, not interface casting.
+The interface can be removed in a future cleanup without breaking anything.
+
+### SerializableDictionary class is unused for JSON
+
+``SerializableDictionary<TKey, TValue>`` exists only for XML serialization compatibility.
+The ``AdditionalProperties`` properties now use ``Dictionary<string, JsonElement>`` for JSON.
+Consider marking ``SerializableDictionary`` as ``[Obsolete]`` and planning removal.
+
 ## Verification
 
 | Check | Result |

@@ -66,6 +66,7 @@ namespace AdaptiveCards
             foreach (var prop in typeToConvert.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (!prop.CanWrite) continue;
+                if (prop.GetIndexParameters().Length > 0) continue; // Skip indexers
                 if (prop.GetCustomAttribute<JsonIgnoreAttribute>() is JsonIgnoreAttribute ignore && ignore.Condition == JsonIgnoreCondition.Always) continue;
 
                 // Determine the JSON property name
@@ -84,7 +85,7 @@ namespace AdaptiveCards
                     jsonName = prop.Name;
                 }
 
-                if (!jsonObj.ContainsKey(jsonName)) continue;
+                if (string.IsNullOrEmpty(jsonName) || !jsonObj.ContainsKey(jsonName)) continue;
                 
                 var jsonNode = jsonObj[jsonName];
                 if (jsonNode == null) continue;
@@ -165,6 +166,7 @@ namespace AdaptiveCards
             foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (!prop.CanRead) continue;
+                if (prop.GetIndexParameters().Length > 0) continue; // Skip indexers
                 if (prop.GetCustomAttribute<JsonIgnoreAttribute>() is JsonIgnoreAttribute ignore && ignore.Condition == JsonIgnoreCondition.Always) continue;
                 if (prop.GetCustomAttribute<JsonExtensionDataAttribute>() != null) continue;
 
@@ -187,6 +189,8 @@ namespace AdaptiveCards
                 
                 // Handle null suppression
                 if (propValue == null && options.DefaultIgnoreCondition == JsonIgnoreCondition.WhenWritingNull) continue;
+
+                if (string.IsNullOrEmpty(jsonName)) continue;
 
                 writer.WritePropertyName(jsonName);
                 JsonSerializer.Serialize(writer, propValue, prop.PropertyType, options);

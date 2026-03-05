@@ -55,7 +55,7 @@ namespace AdaptiveCards
         [JsonIgnore]
         // don't serialize type with xml, because we use element name or attribute for type
         [XmlIgnore]
-        public AdaptiveInternalID InternalID { get; set; }
+        public AdaptiveInternalID InternalID { get; set; } = AdaptiveInternalID.Next();
 
         /// <summary>
         /// A unique ID associated with the element. For Inputs, the ID will be used as the key for Action.Submit response.
