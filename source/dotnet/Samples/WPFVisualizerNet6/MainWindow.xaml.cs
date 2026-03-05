@@ -233,7 +233,17 @@ namespace WpfVisualizer
                 var inputs = sender.UserInputs.AsJson();
 
                 // Merge the Action.Submit Data property with the inputs
-                inputs.Merge(submitAction.Data);
+                if (submitAction.Data != null)
+                {
+                    var dataNode = System.Text.Json.Nodes.JsonNode.Parse(JsonSerializer.Serialize(submitAction.Data));
+                    if (dataNode is System.Text.Json.Nodes.JsonObject dataObj && inputs is System.Text.Json.Nodes.JsonObject inputsObj)
+                    {
+                        foreach (var prop in dataObj)
+                        {
+                            inputsObj[prop.Key] = prop.Value?.DeepClone();
+                        }
+                    }
+                }
 
                 MessageBox.Show(this, JsonSerializer.Serialize(inputs, new JsonSerializerOptions { WriteIndented = true }), "SubmitAction");
             }
@@ -242,7 +252,17 @@ namespace WpfVisualizer
                 var inputs = sender.UserInputs.AsJson();
 
                 // Merge the Action.Execute Data property with the inputs
-                inputs.Merge(executeAction.Data);
+                if (executeAction.Data != null)
+                {
+                    var dataNode = System.Text.Json.Nodes.JsonNode.Parse(JsonSerializer.Serialize(executeAction.Data));
+                    if (dataNode is System.Text.Json.Nodes.JsonObject dataObj && inputs is System.Text.Json.Nodes.JsonObject inputsObj)
+                    {
+                        foreach (var prop in dataObj)
+                        {
+                            inputsObj[prop.Key] = prop.Value?.DeepClone();
+                        }
+                    }
+                }
 
                 MessageBox.Show(this, JsonSerializer.Serialize(inputs, new JsonSerializerOptions { WriteIndented = true }) + "\nverb: " + executeAction.Verb, "ExecuteAction");
             }
