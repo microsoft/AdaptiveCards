@@ -290,7 +290,7 @@ namespace WpfVisualizer
             var fullError = err.ToString();
 
             // Use a TextBox instead of TextBlock so users can select and copy the error text
-            var textBox = new TextBox
+            var errorTextBox = new TextBox
             {
                 Text = fullError,
                 TextWrapping = TextWrapping.Wrap,
@@ -301,7 +301,7 @@ namespace WpfVisualizer
                 MaxHeight = 200,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto
             };
-            cardError.Children.Add(textBox);
+            cardError.Children.Add(errorTextBox);
 
             var iPos = err.Message.IndexOf("line ");
             if (iPos > 0)
