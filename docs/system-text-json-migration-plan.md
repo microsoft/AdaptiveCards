@@ -69,6 +69,14 @@ for the consumer migration guide.
 
 ## Known Issues & Future Work
 
+### Bug fixes found during code review
+
+1. **Thread safety — `AdaptiveFallbackConverter.IsInFallback`**: The `static bool IsInFallback` field was shared across threads. Concurrent parses could corrupt the fallback flag, causing false ID-collision exceptions. Fixed with `[ThreadStatic]` backing field.
+
+2. **Collection element default-value leakage**: `AdaptiveCollectionElementConverter.Write` ignored per-property `WhenWritingNull`/`WhenWritingDefault` conditions, emitting noise like `"separator": false`, `"bleed": false`. Fixed by reading each property's `JsonIgnoreAttribute.Condition` before writing.
+
+3. **`IsVisible = false` roundtrip regression**: `[JsonIgnore(Condition = WhenWritingDefault)]` on a `bool` that defaults to `true` in the initializer skips `false` (the type default), causing hidden elements to reappear. Fixed by removing the condition; `isVisible` is now always serialized.
+
 ### AdaptiveInternalID is not thread-safe (pre-existing)
 
 ``AdaptiveInternalID`` uses a static ``uint`` counter (``CurrentInternalID++``) that is

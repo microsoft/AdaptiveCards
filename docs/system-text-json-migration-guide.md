@@ -125,7 +125,7 @@ If you implemented custom `JsonConverter` classes that inherited from AdaptiveCa
 | ------ | ----------------- | ----------------------- |
 | Property order | `type` always first | Declaration order (still deterministic) |
 | Integer doubles | `5.0` | `5` |
-| Default values | Omitted (`isVisible: true` not shown) | May be included |
+| Default values | Omitted (`isVisible: true` not shown) | `isVisible` is always serialized (both `true` and `false`) |
 | Empty arrays | Omitted (`"actions": []` not shown) | May be included |
 
 **These differences do not affect any Adaptive Card renderer.** JSON is an unordered format by specification, and all renderers parse by property name, not position. Extra properties with default values are ignored by renderers.

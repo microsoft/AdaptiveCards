@@ -167,8 +167,10 @@ namespace AdaptiveCards
             {
                 if (!prop.CanRead) continue;
                 if (prop.GetIndexParameters().Length > 0) continue; // Skip indexers
-                if (prop.GetCustomAttribute<JsonIgnoreAttribute>() is JsonIgnoreAttribute ignore && ignore.Condition == JsonIgnoreCondition.Always) continue;
                 if (prop.GetCustomAttribute<JsonExtensionDataAttribute>() != null) continue;
+
+                var ignoreAttr = prop.GetCustomAttribute<JsonIgnoreAttribute>();
+                if (ignoreAttr != null && ignoreAttr.Condition == JsonIgnoreCondition.Always) continue;
 
                 string jsonName;
                 var nameAttr = prop.GetCustomAttribute<JsonPropertyNameAttribute>();
@@ -185,15 +187,34 @@ namespace AdaptiveCards
                     jsonName = prop.Name;
                 }
 
-                var propValue = prop.GetValue(value);
-                
-                // Handle null suppression
-                if (propValue == null && options.DefaultIgnoreCondition == JsonIgnoreCondition.WhenWritingNull) continue;
-
                 if (string.IsNullOrEmpty(jsonName)) continue;
 
+                var propValue = prop.GetValue(value);
+                var propType = prop.PropertyType;
+
+                // Determine the effective ignore condition: per-property attribute overrides the global option.
+                var effectiveCondition = (ignoreAttr != null)
+                    ? ignoreAttr.Condition
+                    : options.DefaultIgnoreCondition;
+
+                // Apply the effective ignore condition
+                if (effectiveCondition == JsonIgnoreCondition.WhenWritingNull && propValue == null) continue;
+                if (effectiveCondition == JsonIgnoreCondition.WhenWritingDefault)
+                {
+                    if (propValue == null) continue;
+                    // For value types compare against the type's default (e.g. false for bool, 0 for enum).
+                    // Activator.CreateInstance always returns a non-null boxed value for value types so
+                    // the null-conditional guard here is purely defensive.
+                    if (propType.IsValueType)
+                    {
+                        var underlyingType = Nullable.GetUnderlyingType(propType) ?? propType;
+                        var typeDefault = Activator.CreateInstance(underlyingType);
+                        if (typeDefault == null || propValue.Equals(typeDefault)) continue;
+                    }
+                }
+
                 writer.WritePropertyName(jsonName);
-                JsonSerializer.Serialize(writer, propValue, prop.PropertyType, options);
+                JsonSerializer.Serialize(writer, propValue, propType, options);
             }
 
             // Write extension data

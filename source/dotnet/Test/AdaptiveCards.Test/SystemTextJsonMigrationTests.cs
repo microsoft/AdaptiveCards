@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -811,6 +812,147 @@ namespace AdaptiveCards.Test
             var cell1 = table.Rows[0].Cells[0];
             Assert.AreEqual(1, cell1.Items.Count);
             Assert.AreEqual("Cell 1", (cell1.Items[0] as AdaptiveTextBlock)?.Text);
+        }
+
+        // =====================================================================
+        // Category 6: Bug-fix Regression Tests
+        // =====================================================================
+
+        /// <summary>
+        /// Verifies that <see cref="AdaptiveFallbackConverter.IsInFallback"/> does not leak
+        /// across threads. Before the ThreadStatic fix, concurrent parsing of cards that contain
+        /// fallback elements could corrupt the shared flag, causing valid cards to throw a
+        /// spurious ID-collision exception or silently accept real collisions.
+        /// </summary>
+        [TestMethod]
+        public void ConcurrentFallbackParsing_IsThreadSafe()
+        {
+            var json = @"{
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.2"",
+                ""body"": [
+                    {
+                        ""type"": ""TextBlock"",
+                        ""id"": ""shared"",
+                        ""text"": ""Primary"",
+                        ""fallback"": {
+                            ""type"": ""TextBlock"",
+                            ""id"": ""shared"",
+                            ""text"": ""Fallback""
+                        }
+                    }
+                ]
+            }";
+
+            var exceptions = new ConcurrentBag<Exception>();
+            var tasks = new Task[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                tasks[i] = Task.Run(() =>
+                {
+                    try
+                    {
+                        for (int j = 0; j < 50; j++)
+                        {
+                            var result = AdaptiveCard.FromJson(json);
+                            Assert.IsNotNull(result.Card);
+                            Assert.AreEqual(1, result.Card.Body.Count);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                    }
+                });
+            }
+
+            Task.WaitAll(tasks);
+            Assert.AreEqual(0, exceptions.Count,
+                $"Thread-safety failures: {string.Join("; ", exceptions.Select(e => e.Message))}");
+        }
+
+        [TestMethod]
+        public void CollectionElements_DefaultPropertiesAreNotSerialized()
+        {
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveContainer { Items = { new AdaptiveTextBlock("Hello") } },
+                    new AdaptiveColumnSet
+                    {
+                        Columns = { new AdaptiveColumn { Items = { new AdaptiveTextBlock("Col") } } }
+                    }
+                }
+            };
+
+            var json = card.ToJson();
+
+            Assert.IsFalse(json.Contains("\"separator\""),
+                "Default 'separator: false' must not be serialized");
+            Assert.IsFalse(json.Contains("\"bleed\""),
+                "Default 'bleed: false' must not be serialized");
+            Assert.IsFalse(json.Contains("\"horizontalAlignment\""),
+                "Default 'horizontalAlignment: Left' must not be serialized");
+            Assert.IsFalse(json.Contains("\"verticalContentAlignment\""),
+                "Default 'verticalContentAlignment: Top' (null-written by enum converter) must not be serialized");
+
+            var card2 = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveContainer
+                    {
+                        Bleed = true,
+                        Style = AdaptiveContainerStyle.Emphasis,
+                        Items = { new AdaptiveTextBlock("Hello") }
+                    }
+                }
+            };
+
+            var json2 = card2.ToJson();
+            Assert.IsTrue(json2.Contains("\"bleed\""), "Non-default 'bleed: true' must be serialized");
+            Assert.IsTrue(json2.Contains("emphasis"), "Non-default 'style: emphasis' must be serialized");
+
+            var reparsed = AdaptiveCard.FromJson(json2).Card;
+            var container = reparsed.Body[0] as AdaptiveContainer;
+            Assert.IsTrue(container.Bleed);
+            Assert.AreEqual(AdaptiveContainerStyle.Emphasis, container.Style);
+        }
+
+        [TestMethod]
+        public void IsVisible_False_RoundtripsCorrectly()
+        {
+            var card = new AdaptiveCard("1.0")
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock("Hidden") { IsVisible = false },
+                    new AdaptiveTextBlock("Visible") { IsVisible = true },
+                    new AdaptiveContainer
+                    {
+                        IsVisible = false,
+                        Items = { new AdaptiveTextBlock("Inside hidden container") }
+                    }
+                }
+            };
+
+            var json = card.ToJson();
+
+            Assert.IsTrue(json.Contains("\"isVisible\""),
+                "The isVisible property must always be serialized");
+            Assert.IsTrue(json.Contains("\"isVisible\":false") || json.Contains("\"isVisible\": false"),
+                "isVisible: false must be present in the JSON");
+
+            var reparsed = AdaptiveCard.FromJson(json).Card;
+
+            Assert.IsFalse(((AdaptiveTextBlock)reparsed.Body[0]).IsVisible,
+                "TextBlock with IsVisible=false must remain hidden after roundtrip");
+            Assert.IsTrue(((AdaptiveTextBlock)reparsed.Body[1]).IsVisible,
+                "TextBlock with IsVisible=true must remain visible after roundtrip");
+            Assert.IsFalse(((AdaptiveContainer)reparsed.Body[2]).IsVisible,
+                "Container with IsVisible=false must remain hidden after roundtrip");
         }
     }
 }

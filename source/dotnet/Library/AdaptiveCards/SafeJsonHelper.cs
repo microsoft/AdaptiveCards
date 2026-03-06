@@ -10,8 +10,8 @@ namespace AdaptiveCards
     /// duplicate keys (which is valid JSON per RFC 8259 but not handled by JsonObject.Create).
     /// </summary>
     /// <remarks>
-    /// System.Text.Json's <see cref="JsonObject.Create(JsonElement)"/> throws
-    /// <see cref="System.ArgumentException"/> when duplicate keys are present.
+    /// <see cref="System.Text.Json.Nodes.JsonObject"/> throws
+    /// <see cref="System.ArgumentException"/> when duplicate keys are present in a JsonElement.
     /// This helper uses indexer assignment so duplicates silently keep the last value,
     /// matching the previous Newtonsoft.Json behavior. A debug warning is emitted
     /// when duplicates are detected to help identify malformed payloads.
