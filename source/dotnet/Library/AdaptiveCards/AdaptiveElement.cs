@@ -46,7 +46,13 @@ namespace AdaptiveCards
         /// <summary>
         /// Indicates whether the element should be visible when the card has been rendered.
         /// </summary>
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        /// <remarks>
+        /// The spec default is <c>true</c> (visible). Because the .NET type default for <c>bool</c>
+        /// is <c>false</c>, using <see cref="JsonIgnoreCondition.WhenWritingDefault"/> would suppress
+        /// <c>false</c> values during serialization — which would then be read back as <c>true</c>
+        /// (the initialised default) and silently make hidden elements visible. To avoid this roundtrip
+        /// regression the property is always serialised regardless of its value.
+        /// </remarks>
         [XmlElement]
         [DefaultValue(true)]
         public bool IsVisible { get; set; } = true;

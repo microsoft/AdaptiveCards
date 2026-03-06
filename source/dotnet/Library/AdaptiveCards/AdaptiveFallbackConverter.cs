@@ -40,7 +40,20 @@ namespace AdaptiveCards
         /// <summary>
         /// State tracking to determine whether we're currently processing a fallback request.
         /// </summary>
-        public static bool IsInFallback = false;
+        /// <remarks>
+        /// Marked <c>[ThreadStatic]</c> to avoid race conditions when multiple threads parse
+        /// cards concurrently. Each thread has its own copy of this flag so that one thread's
+        /// fallback state cannot corrupt another thread's ID collision detection.
+        /// </remarks>
+        [System.ThreadStatic]
+        private static bool _isInFallback;
+
+        /// <inheritdoc cref="_isInFallback"/>
+        public static bool IsInFallback
+        {
+            get => _isInFallback;
+            set => _isInFallback = value;
+        }
 
         /// <inheritdoc />
         public override AdaptiveFallbackElement Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
