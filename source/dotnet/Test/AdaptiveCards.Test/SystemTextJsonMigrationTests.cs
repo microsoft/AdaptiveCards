@@ -960,7 +960,7 @@ namespace AdaptiveCards.Test
             // "isVisible": false must be present in the serialized JSON
             Assert.IsTrue(json.Contains("\"isVisible\""),
                 "The isVisible property must always be serialized");
-            Assert.IsTrue(json.Contains("false"),
+            Assert.IsTrue(json.Contains("\"isVisible\":false") || json.Contains("\"isVisible\": false"),
                 "isVisible: false must be present in the JSON");
 
             var reparsed = AdaptiveCard.FromJson(json).Card;
