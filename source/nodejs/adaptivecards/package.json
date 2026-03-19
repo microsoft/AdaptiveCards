@@ -47,7 +47,7 @@
 		"typedoc-plugin-markdown": "^3.11.2"
 	},
 	"peerDependencies": {
-		"swiper": "^11.0.7"
+		"swiper": "^12.1.2"
 	},
 	"jest": {
 		"verbose": true,

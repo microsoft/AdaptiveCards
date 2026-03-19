@@ -1,9 +1,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 @import 'adaptivecards-vars';
-@import 'swiper/swiper.scss';
-@import 'swiper/modules/pagination.scss';
-@import 'swiper/modules/navigation.scss';
+@import 'swiper/swiper';
+@import 'swiper/modules/pagination';
+@import 'swiper/modules/navigation';
 
 .swiper-pagination-bullet {
     text-align: center;
