@@ -174,7 +174,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
             auto selectAction = styledCollection.SelectAction();
             return ::AdaptiveCards::Rendering::Xaml_Rendering::ActionHelpers::HandleSelectAction(
-                element, selectAction, context, carouselBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
+                element, selectAction, context, renderArgs, carouselBorder, XamlHelpers::SupportsInteractivity(hostConfig), true);
         }
         catch (winrt::hresult_error const& ex)
         {

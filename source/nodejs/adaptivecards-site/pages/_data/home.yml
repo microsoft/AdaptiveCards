@@ -44,27 +44,27 @@ en:
     title: Meet your users where they are
     subtitle: Modern digital life is hectic. Users are constantly switching between devices, apps, and services to get their job done. Adaptive Cards help you increase engagement and efficiency by injecting your actionable content directly into the apps they use every day.
     learnmore_title: Integrate into existing apps
-    video: https://adaptivecardsblob.blob.core.windows.net/assets/Video-MeetYourUsersWhereTheyAre.mp4
+    video: https://cdn.adaptivecards.io/assets/Video-MeetYourUsersWhereTheyAre.mp4
     videoLoopDelay: 5000
     learnMoreLink: https://docs.microsoft.com/adaptive-cards/resources/partners
   extensibility_section:
     title: Open your apps to extensibility
     subtitle: There's an ecosystem of developers out there who want to integrate with your apps, but how can you do so safely and without their content sticking out like a sore thumb? Adaptive Cards are always native and blend seamlessly into the surrounding UI - and they work on every major platform!
-    video: https://adaptivecardsblob.blob.core.windows.net/assets/Video-RenderingCards.mp4
+    video: https://cdn.adaptivecards.io/assets/Video-RenderingCards.mp4
     videoLoopDelay: 2000
     learnmore_title: Install the Rendering SDKs
     learnMoreLink: https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/getting-started
   design_section:
     title: Design cards anywhere
     subtitle: You don't have to send your users to this website to design cards. Just like Adaptive Cards blend into their surroundings, so does the Adaptive Card Designer. The SDK includes a full configuration API allowing you to deeply integrate card workflows into your existing toolchain.
-    video: https://adaptivecardsblob.blob.core.windows.net/assets/Video-Designer.mp4?refresh=2019-09-10
+    video: https://cdn.adaptivecards.io/assets/Video-Designer.mp4?refresh=2019-09-10
     videoLoopDelay: 5000
     learnmore_title: Install the Designer SDK
     learnMoreLink: https://docs.microsoft.com/adaptive-cards/sdk/designer
   template_section:
     title: Create, share, and discover reusable templates
     subtitle: What if you could instantly display any type of data? It could be your own app's data, your organization's data, or data from the web. With Adaptive Card Templating you can separate the data from card layout, and when coupled with a new template service a whole new ecosystem of card exchange becomes possible.
-    video: https://adaptivecardsblob.blob.core.windows.net/assets/Video-RenderingCards.mp4
+    video: https://cdn.adaptivecards.io/assets/Video-RenderingCards.mp4
     learnmore_title: Create reusable card templates
     learnMoreLink: https://docs.microsoft.com/en-us/adaptive-cards/templating
     tag: Updated May 2020

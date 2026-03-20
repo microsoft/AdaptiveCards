@@ -51,7 +51,7 @@
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PerfApp_TemporaryKey.pfx" />
+    <None Include="Assets\PerfApp_TemporaryKey.pfx" />
     <None Include="..\..\..\samples\v1.0\Elements\AdaptiveCard.json" />
   </ItemGroup>
   <ItemGroup>

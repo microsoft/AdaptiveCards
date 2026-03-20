@@ -104,8 +104,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                                     // Text did not reach its minHeight property and we have to clear it otherwise
                                     // ellipses won't be displayed correctly...
-                                    winrt::IFrameworkElementStatics frameworkElementStatics;
-                                    child.ClearValue(frameworkElementStatics.MinHeightProperty());
+                                    child.ClearValue(winrt::FrameworkElement::MinHeightProperty());
                                 }
                                 else
                                 {

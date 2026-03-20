@@ -22,11 +22,9 @@ variables:
 
 pool:
   name: Azure Pipelines
-  vmImage: windows-2019
+  vmImage: windows-2022
 
 steps:
-- template: templates/uwp-download-secure-files.yml
-
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1
   displayName: Use NuGet 5.x
@@ -44,6 +42,21 @@ steps:
     nugetConfigPath: source/nuget.config
     restoreSolution: $(solution)
     verbosityRestore: Detailed
+
+# Signing
+- task: PowerShell@2
+  displayName: Generate Test Signing Certificate
+  inputs:
+    targetType: filePath
+    filePath: source/uwp/Build/GenerateTestPFX.ps1
+
+- task: PowerShell@2
+  displayName: 'Install Windows SDK'
+  inputs:
+    targetType: 'inline'
+    script: |
+      choco install windows-sdk-10-version-1809-all
+      choco install windows-sdk-10-version-2004-all
 
 - task: VSBuild@1
   name: VSBuild3

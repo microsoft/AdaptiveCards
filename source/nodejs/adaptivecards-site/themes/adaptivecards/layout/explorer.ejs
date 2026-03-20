@@ -1,21 +1,20 @@
+<!-- This is the schema explorer index page -->
+
 <div id="content-wrapper" class="w3-row explorer" style="max-width:1564px">
 
 	<nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block"
 		style="width: 200px">
 		<div class="sidebar__inner">
-			<ul class="toc-tree" role="tree">
-				<% page.schema.forEach(function(root) { %>
-				<li role="treeitem" aria-expanded="true"><span><i class="fa fa-angle-down"></i> <%= root.title %></span>
-					<ul role="group">
-						<% root.children.forEach(function(child) { %>
-						<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>' role="treeitem">
-							<a href="<%- url_for(child.htmlPath) %>" aria-label="<%= child.accessibleName %>"><%= child.name %></a>
-						</li>
-						<% }) %>
-					</ul>
-				</li>
+			<% page.schema.forEach(function(root) { %>
+			<ul role="listbox" aria-label="<%= root.title %>" class="samples-sidebar-list">
+				<span><%= root.title %></span>
+				<% root.children.forEach(function(child) { %>
+					<a role="option"
+						aria-setsize='<%= root.children.length.toString() %>'
+						href="<%- url_for(child.htmlPath) %>" aria-label="<%= child.accessibleName %>"><%= child.name %></a>
 				<% }) %>
 			</ul>
+			<% }) %>
 		</div>
 	</nav>
 
@@ -41,6 +40,23 @@
 					</optgroup>
 					<% }) %>
 				</select>
+			</div>
+
+			<div class="w3-center" style="width: 100%; margin: 50px auto auto auto; background-color: #fdf5fc; border-radius: 8px; border: 2px solid #af33a1; padding: 25px 50px">
+				<p class="w3-xlarge"><b>NEW</b></p>
+				<h1>Are you building Copilot, Teams or Outlook scenarios powered by Adaptive Cards?</h1>
+				<p class="w3-large">The <a class="w3-large" href="https://adaptivecards.microsoft.com">Adaptive Card Documentation Hub</a> is the new one-stop-shop for all your Adaptive Card needs! It has all the resources you're looking for, including complete documentation for many new features, such as
+					<a class="w3-large" href="https://adaptivecards.microsoft.com/?topic=responsive-layout">Responsive layout</a>,
+					<a class="w3-large" href="https://adaptivecards.microsoft.com/?topic=Icon">Icon</a>,
+					<a class="w3-large" href="https://adaptivecards.microsoft.com/?topic=Badge">Badge</a>,
+					<a class="w3-large" href="https://adaptivecards.microsoft.com/?topic=Carousel">Carousel</a>,
+					<a class="w3-large" href="https://adaptivecards.microsoft.com/?topic=Chart.Line">Charts</a>,
+					and much more!
+				</p>
+				<button role="link" onclick="window.location.href='https://adaptivecards.microsoft.com'"
+					class="w3-button w3-large w3-round-medium ac-blue" aria-label="Click to navigate to the Adaptive Card Documentation Hub">
+					Visit the hub
+				</button>
 			</div>
 
 			<p><%- site.data.samples.en.accwarning %></p>

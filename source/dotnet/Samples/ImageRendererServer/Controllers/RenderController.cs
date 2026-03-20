@@ -8,6 +8,7 @@ using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Internal.AntiSSRF;
 using Newtonsoft.Json.Linq;
 
 namespace ImageRendererServer.Controllers
@@ -15,6 +16,11 @@ namespace ImageRendererServer.Controllers
     public class RenderController : Controller
     {
         private readonly IHostingEnvironment _env;
+        private readonly string[] _allowedDomains = new string[]
+        {
+            "raw.githubusercontent.com",
+            "github.com"
+        };
 
         public RenderController(IHostingEnvironment env)
         {
@@ -28,11 +34,17 @@ namespace ImageRendererServer.Controllers
 
             try
             {
+                // Validate the URL domain
+                if (!URIValidate.InDomain(cardUrl, _allowedDomains))
+                {
+                    return BadRequest("URL domain not allowed");
+                }
+
                 var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
                 // Get the JSON from the card URL
                 var client = new HttpClient();
-                var response = await client.GetAsync(cardUrl, cts.Token);
+                var response = await client.GetAsync(cardUrl, cts.Token);  // CodeQL [SM03781] InDomain is used to validate the URL domain, so this is safe. Adding suppression for CodeQL since known pattern not currently supported for SSRF query yet.
                 var json = await response.Content.ReadAsStringAsync();
 
                 // Make sure the payload has a version property

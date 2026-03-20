@@ -37,6 +37,14 @@ Microsoft properties have a standard header/footer that is provided by the UHF A
     * `header.ejs` has a manual copy-paste of the HTML
     * `footer.ejs` non-essential JS includes that can be placed at the bottom of the page to decrease page load times.
 
+**Update as of October 2022**
+* We updated our UHF usage to pull directly from their API for the cssIncludes, javascriptIncludes, and footer whenever the site is generated. [Reference Pull Request](https://github.com/microsoft/AdaptiveCards/pull/7941)
+
+For UFH purposes, take note of the following properties:
+* partnerId: "MSDocsAdaptivecards"
+* headerId: "MSDocsAdaptivecardsHeader"
+* footerId: "MSDocsAdaptivecardsFooter"
+
 ## Install and Build
 
 ### Prerequisites

@@ -70,7 +70,7 @@ namespace AdaptiveCards::Rendering::Xaml_Rendering
             // Create a new UIElement pointer to house the root element decorated with select action
 
             auto rootSelectActionElement =
-                ActionHelpers::HandleSelectAction(nullptr, selectAction, renderContext, rootElement, ifSupportsInteractivity, true);
+                ActionHelpers::HandleSelectAction(nullptr, selectAction, renderContext, renderArgs, rootElement, ifSupportsInteractivity, true);
 
             rootAsFrameworkElement = rootSelectActionElement.as<winrt::FrameworkElement>();
 

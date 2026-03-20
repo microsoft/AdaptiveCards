@@ -1,19 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+    <TargetFrameworks>net6.0-windows10.0.17763.0;net8.0-windows10.0.17763.0</TargetFrameworks>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <WindowsSdkPackageVersion>10.0.17763.38</WindowsSdkPackageVersion>
     <!-- Set Platform to AnyCPU to allow consumption of the projection assembly from any architecture. -->
     <Platform>AnyCPU</Platform>
     <RootNamespace>AdaptiveCards.Rendering.WinUI3</RootNamespace>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    
+    <!-- Suppress warning about win10-* RIDs in dependencies for .NET 8.0+ -->
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <CsWinRTIncludes>AdaptiveCards.Rendering.WinUI3</CsWinRTIncludes>
     <CsWinRTGeneratedFilesDir>$(OutDir)</CsWinRTGeneratedFilesDir>
     <BaseOutputPath>$(SolutionDir)\$(Platform)\$(MSBuildProjectName)</BaseOutputPath>
+    <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
+    <CsWinRTAotWarningLevel>2</CsWinRTAotWarningLevel>
   </PropertyGroup>
   <ItemGroup>
       <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.1.1" />
