@@ -47,7 +47,17 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(ParseContex
 
     const std::string& propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card);
 
+    if (!context.CanIncrementShowCardDepth())
+    {
+        context.warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(
+            WarningStatusCode::CustomWarning, "Maximum ShowCard nesting depth exceeded"));
+        showCardAction->SetCard(std::make_shared<AdaptiveCard>());
+        return showCardAction;
+    }
+
+    context.IncrementShowCardDepth();
     auto parseResult = AdaptiveCard::Deserialize(json.get(propertyName, Json::Value()), "", context);
+    context.DecrementShowCardDepth();
 
     auto showCardWarnings = parseResult->GetWarnings();
     auto warningsEnd = context.warnings.insert(context.warnings.end(), showCardWarnings.begin(), showCardWarnings.end());
