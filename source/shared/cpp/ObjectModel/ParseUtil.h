@@ -215,11 +215,21 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollectionOfSingleType(
         return elements;
     }
 
-    elements.reserve(elementArray.size());
+    const size_t maxElements = static_cast<size_t>(ParseContext::c_maxElementsPerCollection);
+    elements.reserve(std::min(static_cast<size_t>(elementArray.size()), maxElements));
 
     // Deserialize every element in the array
     for (const Json::Value& curJsonValue : elementArray)
     {
+        // Cap the number of elements to prevent resource exhaustion
+        if (elements.size() >= maxElements)
+        {
+            context.warnings.emplace_back(
+                std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::CustomWarning,
+                    "Maximum number of elements in a collection exceeded; remaining items were dropped"));
+            break;
+        }
+
         // Parse the element
         auto el = deserializer(context, curJsonValue);
         if (el != nullptr)
@@ -280,13 +290,22 @@ std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollection(
     }
 
     const size_t elemSize = elementArray.size();
-    elements.reserve(elemSize);
+    const size_t maxElements = static_cast<size_t>(ParseContext::c_maxElementsPerCollection);
+    elements.reserve(std::min(elemSize, maxElements));
 
     const ContainerBleedDirection previousBleedState = context.GetBleedDirection();
 
     size_t currentIndex = 0;
     for (auto& curJsonValue : elementArray)
     {
+        // Cap the number of elements to prevent resource exhaustion
+        if (elements.size() >= maxElements)
+        {
+            context.warnings.emplace_back(
+                std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::CustomWarning,
+                    "Maximum number of elements in a collection exceeded; remaining items were dropped"));
+            break;
+        }
         ContainerBleedDirection currentBleedState = previousBleedState;
 
         if (currentIndex != 0)
