@@ -59,6 +59,10 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
         carouselUI.SelectionChanged([carouselUI, pipsPager, loopEnabled](auto &&, auto &&) {
             auto val = carouselUI.SelectedIndex();
+            if (val < 0)
+            {
+                return;
+            }
             if (loopEnabled &&
                 static_cast<unsigned int>(val) == carouselUI.Items().Size())
             {
@@ -67,7 +71,7 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             }
             else
             {
-                pipsPager.SelectedPageIndex(carouselUI.SelectedIndex());
+                pipsPager.SelectedPageIndex(val);
             }
         });
 
@@ -125,15 +129,22 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
 
                     if (fixedHeightInPixel == 0)
                     {
-                        carouselPageUI.try_as<FrameworkElement>().LayoutUpdated(
-                            [carouselUI](auto&&, auto&&) { SetFlipViewMaxHeight(carouselUI); });
+                        if (auto fe = carouselPageUI.try_as<FrameworkElement>())
+                        {
+                            fe.LayoutUpdated(
+                                [carouselUI](auto&&, auto&&) { SetFlipViewMaxHeight(carouselUI); });
+                        }
                     }
                }
             }
 
             if (carousel.InitialPage())
             {
-                carouselUI.SelectedIndex(carousel.InitialPage().GetUInt32());
+                auto initialPageIndex = carousel.InitialPage().GetUInt32();
+                if (initialPageIndex < carouselUI.Items().Size())
+                {
+                    carouselUI.SelectedIndex(initialPageIndex);
+                }
             }
 
             auto verticalContentAlignmentReference = carousel.VerticalContentAlignment();
@@ -192,7 +203,16 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
     void SetFlipViewMaxHeight(FlipView const& flipView)
     {
         auto selectIndex = flipView.SelectedIndex();
+        if (selectIndex < 0 || static_cast<uint32_t>(selectIndex) >= flipView.Items().Size())
+        {
+            return;
+        }
+
         auto carouselPageUI = flipView.Items().GetAt(selectIndex).try_as<FrameworkElement>();
+        if (!carouselPageUI)
+        {
+            return;
+        }
 
         if (flipView.IsLoaded())
         {
