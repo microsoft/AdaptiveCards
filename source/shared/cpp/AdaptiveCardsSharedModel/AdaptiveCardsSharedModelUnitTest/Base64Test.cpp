@@ -60,14 +60,42 @@ namespace AdaptiveCardsSharedModelUnitTest
             }
         }
 
+        TEST_METHOD(DecodingUnpaddedTest)
+        {
+            std::vector<std::string> expectedDecodedData{ "f", "fo", "foobar" };
+            std::vector<std::string> encodedData{ "Zg", "Zm8", "Zm9vYmFy" };
+
+            for (size_t i{}; i < encodedData.size(); ++i)
+            {
+                Assert::IsTrue(ContainSameCharacters(expectedDecodedData[i],
+                                                    AdaptiveBase64Util::Decode(std::string(encodedData[i].begin(), encodedData[i].end()))));
+            }
+        }
+
         TEST_METHOD(FailToDecodeTest)
         {
-            std::vector<std::string> badUri{ "foo_bar", "foo(bar)", "foo-bar", "foo*bar", "foo\"bar", "foo&bar", "foo^bar", "foo#bar", "foo@bar", "foo!bar" };
+            std::vector<std::string> badUri{
+                "foo_bar",
+                "foo(bar)",
+                "foo-bar",
+                "foo*bar",
+                "foo\"bar",
+                "foo&bar",
+                "foo^bar",
+                "foo#bar",
+                "foo@bar",
+                "foo!bar",
+                "A",
+                "====",
+                "AAAA====",
+                "Zm=9",
+                "Zg=",
+                "Zg===",
+            };
 
-            // If it crashes in any case the test will fail
             for (const auto& uri : badUri)
             {
-                AdaptiveBase64Util::Decode(uri);
+                Assert::IsTrue(AdaptiveBase64Util::Decode(uri).empty());
             }
 
         }
