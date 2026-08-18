@@ -57,7 +57,17 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             pipsPager.FlowDirection(currentRtl.GetBoolean() ? winrt::FlowDirection::RightToLeft : winrt::FlowDirection::LeftToRight);
         }
 
-        carouselUI.SelectionChanged([carouselUI, pipsPager, loopEnabled](auto &&, auto &&) {
+        auto weakCarouselUI = winrt::make_weak(carouselUI);
+        auto weakPipsPager = winrt::make_weak(pipsPager);
+
+        carouselUI.SelectionChanged([weakCarouselUI, weakPipsPager, loopEnabled](auto &&, auto &&) {
+            auto carouselUI = weakCarouselUI.get();
+            auto pipsPager = weakPipsPager.get();
+            if (!carouselUI || !pipsPager)
+            {
+                return;
+            }
+
             auto val = carouselUI.SelectedIndex();
             if (loopEnabled &&
                 static_cast<unsigned int>(val) == carouselUI.Items().Size())
@@ -71,8 +81,11 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
             }
         });
 
-        pipsPager.SelectedIndexChanged([carouselUI](PipsPager pager, IPipsPagerSelectedIndexChangedEventArgs) {
-            carouselUI.SelectedIndex(pager.SelectedPageIndex());
+        pipsPager.SelectedIndexChanged([weakCarouselUI](PipsPager pager, IPipsPagerSelectedIndexChangedEventArgs) {
+            if (auto carouselUI = weakCarouselUI.get())
+            {
+                carouselUI.SelectedIndex(pager.SelectedPageIndex());
+            }
         });
 
         stackPanel.Children().Append(carouselUI);
@@ -126,7 +139,12 @@ namespace winrt::AdaptiveCards::Rendering::Xaml_Rendering::implementation
                     if (fixedHeightInPixel == 0)
                     {
                         carouselPageUI.try_as<FrameworkElement>().LayoutUpdated(
-                            [carouselUI](auto&&, auto&&) { SetFlipViewMaxHeight(carouselUI); });
+                            [weakCarouselUI](auto&&, auto&&) {
+                                if (auto carouselUI = weakCarouselUI.get())
+                                {
+                                    SetFlipViewMaxHeight(carouselUI);
+                                }
+                            });
                     }
                }
             }
