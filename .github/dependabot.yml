@@ -1,13 +1,12 @@
 version: 2
 updates:
   # ---- JavaScript / TypeScript (npm) ----
-  # /source/nodejs is a lerna + npm-workspaces monorepo; its single lockfile
-  # covers every workspace package (adaptivecards, -templating, -react, etc.).
+  # /source/nodejs is a lerna + npm-workspaces monorepo; its single top-level
+  # package.json + lockfile covers every workspace package (adaptivecards,
+  # -templating, -react, etc.). The repo-root and /schemas lockfiles are empty
+  # stubs with no package.json, so they are intentionally not listed.
   - package-ecosystem: "npm"
-    directories:
-      - "/"
-      - "/schemas"
-      - "/source/nodejs"
+    directory: "/source/nodejs"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 1
