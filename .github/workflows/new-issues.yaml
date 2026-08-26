@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Create new project card with issue
       id: list
-      uses: qmacro/action-add-issue-to-project-column@v1
+      uses: qmacro/action-add-issue-to-project-column@fa0fe83fd05c680ea0d1171310ae9b58aa1dcfbf # v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         project: 'Triage'

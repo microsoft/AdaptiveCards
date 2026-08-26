@@ -10,14 +10,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Scan for accessibility issues
-              uses: microsoft/accessibility-insights-action@v2
+              uses: microsoft/accessibility-insights-action@4de5e651634d3efc10c7573633780e01371aec4e # v2
               with:
                   url: http://adaptivecards-ci.azurewebsites.net/samples
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
                   discovery-patterns: http://adaptivecards-ci.azurewebsites.net/samples[.*]
 
             - name: Upload report artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@82c141cc518b40d92cc801eee768e7aafc9c2fa2 # v2.3.1
               with:
                   name: accessibility-reports
                   path: ${{ github.workspace }}/_accessibility-reports
