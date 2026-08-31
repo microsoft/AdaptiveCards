@@ -21,6 +21,7 @@ export interface Props {
     onError?: Function;
     style?: object;
     hostConfig?: object;
+    serializationContext?: AdaptiveCards.SerializationContext;
 }
 
 const propTypes = {
@@ -40,6 +41,8 @@ const propTypes = {
     style: PropTypes.object,
     /** HostConfig. [More Info](https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config) */
     hostConfig: PropTypes.object,
+    /** Custom serialization context for elements customization. [More Info](https://learn.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/extensibility) */
+    serializationContext: PropTypes.object
 };
 
 const defaultOpenUrlHandler = (action: AdaptiveCards.OpenUrlAction) => {
@@ -66,6 +69,7 @@ export const AdaptiveCard = ({
     onError,
     style,
     hostConfig,
+    serializationContext
 }: Props) => {
     const [error, setError] = useState<Error>();
     const targetRef = useRef<HTMLDivElement>(null);
@@ -122,7 +126,7 @@ export const AdaptiveCard = ({
         const card = cardRef.current;
 
         try {
-            card.parse(payload);
+            card.parse(payload, serializationContext);
             const result = card.render() as HTMLElement;
             const trustedHtml = (typeof window === 'undefined') ? "" : (window.trustedTypes?.emptyHTML ?? "");
             targetRef.current.innerHTML = trustedHtml as string;
