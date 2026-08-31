@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace AdaptiveCards.Rendering
 {
@@ -34,9 +35,9 @@ namespace AdaptiveCards.Rendering
         /// Read the input fields as a JSON object. All input values will serialize to strings
         /// </summary>
         /// <returns></returns>
-        public JObject AsJson()
+        public JsonNode AsJson()
         {
-            return JObject.FromObject(AsDictionary());
+            return JsonSerializer.SerializeToNode(AsDictionary());
         }
 
         /// <summary>

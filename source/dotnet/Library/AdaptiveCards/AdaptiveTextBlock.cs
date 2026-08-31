@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -36,37 +36,37 @@ namespace AdaptiveCards
         }
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveTextSize), "normal")]
         public AdaptiveTextSize Size { get; set; }
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveTextWeight), "normal")]
         public AdaptiveTextWeight Weight { get; set; }
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveTextColor), "default")]
         public AdaptiveTextColor Color { get; set; }
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool IsSubtle { get; set; }
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool Italic { get; set; }
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool Strikethrough { get; set; }
@@ -77,7 +77,7 @@ namespace AdaptiveCards
         public string Text { get; set; } = "";
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
@@ -85,7 +85,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Controls text wrapping behavior.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool Wrap { get; set; }
@@ -93,7 +93,7 @@ namespace AdaptiveCards
         /// <summary>
         /// When <see cref="AdaptiveTextBlock.Wrap"/> is true, this controls the maximum number of lines of text to display.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(0)]
         public int MaxLines { get; set; }
@@ -101,13 +101,13 @@ namespace AdaptiveCards
         /// <summary>
         /// The maximum width of the TextBlock.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(0)]
         public int MaxWidth { get; set; }
 
         /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveFontType), "default")]
         public AdaptiveFontType FontType { get; set; }
@@ -115,7 +115,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The style (<see cref="AdaptiveTextBlockStyle"/>) of text.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveTextBlockStyle), "paragraph")]
         public AdaptiveTextBlockStyle Style { get; set; }

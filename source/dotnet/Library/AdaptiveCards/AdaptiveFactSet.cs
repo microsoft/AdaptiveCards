@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {

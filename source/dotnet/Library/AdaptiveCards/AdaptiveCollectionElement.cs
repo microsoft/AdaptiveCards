@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,13 +11,14 @@ namespace AdaptiveCards
     /// <summary>
     /// Base class for all elements that contain other elements.
     /// </summary>
+    [JsonConverter(typeof(AdaptiveCollectionElementConverterFactory))]
     public abstract class AdaptiveCollectionElement : AdaptiveElement, IEnumerable<AdaptiveElement>
     {
         /// <summary>
         /// The style used to display this element. See <see cref="AdaptiveContainerStyle" />.
         /// </summary>
-        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>))]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlIgnore]
         [DefaultValue(null)]
         public AdaptiveContainerStyle? Style { get; set; }
@@ -53,7 +53,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Horizontal alignment for element.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
@@ -61,7 +61,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The content alignment for the element inside the container.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
@@ -69,7 +69,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Action for this container. This allows for setting a default action at the container level.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlElement]
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
@@ -77,7 +77,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Defines if the element can bleed through its parent's padding.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool Bleed { get; set; }
@@ -85,7 +85,8 @@ namespace AdaptiveCards
         /// <summary>
         /// Explicit card minimum height with 'px'. (100px, 200px)
         /// </summary>
-        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyName("minHeight")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string MinHeight { get; set; }

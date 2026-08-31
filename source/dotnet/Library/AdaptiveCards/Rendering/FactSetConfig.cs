@@ -1,27 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
     /// <summary>
     /// FactSetConfig
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FactSetConfig
     {
 
         /// <summary>
         /// TextBlock to use for Titles in factsets
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public TextBlockConfig Title { get; set; } = new TextBlockConfig() { Size = AdaptiveTextSize.Default, Color = AdaptiveTextColor.Default, IsSubtle = false, Weight = AdaptiveTextWeight.Bolder, Wrap = true, MaxWidth = 150 };
 
         /// <summary>
         /// TextBlock to use for Values in fact sets
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public TextBlockConfig Value { get; set; } = new TextBlockConfig() { Size = AdaptiveTextSize.Default, Color = AdaptiveTextColor.Default, IsSubtle = false, Weight = AdaptiveTextWeight.Default, Wrap = true };
 
         /// <summary>

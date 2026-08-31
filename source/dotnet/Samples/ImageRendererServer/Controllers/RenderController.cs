@@ -9,7 +9,7 @@ using AdaptiveCards.Rendering.Wpf;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Internal.AntiSSRF;
-using Newtonsoft.Json.Linq;
+using System.Text.Json.Nodes;
 
 namespace ImageRendererServer.Controllers
 {
@@ -48,12 +48,12 @@ namespace ImageRendererServer.Controllers
                 var json = await response.Content.ReadAsStringAsync();
 
                 // Make sure the payload has a version property
-                var jObject = JObject.Parse(json);
-                if (!jObject.TryGetValue("version", out var _))
+                var jObject = JsonNode.Parse(json).AsObject();
+                if (!jObject.ContainsKey("version"))
                     jObject["version"] = "0.5";
 
                 // Parse the Adaptive Card JSON
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jObject.ToString());
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jObject.ToJsonString());
                 AdaptiveCard card = parseResult.Card;
 
                 // Create a host config

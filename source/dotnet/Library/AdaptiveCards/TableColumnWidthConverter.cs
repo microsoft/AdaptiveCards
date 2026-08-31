@@ -1,31 +1,28 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
-    internal class TableColumnWidthConverter : JsonConverter, ILogWarnings
+    internal class TableColumnWidthConverter : JsonConverter<TableColumnWidth>, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
-        public TableColumnWidthConverter()
+
+        public TableColumnWidthConverter() { }
+
+        public TableColumnWidthConverter(List<AdaptiveWarning> warnings)
         {
+            Warnings = warnings ?? new List<AdaptiveWarning>();
         }
 
-        public override bool CanConvert(Type objectType)
-        {
-            return (objectType == typeof(string)) || (objectType == typeof(int));
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override TableColumnWidth Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             TableColumnWidth tableColumnWidth = new TableColumnWidth();
-            if (reader.ValueType == typeof(string))
+
+            if (reader.TokenType == JsonTokenType.String)
             {
-                string pixelWidth = (string)reader.Value;
+                string pixelWidth = reader.GetString();
                 if (pixelWidth.EndsWith("px"))
                 {
                     try
@@ -34,44 +31,47 @@ namespace AdaptiveCards
                     }
                     catch
                     {
-                        Warnings.Add(new AdaptiveWarning(-1,
-                            $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?px), it will be ignored."));
+                        WarningContext.AddWarning(Warnings, new AdaptiveWarning(-1,
+                            $"The Value \"{pixelWidth}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?px), it will be ignored."));
                     }
                 }
                 else
                 {
-                    Warnings.Add(new AdaptiveWarning(-1,
-                        $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?px), it will be ignored."));
+                    WarningContext.AddWarning(Warnings, new AdaptiveWarning(-1,
+                        $"The Value \"{pixelWidth}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?px), it will be ignored."));
                 }
             }
-            else
+            else if (reader.TokenType == JsonTokenType.Number)
             {
-                double relativeWidth = Convert.ToDouble(reader.Value);
+                double relativeWidth = reader.GetDouble();
                 if (relativeWidth < 0)
                 {
-                    Warnings.Add(new AdaptiveWarning(-1,
-                        $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was invalid, default value (0) will be used."));
+                    WarningContext.AddWarning(Warnings, new AdaptiveWarning(-1,
+                        $"The Value \"{relativeWidth}\" was invalid, default value (0) will be used."));
                     relativeWidth = 0;
                 }
                 tableColumnWidth.RelativeWidth = relativeWidth;
+            }
+            else
+            {
+                reader.Skip();
             }
 
             return tableColumnWidth;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, TableColumnWidth value, JsonSerializerOptions options)
         {
-            var tableColumnWidth = value as TableColumnWidth;
-            if (tableColumnWidth.PixelWidth > 0)
+            if (value.PixelWidth > 0)
             {
-                writer.WriteValue(tableColumnWidth.PixelWidth.ToString() + "px");
+                writer.WriteStringValue(value.PixelWidth.ToString() + "px");
             }
             else
             {
-                if (tableColumnWidth.PixelWidth == (int)tableColumnWidth.PixelWidth) 
-                    writer.WriteValue((int)tableColumnWidth.RelativeWidth);
+                if (value.PixelWidth == (int)value.PixelWidth)
+                    writer.WriteNumberValue((int)value.RelativeWidth);
                 else
-                    writer.WriteValue(tableColumnWidth.RelativeWidth);
+                    writer.WriteNumberValue(value.RelativeWidth);
             }
         }
     }

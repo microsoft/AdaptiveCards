@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -30,7 +30,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Specifies the <see cref="AdaptiveImageSize"/> of each image in the set.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveImageSize), "auto")]
         public AdaptiveImageSize ImageSize { get; set; }
