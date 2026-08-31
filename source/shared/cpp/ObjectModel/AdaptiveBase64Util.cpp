@@ -55,28 +55,41 @@ const unsigned char c_base64DecodeTable[] = {
 
 size_t AdaptiveBase64Util::DecodedLength(const char* in, size_t in_length)
 {
-    int numEq{};
+    if (in == nullptr || in_length == 0)
+    {
+        return 0;
+    }
 
-    const char* in_end{in + in_length};
-    while (*--in_end == '=')
+    size_t numEq{};
+    while (numEq < in_length && in[in_length - 1 - numEq] == '=')
     {
         ++numEq;
     }
 
-    return ((6 * in_length) / 8) - numEq;
+    if (numEq > 2)
+    {
+        numEq = 2;
+    }
+
+    size_t decodedLength = (in_length / 4) * 3;
+    switch (in_length % 4)
+    {
+    case 2:
+        decodedLength += 1;
+        break;
+    case 3:
+        decodedLength += 2;
+        break;
+    default:
+        break;
+    }
+
+    return decodedLength >= numEq ? decodedLength - numEq : 0;
 }
 
 size_t AdaptiveBase64Util::DecodedLength(const std::string& in)
 {
-    size_t numEq{};
-    size_t n{in.size()};
-
-    for (auto it = in.rbegin(); (numEq < n) && (*it == '='); ++it)
-    {
-        ++numEq;
-    }
-
-    return ((6 * n) / 8) - numEq;
+    return DecodedLength(in.data(), in.size());
 }
 
 size_t AdaptiveBase64Util::EncodedLength(size_t length)
@@ -174,35 +187,51 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
 
 bool AdaptiveBase64Util::Decode(const std::string& in, std::vector<char>* out)
 {
-    size_t input_len{in.size()};
-    auto input = in.begin();
+    if (out == nullptr)
+    {
+        return false;
+    }
 
-    out->resize(DecodedLength(in));
+    out->clear();
+    if (in.empty())
+    {
+        return true;
+    }
+
+    size_t numEq{};
+    while (numEq < in.size() && in[in.size() - 1 - numEq] == '=')
+    {
+        ++numEq;
+    }
+
+    if (numEq > 2 || (numEq > 0 && in.size() % 4 != 0) || in.size() % 4 == 1)
+    {
+        return false;
+    }
+
+    const size_t dataLength = in.size() - numEq;
+    std::vector<char> decoded;
+    decoded.reserve(DecodedLength(in));
 
     int i{};
-    size_t dec_len = 0;
-    unsigned char a3[3];
-    unsigned char a4[4];
-    while (input_len--)
+    unsigned char a3[3]{};
+    unsigned char a4[4]{};
+    for (size_t inputIndex{}; inputIndex < dataLength; ++inputIndex)
     {
-        if (*input == '=')
+        const unsigned char decodedValue = b64_lookup(static_cast<unsigned char>(in[inputIndex]));
+        if (decodedValue == 0xFF)
         {
-            break;
+            return false;
         }
 
-        a4[i++] = *(input++);
+        a4[i++] = decodedValue;
         if (i == 4)
         {
-            for (i = 0; i < 4; ++i)
-            {
-                a4[i] = b64_lookup(a4[i]);
-            }
-
             a4_to_a3(a3, a4);
 
             for (i = 0; i < 3; ++i)
             {
-                (*out)[dec_len++] = a3[i];
+                decoded.push_back(static_cast<char>(a3[i]));
             }
 
             i = 0;
@@ -211,31 +240,35 @@ bool AdaptiveBase64Util::Decode(const std::string& in, std::vector<char>* out)
 
     if (i)
     {
-        for (int j{i}; j < 4; ++j)
+        if (i == 1)
         {
-            a4[j] = '\0';
+            return false;
         }
 
-        for (int j{}; j < 4; j++)
+        for (int j{i}; j < 4; ++j)
         {
-            a4[j] = b64_lookup(a4[j]);
+            a4[j] = 0;
         }
 
         a4_to_a3(a3, a4);
 
         for (int j{}; j < i - 1; ++j)
         {
-            (*out)[dec_len++] = a3[j];
+            decoded.push_back(static_cast<char>(a3[j]));
         }
     }
 
-    return (dec_len == out->size());
+    out->swap(decoded);
+    return true;
 }
 
 std::vector<char> AdaptiveBase64Util::Decode(const std::string& encodedBase64)
 {
     std::vector<char> decodedString;
-    Decode(encodedBase64, &decodedString);
+    if (!Decode(encodedBase64, &decodedString))
+    {
+        decodedString.clear();
+    }
     return decodedString;
 }
 
