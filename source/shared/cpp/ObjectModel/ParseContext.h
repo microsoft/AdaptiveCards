@@ -52,6 +52,12 @@ public:
     void RemoveProhibitedElementType(const std::vector<std::string>& list);
     void ShouldParse(const std::string& type);
 
+    // ShowCard nesting depth tracking — prevents stack overflow from deeply nested ShowCards
+    static constexpr unsigned int c_maxShowCardDepth = 5;
+    bool CanIncrementShowCardDepth() const;
+    void IncrementShowCardDepth();
+    void DecrementShowCardDepth();
+
 private:
     const AdaptiveCards::InternalId GetNearestFallbackId(const AdaptiveCards::InternalId& skipId) const;
     // This enum is just a helper to keep track of the position of contents within the std::tuple used in
@@ -83,6 +89,8 @@ private:
     std::vector<ContainerBleedDirection> m_parentalBleedDirection;
 
     std::unordered_set<std::string> m_prohibitedElementTypes;
+
+    unsigned int m_currentShowCardDepth{0};
 
     bool m_canFallbackToAncestor;
     std::string m_language;
