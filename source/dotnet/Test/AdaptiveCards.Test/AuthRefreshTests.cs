@@ -1,6 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using System.IO;
+using System.Text.Json;
 
 namespace AdaptiveCards.Test
 {
@@ -52,17 +51,11 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(action.Verb, "doStuff");
 
             // Check Action data json
-            JsonTextReader reader = new JsonTextReader(new StringReader(action.DataJson));
-            reader.Read();
-            Assert.AreEqual(reader.TokenType.ToString(), "StartObject");
-            reader.Read();
-            Assert.AreEqual(reader.TokenType.ToString(), "PropertyName");
-            Assert.AreEqual(reader.Value, "HereIs");
-            reader.Read();
-            Assert.AreEqual(reader.TokenType.ToString(), "String");
-            Assert.AreEqual(reader.Value, "Some Data");
-            reader.Read();
-            Assert.AreEqual(reader.TokenType.ToString(), "EndObject");
+            using var document = JsonDocument.Parse(action.DataJson);
+            var root = document.RootElement;
+            Assert.AreEqual(JsonValueKind.Object, root.ValueKind);
+            Assert.IsTrue(root.TryGetProperty("HereIs", out var hereIsProperty));
+            Assert.AreEqual("Some Data", hereIsProperty.GetString());
         }
 
 

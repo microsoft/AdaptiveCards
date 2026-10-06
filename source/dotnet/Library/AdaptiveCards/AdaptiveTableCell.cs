@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -20,13 +20,12 @@ namespace AdaptiveCards
 
         /// <inheritdoc />
         [XmlIgnore]
-        [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         /// Sets the text flow direction
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlIgnore]
         [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;
@@ -48,8 +47,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Elements within this container.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlElement(typeof(AdaptiveTextBlock))]
         [XmlElement(typeof(AdaptiveRichTextBlock))]
         [XmlElement(typeof(AdaptiveImage))]
@@ -67,6 +65,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveActionSet))]
         [XmlElement(typeof(AdaptiveTable))]
         [XmlElement(typeof(AdaptiveUnknownElement))]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
         /// <inheritdoc/>

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System;
 using System.Xml.Serialization;
 
@@ -9,7 +9,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Controls the vertical size (height) of element.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveHeightType>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveHeightType>))]
 
     public enum AdaptiveHeightType
     {
@@ -113,14 +113,14 @@ namespace AdaptiveCards
         /// <summary>
         /// The <see cref="AdaptiveHeightType"/> this instance represents.
         /// </summary>
-        [JsonProperty("heightType")]
+        [JsonPropertyName("heightType")]
         [XmlAttribute]
         public AdaptiveHeightType HeightType { get; set; }
 
         /// <summary>
         /// The specific height to use (only valid for the <see cref="AdaptiveHeightType.Pixel"/> type).
         /// </summary>
-        [JsonProperty("unit")]
+        [JsonPropertyName("unit")]
         [XmlIgnore]
         public uint? Unit { get; set; }
 
@@ -143,30 +143,6 @@ namespace AdaptiveCards
         public bool IsPixel()
         {
             return HeightType == AdaptiveHeightType.Pixel;
-        }
-
-        /// <summary>
-        /// Determines whether this <see cref="AdaptiveHeight"/> instance should be serialized.
-        /// </summary>
-        public bool ShouldSerializeAdaptiveHeight()
-        {
-            if (HeightType == AdaptiveHeightType.Auto)
-            {
-                return false;
-            }
-
-            if (HeightType == AdaptiveHeightType.Pixel)
-            {
-                if (!Unit.HasValue)
-                {
-                    return false;
-                }
-                else if (Unit.Value == 0)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         /// <summary>

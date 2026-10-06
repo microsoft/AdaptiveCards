@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls which inputs are associated with a given submit action
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveAssociatedInputs>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveAssociatedInputs>))]
     public enum AdaptiveAssociatedInputs
     {
         /// <summary>

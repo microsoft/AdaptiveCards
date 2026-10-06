@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -31,7 +30,7 @@ namespace AdaptiveCards
         /// <summary>
         /// URL for the poster image to show for this media element.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Poster { get; set; }
@@ -39,7 +38,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Alternate text to display for this media element.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string AltText { get; set; }
@@ -47,15 +46,10 @@ namespace AdaptiveCards
         /// <summary>
         /// A collection of captions.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlElement(Type = typeof(AdaptiveCaptionSource), ElementName = "CaptionSource")]
         [DefaultValue(null)]
         public List<AdaptiveCaptionSource> CaptionSources { get; set; } = new List<AdaptiveCaptionSource>();
 
-        /// <summary>
-        /// XmlSerializer method
-        /// </summary>
-        /// <returns></returns>
-        public bool ShouldSerializeCaptionSources() => CaptionSources.Any();
     }
 }

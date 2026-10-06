@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls the color style of TextBlock Elements
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextColor>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextColor>))]
     public enum AdaptiveTextColor
     {
         /// <summary>

@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 using System.ComponentModel;
 using System;
 
@@ -13,7 +12,6 @@ namespace AdaptiveCards
     /// Represents the backgroundImage property
     /// </summary>
     [XmlType(TypeName = AdaptiveTableColumnDefinition.TypeName)]
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveTableColumnDefinition
     {
         /// <summary>
@@ -24,7 +22,8 @@ namespace AdaptiveCards
         /// <summary>
         /// The content alignment for the TableCells inside the TableRow.
         /// </summary>
-        [JsonProperty("verticalCellContentAlignment", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyName("verticalCellContentAlignment")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
@@ -32,13 +31,16 @@ namespace AdaptiveCards
         /// <summary>
         /// The content alignment for the TableCells inside the TableRow.
         /// </summary>
-        [JsonProperty("horizontalCellContentAlignment", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyName("horizontalCellContentAlignment")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveHorizontalContentAlignment), "left")]
         public AdaptiveHorizontalContentAlignment HorizontalContentAlignment { get; set; }
 
         [JsonConverter(typeof(TableColumnWidthConverter))]
-        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyName("width")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonInclude]
         [XmlAttribute]
         [DefaultValue(0)]
         private TableColumnWidth TableColumnWidth { get; set; } = new TableColumnWidth();

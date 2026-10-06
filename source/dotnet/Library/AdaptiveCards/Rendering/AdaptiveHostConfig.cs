@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 using System;
 using System.Diagnostics;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
@@ -14,94 +15,94 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Properties which control rendering and behavior of actions.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public ActionsConfig Actions { get; set; } = new ActionsConfig();
 
         /// <summary>
         /// Properties that control the rendering and behavior of the toplevel Adaptive Card.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public AdaptiveCardConfig AdaptiveCard { get; set; } = new AdaptiveCardConfig();
 
         /// <summary>
         /// Definitions of the various styles that can be applied to containers and container-like elements.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public ContainerStylesConfig ContainerStyles { get; set; } = new ContainerStylesConfig();
 
         /// <summary>
         /// Controls the sizes at which images render.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public ImageSizesConfig ImageSizes { get; set; } = new ImageSizesConfig();
 
         /// <summary>
         /// Controls the default size at which images in an ImageSet are rendered.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public ImageSetConfig ImageSet { get; set; } = new ImageSetConfig();
 
         /// <summary>
         /// Controls the rendering of the FactSet element.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
         /// <summary>
         /// Defines which font families to use during rendering. (Obsolete)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [Obsolete("AdaptiveHostConfig.FontFamily has been deprecated.  Use AdaptiveHostConfig.FontTypes.Default.FontFamily", false)]
         public string FontFamily { get; set; }
 
         /// <summary>
         /// Defines which font sizes to use during rendering. (Obsolete)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [Obsolete("AdaptiveHostConfig.FontSizes has been deprecated.  Use AdaptiveHostConfig.FontTypes.Default.FontSizes", false)]
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
         /// <summary>
         /// Defines which font weights to use during rendering. (Obsolete)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [Obsolete("AdaptiveHostConfig.FontWeights has been deprecated.  Use AdaptiveHostConfig.FontTypes.Default.FontWeights", false)]
         public FontWeightsConfig FontWeights { get; set; } = new FontWeightsConfig();
 
         /// <summary>
         /// Defines font families, sizes, and weights to use during rendering.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public FontTypesConfig FontTypes { get; set; } = new FontTypesConfig();
 
         /// <summary>
         /// Defines the various values to use for spacing.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public SpacingsConfig Spacing { get; set; } = new SpacingsConfig();
 
         /// <summary>
         /// Controls the appearance of the separator.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public SeparatorConfig Separator { get; set; } = new SeparatorConfig();
 
         /// <summary>
         /// Controls the rendering and behavior of media elements.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public MediaConfig Media { get; set; } = new MediaConfig();
 
         /// <summary>
         /// Controls the rendering and behavior of input elements.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public InputsConfig Inputs { get; set; } = new InputsConfig();
 
         /// <summary>
         /// Controls the rendering of heading text.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public HeadingsConfig Headings { get; set; } = new HeadingsConfig();
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Image Base URL for relative URLs.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public Uri ImageBaseUrl { get; set; } = null;
 
         /// <summary>
@@ -214,10 +215,7 @@ namespace AdaptiveCards.Rendering
         {
             try
             {
-                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json, new JsonSerializerSettings
-                {
-                    Converters = { new StrictIntConverter() }
-                });
+                return JsonSerializer.Deserialize<AdaptiveHostConfig>(json, AdaptiveCardSerializationContext.HostConfigOptions);
             }
             catch (JsonException ex)
             {
@@ -231,7 +229,7 @@ namespace AdaptiveCards.Rendering
         /// <returns>A JSON string representation of this Host Config.</returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
+            return JsonSerializer.Serialize(this, AdaptiveCardSerializationContext.SerializationOptions);
         }
 
 // Ignore deprecation warnings for Font[Family|Weights|Sizes]

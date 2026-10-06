@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
 using System.ComponentModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -25,14 +26,14 @@ namespace AdaptiveCards
         ///     initial data that input fields will be combined with. This is essentially 'hidden' properties, Example:
         ///     {"id":"123123123"}
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlIgnore]
         public object Data { get; set; }
 
         /// <summary>
         ///     Controls which inputs are associated with the submit action
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveAssociatedInputs), "auto")]
         public AdaptiveAssociatedInputs AssociatedInputs { get; set; }
@@ -48,7 +49,7 @@ namespace AdaptiveCards
             {
                 if (Data != null)
                 {
-                    return JsonConvert.SerializeObject(Data, Formatting.Indented);
+                    return JsonSerializer.Serialize(Data, new JsonSerializerOptions { WriteIndented = true });
                 }
                 else
                 {
@@ -63,10 +64,7 @@ namespace AdaptiveCards
                 }
                 else
                 {
-                    Data = JsonConvert.DeserializeObject(value, new JsonSerializerSettings
-                    {
-                        Converters = { new StrictIntConverter() }
-                    });
+                    Data = JsonSerializer.Deserialize<JsonElement>(value);
                 }
             }
         }

@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls the weight of TextBock Elements
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextWeight>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextWeight>))]
     public enum AdaptiveTextWeight
     {
         /// <summary>

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace AdaptiveCards.Test
 {
@@ -35,7 +35,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestPassWordInputStyle()
         {
-            var expectedJSON = Utilities.BuildExpectedCardJSON("textInput", new SerializableDictionary<string, object>() { ["style"] = "Password" });
+            var expectedJSON = Utilities.BuildExpectedCardJSON("textInput", new Dictionary<string, JsonElement>() { ["style"] = JsonSerializer.SerializeToElement("Password") });
             var testCard = AdaptiveCard.FromJson(expectedJSON);
             Assert.IsTrue(testCard.Warnings.Count == 0);
             AdaptiveTextInput textInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "textInput") as AdaptiveTextInput;

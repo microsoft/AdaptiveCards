@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -25,19 +25,18 @@ namespace AdaptiveCards
         /// The JSON property name that this class implements.
         /// </summary>
         [XmlIgnore]
-        [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         /// The actions contained within this ActionSet.
         /// </summary>
-        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
         [XmlElement(typeof(AdaptiveOpenUrlAction))]
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
         [XmlElement(typeof(AdaptiveExecuteAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
+        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
     }
 }

@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls the relative size of TextBlock elements
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextSize>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextSize>))]
     public enum AdaptiveTextSize
     {
         /// <summary>

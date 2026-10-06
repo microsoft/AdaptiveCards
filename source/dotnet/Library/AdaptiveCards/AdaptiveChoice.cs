@@ -3,15 +3,13 @@
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Choice as part of a Input.AdaptiveChoiceSetInput element
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [XmlType(TypeName = "Choice")]
     public class AdaptiveChoice
     {
@@ -35,13 +33,13 @@ namespace AdaptiveCards
         ///     Is this choice selected?
         /// </summary>
         [Obsolete("Choice.IsSelected has been deprecated.  Use AdaptiveChoiceSetInput.Value", false)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool IsSelected { get; set; } = false;
 
         /// <summary>
         ///     (OPTIONAL) Speech description of the choice
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [Obsolete("AdaptiveChoiceSetInput.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
     }

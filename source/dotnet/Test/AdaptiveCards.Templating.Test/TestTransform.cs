@@ -13091,7 +13091,7 @@ namespace AdaptiveCards.Templating.Test
             string st = template.Expand(JsonSerializer.Serialize(dt, TestSerializerContext.Default.Data));
             try
             {
-                var jsonOb = Newtonsoft.Json.JsonConvert.DeserializeObject(st);
+                var jsonOb = System.Text.Json.JsonDocument.Parse(st);
             }
             catch (Exception ex)
             {
@@ -13119,7 +13119,7 @@ namespace AdaptiveCards.Templating.Test
             string st = template.Expand(JsonSerializer.Serialize(data, TestSerializerContext.Default.Data2));
             try
             {
-                var jsonOb = Newtonsoft.Json.JsonConvert.DeserializeObject(st);
+                var jsonOb = System.Text.Json.JsonDocument.Parse(st);
                 string expectedJson = "{ \"type\": \"AdaptiveCard\"," + 
                 "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\"," + 
                 "\"version\": \"1.3\"," + 

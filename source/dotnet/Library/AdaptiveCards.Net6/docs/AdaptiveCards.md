@@ -30,6 +30,8 @@
 - [AdaptiveActionMode](#T-AdaptiveCards-AdaptiveActionMode 'AdaptiveCards.AdaptiveActionMode')
   - [Primary](#F-AdaptiveCards-AdaptiveActionMode-Primary 'AdaptiveCards.AdaptiveActionMode.Primary')
   - [Secondary](#F-AdaptiveCards-AdaptiveActionMode-Secondary 'AdaptiveCards.AdaptiveActionMode.Secondary')
+- [AdaptiveActionPolymorphicConverter](#T-AdaptiveCards-AdaptiveActionPolymorphicConverter 'AdaptiveCards.AdaptiveActionPolymorphicConverter')
+  - [CanConvert()](#M-AdaptiveCards-AdaptiveActionPolymorphicConverter-CanConvert-System-Type- 'AdaptiveCards.AdaptiveActionPolymorphicConverter.CanConvert(System.Type)')
 - [AdaptiveActionSet](#T-AdaptiveCards-AdaptiveActionSet 'AdaptiveCards.AdaptiveActionSet')
   - [TypeName](#F-AdaptiveCards-AdaptiveActionSet-TypeName 'AdaptiveCards.AdaptiveActionSet.TypeName')
   - [Actions](#P-AdaptiveCards-AdaptiveActionSet-Actions 'AdaptiveCards.AdaptiveActionSet.Actions')
@@ -62,11 +64,11 @@
   - [HasDefaultValues()](#M-AdaptiveCards-AdaptiveBackgroundImage-HasDefaultValues 'AdaptiveCards.AdaptiveBackgroundImage.HasDefaultValues')
   - [op_Implicit(backgroundImageUrl)](#M-AdaptiveCards-AdaptiveBackgroundImage-op_Implicit-System-Uri-~AdaptiveCards-AdaptiveBackgroundImage 'AdaptiveCards.AdaptiveBackgroundImage.op_Implicit(System.Uri)~AdaptiveCards.AdaptiveBackgroundImage')
 - [AdaptiveBackgroundImageConverter](#T-AdaptiveCards-AdaptiveBackgroundImageConverter 'AdaptiveCards.AdaptiveBackgroundImageConverter')
-  - [CanWrite](#P-AdaptiveCards-AdaptiveBackgroundImageConverter-CanWrite 'AdaptiveCards.AdaptiveBackgroundImageConverter.CanWrite')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-#ctor 'AdaptiveCards.AdaptiveBackgroundImageConverter.#ctor')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning}- 'AdaptiveCards.AdaptiveBackgroundImageConverter.#ctor(System.Collections.Generic.List{AdaptiveCards.AdaptiveWarning})')
   - [Warnings](#P-AdaptiveCards-AdaptiveBackgroundImageConverter-Warnings 'AdaptiveCards.AdaptiveBackgroundImageConverter.Warnings')
-  - [CanConvert(objectType)](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-CanConvert-System-Type- 'AdaptiveCards.AdaptiveBackgroundImageConverter.CanConvert(System.Type)')
-  - [ReadJson(reader,objectType,existingValue,serializer)](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveBackgroundImageConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson(writer,backgroundImage,serializer)](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveBackgroundImageConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [Read()](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.AdaptiveBackgroundImageConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-AdaptiveBackgroundImageConverter-Write-System-Text-Json-Utf8JsonWriter,AdaptiveCards-AdaptiveBackgroundImage,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.AdaptiveBackgroundImageConverter.Write(System.Text.Json.Utf8JsonWriter,AdaptiveCards.AdaptiveBackgroundImage,System.Text.Json.JsonSerializerOptions)')
 - [AdaptiveCaptionSource](#T-AdaptiveCards-AdaptiveCaptionSource 'AdaptiveCards.AdaptiveCaptionSource')
   - [#ctor()](#M-AdaptiveCards-AdaptiveCaptionSource-#ctor 'AdaptiveCards.AdaptiveCaptionSource.#ctor')
   - [#ctor(mimeType,url)](#M-AdaptiveCards-AdaptiveCaptionSource-#ctor-System-String,System-String- 'AdaptiveCards.AdaptiveCaptionSource.#ctor(System.String,System.String)')
@@ -104,20 +106,17 @@
   - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveCard-VerticalContentAlignment 'AdaptiveCards.AdaptiveCard.VerticalContentAlignment')
   - [FromJson(json)](#M-AdaptiveCards-AdaptiveCard-FromJson-System-String- 'AdaptiveCards.AdaptiveCard.FromJson(System.String)')
   - [GetResourceInformation()](#M-AdaptiveCards-AdaptiveCard-GetResourceInformation 'AdaptiveCards.AdaptiveCard.GetResourceInformation')
-  - [ShouldSerializeActions()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeActions 'AdaptiveCards.AdaptiveCard.ShouldSerializeActions')
-  - [ShouldSerializeBody()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeBody 'AdaptiveCards.AdaptiveCard.ShouldSerializeBody')
-  - [ShouldSerializeHeight()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeHeight 'AdaptiveCards.AdaptiveCard.ShouldSerializeHeight')
-  - [ShouldSerializeJsonSchema()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeJsonSchema 'AdaptiveCards.AdaptiveCard.ShouldSerializeJsonSchema')
   - [ShouldSerializeRtlXml()](#M-AdaptiveCards-AdaptiveCard-ShouldSerializeRtlXml 'AdaptiveCards.AdaptiveCard.ShouldSerializeRtlXml')
   - [ToJson()](#M-AdaptiveCards-AdaptiveCard-ToJson 'AdaptiveCards.AdaptiveCard.ToJson')
 - [AdaptiveCardConfig](#T-AdaptiveCards-Rendering-AdaptiveCardConfig 'AdaptiveCards.Rendering.AdaptiveCardConfig')
   - [AllowCustomStyle](#P-AdaptiveCards-Rendering-AdaptiveCardConfig-AllowCustomStyle 'AdaptiveCards.Rendering.AdaptiveCardConfig.AllowCustomStyle')
 - [AdaptiveCardConverter](#T-AdaptiveCards-AdaptiveCardConverter 'AdaptiveCards.AdaptiveCardConverter')
-  - [CanWrite](#P-AdaptiveCards-AdaptiveCardConverter-CanWrite 'AdaptiveCards.AdaptiveCardConverter.CanWrite')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveCardConverter-#ctor 'AdaptiveCards.AdaptiveCardConverter.#ctor')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveCardConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-ParseContext- 'AdaptiveCards.AdaptiveCardConverter.#ctor(System.Collections.Generic.List{AdaptiveCards.AdaptiveWarning},AdaptiveCards.ParseContext)')
+  - [ParseContext](#P-AdaptiveCards-AdaptiveCardConverter-ParseContext 'AdaptiveCards.AdaptiveCardConverter.ParseContext')
   - [Warnings](#P-AdaptiveCards-AdaptiveCardConverter-Warnings 'AdaptiveCards.AdaptiveCardConverter.Warnings')
-  - [CanConvert()](#M-AdaptiveCards-AdaptiveCardConverter-CanConvert-System-Type- 'AdaptiveCards.AdaptiveCardConverter.CanConvert(System.Type)')
-  - [ReadJson(reader,objectType,existingValue,serializer)](#M-AdaptiveCards-AdaptiveCardConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveCardConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson()](#M-AdaptiveCards-AdaptiveCardConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveCardConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [Read()](#M-AdaptiveCards-AdaptiveCardConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.AdaptiveCardConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-AdaptiveCardConverter-Write-System-Text-Json-Utf8JsonWriter,AdaptiveCards-AdaptiveCard,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.AdaptiveCardConverter.Write(System.Text.Json.Utf8JsonWriter,AdaptiveCards.AdaptiveCard,System.Text.Json.JsonSerializerOptions)')
 - [AdaptiveCardParseResult](#T-AdaptiveCards-AdaptiveCardParseResult 'AdaptiveCards.AdaptiveCardParseResult')
   - [Card](#P-AdaptiveCards-AdaptiveCardParseResult-Card 'AdaptiveCards.AdaptiveCardParseResult.Card')
   - [Warnings](#P-AdaptiveCards-AdaptiveCardParseResult-Warnings 'AdaptiveCards.AdaptiveCardParseResult.Warnings')
@@ -126,6 +125,13 @@
   - [HostConfig](#P-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2-HostConfig 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.HostConfig')
   - [SupportedSchemaVersion](#P-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2-SupportedSchemaVersion 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.SupportedSchemaVersion')
   - [GetSupportedSchemaVersion()](#M-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2-GetSupportedSchemaVersion 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.GetSupportedSchemaVersion')
+- [AdaptiveCardSerializationContext](#T-AdaptiveCards-AdaptiveCardSerializationContext 'AdaptiveCards.AdaptiveCardSerializationContext')
+  - [#ctor(parseResult,parseContext)](#M-AdaptiveCards-AdaptiveCardSerializationContext-#ctor-AdaptiveCards-AdaptiveCardParseResult,AdaptiveCards-ParseContext- 'AdaptiveCards.AdaptiveCardSerializationContext.#ctor(AdaptiveCards.AdaptiveCardParseResult,AdaptiveCards.ParseContext)')
+  - [HostConfigOptions](#P-AdaptiveCards-AdaptiveCardSerializationContext-HostConfigOptions 'AdaptiveCards.AdaptiveCardSerializationContext.HostConfigOptions')
+  - [Options](#P-AdaptiveCards-AdaptiveCardSerializationContext-Options 'AdaptiveCards.AdaptiveCardSerializationContext.Options')
+  - [ParseContext](#P-AdaptiveCards-AdaptiveCardSerializationContext-ParseContext 'AdaptiveCards.AdaptiveCardSerializationContext.ParseContext')
+  - [ParseResult](#P-AdaptiveCards-AdaptiveCardSerializationContext-ParseResult 'AdaptiveCards.AdaptiveCardSerializationContext.ParseResult')
+  - [SerializationOptions](#P-AdaptiveCards-AdaptiveCardSerializationContext-SerializationOptions 'AdaptiveCards.AdaptiveCardSerializationContext.SerializationOptions')
 - [AdaptiveChoice](#T-AdaptiveCards-AdaptiveChoice 'AdaptiveCards.AdaptiveChoice')
   - [IsSelected](#P-AdaptiveCards-AdaptiveChoice-IsSelected 'AdaptiveCards.AdaptiveChoice.IsSelected')
   - [Speak](#P-AdaptiveCards-AdaptiveChoice-Speak 'AdaptiveCards.AdaptiveChoice.Speak')
@@ -159,6 +165,7 @@
   - [GetEnumerator()](#M-AdaptiveCards-AdaptiveCollectionElement-GetEnumerator 'AdaptiveCards.AdaptiveCollectionElement.GetEnumerator')
   - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveCollectionElement.ShouldSerializeStyleXml')
   - [System#Collections#IEnumerable#GetEnumerator()](#M-AdaptiveCards-AdaptiveCollectionElement-System#Collections#IEnumerable#GetEnumerator 'AdaptiveCards.AdaptiveCollectionElement.System#Collections#IEnumerable#GetEnumerator')
+- [AdaptiveCollectionElementConverterFactory](#T-AdaptiveCards-AdaptiveCollectionElementConverterFactory 'AdaptiveCards.AdaptiveCollectionElementConverterFactory')
 - [AdaptiveCollectionWithContentAlignment](#T-AdaptiveCards-AdaptiveCollectionWithContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment')
   - [HorizontalCellContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-HorizontalCellContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.HorizontalCellContentAlignment')
   - [VerticalCellContentAlignment](#P-AdaptiveCards-AdaptiveCollectionWithContentAlignment-VerticalCellContentAlignment 'AdaptiveCards.AdaptiveCollectionWithContentAlignment.VerticalCellContentAlignment')
@@ -220,7 +227,6 @@
   - [Separator](#P-AdaptiveCards-AdaptiveElement-Separator 'AdaptiveCards.AdaptiveElement.Separator')
   - [Spacing](#P-AdaptiveCards-AdaptiveElement-Spacing 'AdaptiveCards.AdaptiveElement.Spacing')
   - [Speak](#P-AdaptiveCards-AdaptiveElement-Speak 'AdaptiveCards.AdaptiveElement.Speak')
-  - [ShouldSerializeHeight()](#M-AdaptiveCards-AdaptiveElement-ShouldSerializeHeight 'AdaptiveCards.AdaptiveElement.ShouldSerializeHeight')
 - [AdaptiveElementRenderers\`2](#T-AdaptiveCards-Rendering-AdaptiveElementRenderers`2 'AdaptiveCards.Rendering.AdaptiveElementRenderers`2')
   - [Get(type)](#M-AdaptiveCards-Rendering-AdaptiveElementRenderers`2-Get-System-Type- 'AdaptiveCards.Rendering.AdaptiveElementRenderers`2.Get(System.Type)')
   - [Get\`\`1()](#M-AdaptiveCards-Rendering-AdaptiveElementRenderers`2-Get``1 'AdaptiveCards.Rendering.AdaptiveElementRenderers`2.Get``1')
@@ -248,14 +254,13 @@
   - [Facts](#P-AdaptiveCards-AdaptiveFactSet-Facts 'AdaptiveCards.AdaptiveFactSet.Facts')
   - [Type](#P-AdaptiveCards-AdaptiveFactSet-Type 'AdaptiveCards.AdaptiveFactSet.Type')
 - [AdaptiveFallbackConverter](#T-AdaptiveCards-AdaptiveFallbackConverter 'AdaptiveCards.AdaptiveFallbackConverter')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveFallbackConverter-#ctor 'AdaptiveCards.AdaptiveFallbackConverter.#ctor')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveFallbackConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-ParseContext- 'AdaptiveCards.AdaptiveFallbackConverter.#ctor(System.Collections.Generic.List{AdaptiveCards.AdaptiveWarning},AdaptiveCards.ParseContext)')
   - [IsInFallback](#F-AdaptiveCards-AdaptiveFallbackConverter-IsInFallback 'AdaptiveCards.AdaptiveFallbackConverter.IsInFallback')
-  - [CanRead](#P-AdaptiveCards-AdaptiveFallbackConverter-CanRead 'AdaptiveCards.AdaptiveFallbackConverter.CanRead')
-  - [CanWrite](#P-AdaptiveCards-AdaptiveFallbackConverter-CanWrite 'AdaptiveCards.AdaptiveFallbackConverter.CanWrite')
+  - [ParseContext](#P-AdaptiveCards-AdaptiveFallbackConverter-ParseContext 'AdaptiveCards.AdaptiveFallbackConverter.ParseContext')
   - [Warnings](#P-AdaptiveCards-AdaptiveFallbackConverter-Warnings 'AdaptiveCards.AdaptiveFallbackConverter.Warnings')
-  - [CanConvert(objectType)](#M-AdaptiveCards-AdaptiveFallbackConverter-CanConvert-System-Type- 'AdaptiveCards.AdaptiveFallbackConverter.CanConvert(System.Type)')
-  - [ParseFallback()](#M-AdaptiveCards-AdaptiveFallbackConverter-ParseFallback-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-JsonSerializer,System-String,AdaptiveCards-AdaptiveInternalID- 'AdaptiveCards.AdaptiveFallbackConverter.ParseFallback(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.JsonSerializer,System.String,AdaptiveCards.AdaptiveInternalID)')
-  - [ReadJson()](#M-AdaptiveCards-AdaptiveFallbackConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveFallbackConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson(writer,cardElement,serializer)](#M-AdaptiveCards-AdaptiveFallbackConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveFallbackConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [Read()](#M-AdaptiveCards-AdaptiveFallbackConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.AdaptiveFallbackConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-AdaptiveFallbackConverter-Write-System-Text-Json-Utf8JsonWriter,AdaptiveCards-AdaptiveFallbackElement,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.AdaptiveFallbackConverter.Write(System.Text.Json.Utf8JsonWriter,AdaptiveCards.AdaptiveFallbackElement,System.Text.Json.JsonSerializerOptions)')
 - [AdaptiveFallbackElement](#T-AdaptiveCards-AdaptiveFallbackElement 'AdaptiveCards.AdaptiveFallbackElement')
   - [#ctor(fallbackType)](#M-AdaptiveCards-AdaptiveFallbackElement-#ctor-AdaptiveCards-AdaptiveFallbackElement-AdaptiveFallbackType- 'AdaptiveCards.AdaptiveFallbackElement.#ctor(AdaptiveCards.AdaptiveFallbackElement.AdaptiveFallbackType)')
   - [#ctor(fallbackContent)](#M-AdaptiveCards-AdaptiveFallbackElement-#ctor-AdaptiveCards-AdaptiveTypedElement- 'AdaptiveCards.AdaptiveFallbackElement.#ctor(AdaptiveCards.AdaptiveTypedElement)')
@@ -294,7 +299,6 @@
   - [GetHashCode()](#M-AdaptiveCards-AdaptiveHeight-GetHashCode 'AdaptiveCards.AdaptiveHeight.GetHashCode')
   - [IsPixel()](#M-AdaptiveCards-AdaptiveHeight-IsPixel 'AdaptiveCards.AdaptiveHeight.IsPixel')
   - [Parse(value)](#M-AdaptiveCards-AdaptiveHeight-Parse-System-String- 'AdaptiveCards.AdaptiveHeight.Parse(System.String)')
-  - [ShouldSerializeAdaptiveHeight()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeAdaptiveHeight 'AdaptiveCards.AdaptiveHeight.ShouldSerializeAdaptiveHeight')
   - [ShouldSerializeUnitXml()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeUnitXml 'AdaptiveCards.AdaptiveHeight.ShouldSerializeUnitXml')
   - [ToString()](#M-AdaptiveCards-AdaptiveHeight-ToString 'AdaptiveCards.AdaptiveHeight.ToString')
   - [op_Equality()](#M-AdaptiveCards-AdaptiveHeight-op_Equality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.op_Equality(AdaptiveCards.AdaptiveHeight,AdaptiveCards.AdaptiveHeight)')
@@ -402,7 +406,6 @@
   - [Poster](#P-AdaptiveCards-AdaptiveMedia-Poster 'AdaptiveCards.AdaptiveMedia.Poster')
   - [Sources](#P-AdaptiveCards-AdaptiveMedia-Sources 'AdaptiveCards.AdaptiveMedia.Sources')
   - [Type](#P-AdaptiveCards-AdaptiveMedia-Type 'AdaptiveCards.AdaptiveMedia.Type')
-  - [ShouldSerializeCaptionSources()](#M-AdaptiveCards-AdaptiveMedia-ShouldSerializeCaptionSources 'AdaptiveCards.AdaptiveMedia.ShouldSerializeCaptionSources')
 - [AdaptiveMediaSource](#T-AdaptiveCards-AdaptiveMediaSource 'AdaptiveCards.AdaptiveMediaSource')
   - [#ctor()](#M-AdaptiveCards-AdaptiveMediaSource-#ctor 'AdaptiveCards.AdaptiveMediaSource.#ctor')
   - [#ctor(mimeType,url)](#M-AdaptiveCards-AdaptiveMediaSource-#ctor-System-String,System-String- 'AdaptiveCards.AdaptiveMediaSource.#ctor(System.String,System.String)')
@@ -636,28 +639,28 @@
   - [Id](#P-AdaptiveCards-AdaptiveTokenExchangeResource-Id 'AdaptiveCards.AdaptiveTokenExchangeResource.Id')
   - [ProviderId](#P-AdaptiveCards-AdaptiveTokenExchangeResource-ProviderId 'AdaptiveCards.AdaptiveTokenExchangeResource.ProviderId')
   - [Uri](#P-AdaptiveCards-AdaptiveTokenExchangeResource-Uri 'AdaptiveCards.AdaptiveTokenExchangeResource.Uri')
-- [AdaptiveTypedBaseElementConverter](#T-AdaptiveCards-AdaptiveTypedBaseElementConverter 'AdaptiveCards.AdaptiveTypedBaseElementConverter')
-  - [ParseContext](#P-AdaptiveCards-AdaptiveTypedBaseElementConverter-ParseContext 'AdaptiveCards.AdaptiveTypedBaseElementConverter.ParseContext')
 - [AdaptiveTypedElement](#T-AdaptiveCards-AdaptiveTypedElement 'AdaptiveCards.AdaptiveTypedElement')
-  - [Requires](#F-AdaptiveCards-AdaptiveTypedElement-Requires 'AdaptiveCards.AdaptiveTypedElement.Requires')
   - [AdditionalProperties](#P-AdaptiveCards-AdaptiveTypedElement-AdditionalProperties 'AdaptiveCards.AdaptiveTypedElement.AdditionalProperties')
   - [Fallback](#P-AdaptiveCards-AdaptiveTypedElement-Fallback 'AdaptiveCards.AdaptiveTypedElement.Fallback')
   - [Id](#P-AdaptiveCards-AdaptiveTypedElement-Id 'AdaptiveCards.AdaptiveTypedElement.Id')
   - [InternalID](#P-AdaptiveCards-AdaptiveTypedElement-InternalID 'AdaptiveCards.AdaptiveTypedElement.InternalID')
+  - [Requires](#P-AdaptiveCards-AdaptiveTypedElement-Requires 'AdaptiveCards.AdaptiveTypedElement.Requires')
   - [Type](#P-AdaptiveCards-AdaptiveTypedElement-Type 'AdaptiveCards.AdaptiveTypedElement.Type')
   - [MeetsRequirements(featureRegistration)](#M-AdaptiveCards-AdaptiveTypedElement-MeetsRequirements-AdaptiveCards-AdaptiveFeatureRegistration- 'AdaptiveCards.AdaptiveTypedElement.MeetsRequirements(AdaptiveCards.AdaptiveFeatureRegistration)')
   - [ShouldSerializeAdditionalProperties()](#M-AdaptiveCards-AdaptiveTypedElement-ShouldSerializeAdditionalProperties 'AdaptiveCards.AdaptiveTypedElement.ShouldSerializeAdditionalProperties')
 - [AdaptiveTypedElementConverter](#T-AdaptiveCards-AdaptiveTypedElementConverter 'AdaptiveCards.AdaptiveTypedElementConverter')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveTypedElementConverter-#ctor 'AdaptiveCards.AdaptiveTypedElementConverter.#ctor')
+  - [#ctor()](#M-AdaptiveCards-AdaptiveTypedElementConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-ParseContext- 'AdaptiveCards.AdaptiveTypedElementConverter.#ctor(System.Collections.Generic.List{AdaptiveCards.AdaptiveWarning},AdaptiveCards.ParseContext)')
   - [TypedElementTypes](#F-AdaptiveCards-AdaptiveTypedElementConverter-TypedElementTypes 'AdaptiveCards.AdaptiveTypedElementConverter.TypedElementTypes')
-  - [CanRead](#P-AdaptiveCards-AdaptiveTypedElementConverter-CanRead 'AdaptiveCards.AdaptiveTypedElementConverter.CanRead')
-  - [CanWrite](#P-AdaptiveCards-AdaptiveTypedElementConverter-CanWrite 'AdaptiveCards.AdaptiveTypedElementConverter.CanWrite')
+  - [ParseContext](#P-AdaptiveCards-AdaptiveTypedElementConverter-ParseContext 'AdaptiveCards.AdaptiveTypedElementConverter.ParseContext')
   - [Warnings](#P-AdaptiveCards-AdaptiveTypedElementConverter-Warnings 'AdaptiveCards.AdaptiveTypedElementConverter.Warnings')
   - [CanConvert()](#M-AdaptiveCards-AdaptiveTypedElementConverter-CanConvert-System-Type- 'AdaptiveCards.AdaptiveTypedElementConverter.CanConvert(System.Type)')
+  - [CreateConverter()](#M-AdaptiveCards-AdaptiveTypedElementConverter-CreateConverter-System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.AdaptiveTypedElementConverter.CreateConverter(System.Type,System.Text.Json.JsonSerializerOptions)')
   - [CreateElement\`\`1()](#M-AdaptiveCards-AdaptiveTypedElementConverter-CreateElement``1-System-String- 'AdaptiveCards.AdaptiveTypedElementConverter.CreateElement``1(System.String)')
-  - [GetElementTypeName()](#M-AdaptiveCards-AdaptiveTypedElementConverter-GetElementTypeName-System-Type,Newtonsoft-Json-Linq-JObject- 'AdaptiveCards.AdaptiveTypedElementConverter.GetElementTypeName(System.Type,Newtonsoft.Json.Linq.JObject)')
-  - [ReadJson()](#M-AdaptiveCards-AdaptiveTypedElementConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveTypedElementConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [GetElementTypeName()](#M-AdaptiveCards-AdaptiveTypedElementConverter-GetElementTypeName-System-Type,System-Text-Json-Nodes-JsonObject- 'AdaptiveCards.AdaptiveTypedElementConverter.GetElementTypeName(System.Type,System.Text.Json.Nodes.JsonObject)')
   - [RegisterTypedElement\`\`1(typeName)](#M-AdaptiveCards-AdaptiveTypedElementConverter-RegisterTypedElement``1-System-String- 'AdaptiveCards.AdaptiveTypedElementConverter.RegisterTypedElement``1(System.String)')
-  - [WriteJson()](#M-AdaptiveCards-AdaptiveTypedElementConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.AdaptiveTypedElementConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+- [AdaptiveTypedElementInnerConverter](#T-AdaptiveCards-AdaptiveTypedElementInnerConverter 'AdaptiveCards.AdaptiveTypedElementInnerConverter')
+  - [CanConvert()](#M-AdaptiveCards-AdaptiveTypedElementInnerConverter-CanConvert-System-Type- 'AdaptiveCards.AdaptiveTypedElementInnerConverter.CanConvert(System.Type)')
 - [AdaptiveUnknownAction](#T-AdaptiveCards-AdaptiveUnknownAction 'AdaptiveCards.AdaptiveUnknownAction')
   - [Type](#P-AdaptiveCards-AdaptiveUnknownAction-Type 'AdaptiveCards.AdaptiveUnknownAction.Type')
 - [AdaptiveUnknownElement](#T-AdaptiveCards-AdaptiveUnknownElement 'AdaptiveCards.AdaptiveUnknownElement')
@@ -724,7 +727,6 @@
   - [GetHashCode()](#M-AdaptiveCards-AdaptiveWidth-GetHashCode 'AdaptiveCards.AdaptiveWidth.GetHashCode')
   - [IsPixel()](#M-AdaptiveCards-AdaptiveWidth-IsPixel 'AdaptiveCards.AdaptiveWidth.IsPixel')
   - [Parse(value)](#M-AdaptiveCards-AdaptiveWidth-Parse-System-String- 'AdaptiveCards.AdaptiveWidth.Parse(System.String)')
-  - [ShouldSerializeAdaptiveWidth()](#M-AdaptiveCards-AdaptiveWidth-ShouldSerializeAdaptiveWidth 'AdaptiveCards.AdaptiveWidth.ShouldSerializeAdaptiveWidth')
   - [ShouldSerializeUnitXml()](#M-AdaptiveCards-AdaptiveWidth-ShouldSerializeUnitXml 'AdaptiveCards.AdaptiveWidth.ShouldSerializeUnitXml')
   - [ToString()](#M-AdaptiveCards-AdaptiveWidth-ToString 'AdaptiveCards.AdaptiveWidth.ToString')
   - [op_Equality()](#M-AdaptiveCards-AdaptiveWidth-op_Equality-AdaptiveCards-AdaptiveWidth,AdaptiveCards-AdaptiveWidth- 'AdaptiveCards.AdaptiveWidth.op_Equality(AdaptiveCards.AdaptiveWidth,AdaptiveCards.AdaptiveWidth)')
@@ -787,6 +789,7 @@
   - [Title](#P-AdaptiveCards-Rendering-FactSetConfig-Title 'AdaptiveCards.Rendering.FactSetConfig.Title')
   - [Value](#P-AdaptiveCards-Rendering-FactSetConfig-Value 'AdaptiveCards.Rendering.FactSetConfig.Value')
 - [FontColorConfig](#T-AdaptiveCards-Rendering-FontColorConfig 'AdaptiveCards.Rendering.FontColorConfig')
+  - [#ctor()](#M-AdaptiveCards-Rendering-FontColorConfig-#ctor 'AdaptiveCards.Rendering.FontColorConfig.#ctor')
   - [#ctor(defaultColor,subtle)](#M-AdaptiveCards-Rendering-FontColorConfig-#ctor-System-String,System-String- 'AdaptiveCards.Rendering.FontColorConfig.#ctor(System.String,System.String)')
   - [Default](#P-AdaptiveCards-Rendering-FontColorConfig-Default 'AdaptiveCards.Rendering.FontColorConfig.Default')
   - [HighlightColors](#P-AdaptiveCards-Rendering-FontColorConfig-HighlightColors 'AdaptiveCards.Rendering.FontColorConfig.HighlightColors')
@@ -824,11 +827,11 @@
 - [GfmBlockRules](#T-Microsoft-MarkedNet-GfmBlockRules 'Microsoft.MarkedNet.GfmBlockRules')
 - [GfmInlineRules](#T-Microsoft-MarkedNet-GfmInlineRules 'Microsoft.MarkedNet.GfmInlineRules')
 - [HashColorConverter](#T-AdaptiveCards-HashColorConverter 'AdaptiveCards.HashColorConverter')
-  - [CanWrite](#P-AdaptiveCards-HashColorConverter-CanWrite 'AdaptiveCards.HashColorConverter.CanWrite')
+  - [#ctor()](#M-AdaptiveCards-HashColorConverter-#ctor 'AdaptiveCards.HashColorConverter.#ctor')
+  - [#ctor()](#M-AdaptiveCards-HashColorConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning}- 'AdaptiveCards.HashColorConverter.#ctor(System.Collections.Generic.List{AdaptiveCards.AdaptiveWarning})')
   - [Warnings](#P-AdaptiveCards-HashColorConverter-Warnings 'AdaptiveCards.HashColorConverter.Warnings')
-  - [CanConvert()](#M-AdaptiveCards-HashColorConverter-CanConvert-System-Type- 'AdaptiveCards.HashColorConverter.CanConvert(System.Type)')
-  - [ReadJson()](#M-AdaptiveCards-HashColorConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.HashColorConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson()](#M-AdaptiveCards-HashColorConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.HashColorConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [Read()](#M-AdaptiveCards-HashColorConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.HashColorConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-HashColorConverter-Write-System-Text-Json-Utf8JsonWriter,System-String,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.HashColorConverter.Write(System.Text.Json.Utf8JsonWriter,System.String,System.Text.Json.JsonSerializerOptions)')
 - [HeadingsConfig](#T-AdaptiveCards-Rendering-HeadingsConfig 'AdaptiveCards.Rendering.HeadingsConfig')
   - [Level](#P-AdaptiveCards-Rendering-HeadingsConfig-Level 'AdaptiveCards.Rendering.HeadingsConfig.Level')
 - [HighlightColorConfig](#T-AdaptiveCards-Rendering-HighlightColorConfig 'AdaptiveCards.Rendering.HighlightColorConfig')
@@ -851,16 +854,18 @@
   - [AboveTitle](#F-AdaptiveCards-Rendering-IconPlacement-AboveTitle 'AdaptiveCards.Rendering.IconPlacement.AboveTitle')
   - [LeftOfTitle](#F-AdaptiveCards-Rendering-IconPlacement-LeftOfTitle 'AdaptiveCards.Rendering.IconPlacement.LeftOfTitle')
 - [IgnoreEmptyItemsConverter\`1](#T-AdaptiveCards-IgnoreEmptyItemsConverter`1 'AdaptiveCards.IgnoreEmptyItemsConverter`1')
-  - [CanWrite](#P-AdaptiveCards-IgnoreEmptyItemsConverter`1-CanWrite 'AdaptiveCards.IgnoreEmptyItemsConverter`1.CanWrite')
-  - [CanConvert()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-CanConvert-System-Type- 'AdaptiveCards.IgnoreEmptyItemsConverter`1.CanConvert(System.Type)')
-  - [ReadJson()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreEmptyItemsConverter`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreEmptyItemsConverter`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [#ctor()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-#ctor 'AdaptiveCards.IgnoreEmptyItemsConverter`1.#ctor')
+  - [#ctor()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-#ctor-AdaptiveCards-ParseContext- 'AdaptiveCards.IgnoreEmptyItemsConverter`1.#ctor(AdaptiveCards.ParseContext)')
+  - [#ctor()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-#ctor-AdaptiveCards-ParseContext,System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning}- 'AdaptiveCards.IgnoreEmptyItemsConverter`1.#ctor(AdaptiveCards.ParseContext,System.Collections.Generic.List{AdaptiveCards.AdaptiveWarning})')
+  - [ParseContext](#P-AdaptiveCards-IgnoreEmptyItemsConverter`1-ParseContext 'AdaptiveCards.IgnoreEmptyItemsConverter`1.ParseContext')
+  - [Read()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.IgnoreEmptyItemsConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-IgnoreEmptyItemsConverter`1-Write-System-Text-Json-Utf8JsonWriter,System-Collections-Generic-List{`0},System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.IgnoreEmptyItemsConverter`1.Write(System.Text.Json.Utf8JsonWriter,System.Collections.Generic.List{`0},System.Text.Json.JsonSerializerOptions)')
 - [IgnoreNullEnumConverter\`1](#T-AdaptiveCards-IgnoreNullEnumConverter`1 'AdaptiveCards.IgnoreNullEnumConverter`1')
   - [#ctor()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-#ctor 'AdaptiveCards.IgnoreNullEnumConverter`1.#ctor')
   - [#ctor()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-#ctor-System-Boolean- 'AdaptiveCards.IgnoreNullEnumConverter`1.#ctor(System.Boolean)')
   - [Warnings](#P-AdaptiveCards-IgnoreNullEnumConverter`1-Warnings 'AdaptiveCards.IgnoreNullEnumConverter`1.Warnings')
-  - [ReadJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [Read()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.IgnoreNullEnumConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-Write-System-Text-Json-Utf8JsonWriter,System-Nullable{`0},System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.IgnoreNullEnumConverter`1.Write(System.Text.Json.Utf8JsonWriter,System.Nullable{`0},System.Text.Json.JsonSerializerOptions)')
 - [ImageSetConfig](#T-AdaptiveCards-Rendering-ImageSetConfig 'AdaptiveCards.Rendering.ImageSetConfig')
   - [ImageSize](#P-AdaptiveCards-Rendering-ImageSetConfig-ImageSize 'AdaptiveCards.Rendering.ImageSetConfig.ImageSize')
 - [ImageSizesConfig](#T-AdaptiveCards-Rendering-ImageSizesConfig 'AdaptiveCards.Rendering.ImageSizesConfig')
@@ -883,10 +888,11 @@
   - [ErrorMessage](#P-AdaptiveCards-Rendering-InputsConfig-ErrorMessage 'AdaptiveCards.Rendering.InputsConfig.ErrorMessage')
   - [Label](#P-AdaptiveCards-Rendering-InputsConfig-Label 'AdaptiveCards.Rendering.InputsConfig.Label')
 - [Iso8601DateTimeConverter](#T-AdaptiveCards-Iso8601DateTimeConverter 'AdaptiveCards.Iso8601DateTimeConverter')
-  - [#ctor()](#M-AdaptiveCards-Iso8601DateTimeConverter-#ctor 'AdaptiveCards.Iso8601DateTimeConverter.#ctor')
+  - [Read()](#M-AdaptiveCards-Iso8601DateTimeConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.Iso8601DateTimeConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-Iso8601DateTimeConverter-Write-System-Text-Json-Utf8JsonWriter,System-DateTime,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.Iso8601DateTimeConverter.Write(System.Text.Json.Utf8JsonWriter,System.DateTime,System.Text.Json.JsonSerializerOptions)')
 - [JsonExtensions](#T-AdaptiveCards-JsonExtensions 'AdaptiveCards.JsonExtensions')
   - [IsHexDigit(c)](#M-AdaptiveCards-JsonExtensions-IsHexDigit-System-Char- 'AdaptiveCards.JsonExtensions.IsHexDigit(System.Char)')
-  - [IsIntegerType(type)](#M-AdaptiveCards-JsonExtensions-IsIntegerType-System-Type- 'AdaptiveCards.JsonExtensions.IsIntegerType(System.Type)')
+  - [IsIntegerType()](#M-AdaptiveCards-JsonExtensions-IsIntegerType-System-Type- 'AdaptiveCards.JsonExtensions.IsIntegerType(System.Type)')
 - [LabelConfig](#T-AdaptiveCards-Rendering-LabelConfig 'AdaptiveCards.Rendering.LabelConfig')
   - [InputSpacing](#P-AdaptiveCards-Rendering-LabelConfig-InputSpacing 'AdaptiveCards.Rendering.LabelConfig.InputSpacing')
   - [OptionalInputs](#P-AdaptiveCards-Rendering-LabelConfig-OptionalInputs 'AdaptiveCards.Rendering.LabelConfig.OptionalInputs')
@@ -935,6 +941,8 @@
   - [JoinString(choices,sep,last)](#M-AdaptiveCards-Rendering-RendererUtilities-JoinString-System-Collections-Generic-List{System-String},System-String,System-String- 'AdaptiveCards.Rendering.RendererUtilities.JoinString(System.Collections.Generic.List{System.String},System.String,System.String)')
   - [TryGetValue\`\`1(dictionary,key)](#M-AdaptiveCards-Rendering-RendererUtilities-TryGetValue``1-System-Collections-IDictionary,System-String- 'AdaptiveCards.Rendering.RendererUtilities.TryGetValue``1(System.Collections.IDictionary,System.String)')
   - [TryGetValue\`\`1(dictionary,key)](#M-AdaptiveCards-Rendering-RendererUtilities-TryGetValue``1-System-Collections-Generic-IDictionary{System-String,System-Object},System-String- 'AdaptiveCards.Rendering.RendererUtilities.TryGetValue``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)')
+- [SafeJsonHelper](#T-AdaptiveCards-SafeJsonHelper 'AdaptiveCards.SafeJsonHelper')
+  - [SafeCreateJsonObject()](#M-AdaptiveCards-SafeJsonHelper-SafeCreateJsonObject-System-Text-Json-JsonElement- 'AdaptiveCards.SafeJsonHelper.SafeCreateJsonObject(System.Text.Json.JsonElement)')
 - [SeparatorConfig](#T-AdaptiveCards-Rendering-SeparatorConfig 'AdaptiveCards.Rendering.SeparatorConfig')
   - [LineColor](#P-AdaptiveCards-Rendering-SeparatorConfig-LineColor 'AdaptiveCards.Rendering.SeparatorConfig.LineColor')
   - [LineThickness](#P-AdaptiveCards-Rendering-SeparatorConfig-LineThickness 'AdaptiveCards.Rendering.SeparatorConfig.LineThickness')
@@ -954,10 +962,9 @@
   - [Padding](#P-AdaptiveCards-Rendering-SpacingsConfig-Padding 'AdaptiveCards.Rendering.SpacingsConfig.Padding')
   - [Small](#P-AdaptiveCards-Rendering-SpacingsConfig-Small 'AdaptiveCards.Rendering.SpacingsConfig.Small')
 - [StrictIntConverter](#T-AdaptiveCards-StrictIntConverter 'AdaptiveCards.StrictIntConverter')
-  - [CanWrite](#P-AdaptiveCards-StrictIntConverter-CanWrite 'AdaptiveCards.StrictIntConverter.CanWrite')
   - [CanConvert()](#M-AdaptiveCards-StrictIntConverter-CanConvert-System-Type- 'AdaptiveCards.StrictIntConverter.CanConvert(System.Type)')
-  - [ReadJson()](#M-AdaptiveCards-StrictIntConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.StrictIntConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson()](#M-AdaptiveCards-StrictIntConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.StrictIntConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [Read()](#M-AdaptiveCards-StrictIntConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.StrictIntConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-StrictIntConverter-Write-System-Text-Json-Utf8JsonWriter,System-Object,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.StrictIntConverter.Write(System.Text.Json.Utf8JsonWriter,System.Object,System.Text.Json.JsonSerializerOptions)')
 - [TablesBlockRules](#T-Microsoft-MarkedNet-TablesBlockRules 'Microsoft.MarkedNet.TablesBlockRules')
 - [TextBlockConfig](#T-AdaptiveCards-Rendering-TextBlockConfig 'AdaptiveCards.Rendering.TextBlockConfig')
   - [Color](#P-AdaptiveCards-Rendering-TextBlockConfig-Color 'AdaptiveCards.Rendering.TextBlockConfig.Color')
@@ -968,12 +975,12 @@
   - [Wrap](#P-AdaptiveCards-Rendering-TextBlockConfig-Wrap 'AdaptiveCards.Rendering.TextBlockConfig.Wrap')
 - [TextMarkdownRenderer](#T-Microsoft-MarkedNet-TextMarkdownRenderer 'Microsoft.MarkedNet.TextMarkdownRenderer')
 - [ToggleElementsConverter](#T-AdaptiveCards-ToggleElementsConverter 'AdaptiveCards.ToggleElementsConverter')
-  - [CanConvert()](#M-AdaptiveCards-ToggleElementsConverter-CanConvert-System-Type- 'AdaptiveCards.ToggleElementsConverter.CanConvert(System.Type)')
-  - [ReadJson()](#M-AdaptiveCards-ToggleElementsConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.ToggleElementsConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
-  - [WriteJson()](#M-AdaptiveCards-ToggleElementsConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.ToggleElementsConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+  - [Read()](#M-AdaptiveCards-ToggleElementsConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.ToggleElementsConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)')
+  - [Write()](#M-AdaptiveCards-ToggleElementsConverter-Write-System-Text-Json-Utf8JsonWriter,System-Collections-Generic-List{AdaptiveCards-AdaptiveTargetElement},System-Text-Json-JsonSerializerOptions- 'AdaptiveCards.ToggleElementsConverter.Write(System.Text.Json.Utf8JsonWriter,System.Collections.Generic.List{AdaptiveCards.AdaptiveTargetElement},System.Text.Json.JsonSerializerOptions)')
 - [TypedEventHandler\`2](#T-AdaptiveCards-TypedEventHandler`2 'AdaptiveCards.TypedEventHandler`2')
-- [WarningLoggingContractResolver](#T-AdaptiveCards-WarningLoggingContractResolver 'AdaptiveCards.WarningLoggingContractResolver')
-  - [CreateProperty(member,memberSerialization)](#M-AdaptiveCards-WarningLoggingContractResolver-CreateProperty-System-Reflection-MemberInfo,Newtonsoft-Json-MemberSerialization- 'AdaptiveCards.WarningLoggingContractResolver.CreateProperty(System.Reflection.MemberInfo,Newtonsoft.Json.MemberSerialization)')
+- [WarningContext](#T-AdaptiveCards-WarningContext 'AdaptiveCards.WarningContext')
+  - [Current](#P-AdaptiveCards-WarningContext-Current 'AdaptiveCards.WarningContext.Current')
+  - [AddWarning()](#M-AdaptiveCards-WarningContext-AddWarning-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-AdaptiveWarning- 'AdaptiveCards.WarningContext.AddWarning(System.Collections.Generic.List{AdaptiveCards.AdaptiveWarning},AdaptiveCards.AdaptiveWarning)')
 - [WarningStatusCode](#T-AdaptiveCards-AdaptiveWarning-WarningStatusCode 'AdaptiveCards.AdaptiveWarning.WarningStatusCode')
   - [EmptyLabelInRequiredInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-EmptyLabelInRequiredInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.EmptyLabelInRequiredInput')
   - [InvalidLanguage](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-InvalidLanguage 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.InvalidLanguage')
@@ -1253,6 +1260,30 @@ Action is displayed as a button.
 ##### Summary
 
 Action is placed in an overflow menu (typically a popup menu under a ... button).
+
+<a name='T-AdaptiveCards-AdaptiveActionPolymorphicConverter'></a>
+## AdaptiveActionPolymorphicConverter `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Handles polymorphic deserialization and serialization of single-value AdaptiveAction properties
+(e.g., SelectAction, InlineAction). This converter is NOT stripped by
+GetOptionsWithoutThisConverter, so it remains available in stripped options.
+
+<a name='M-AdaptiveCards-AdaptiveActionPolymorphicConverter-CanConvert-System-Type-'></a>
+### CanConvert() `method`
+
+##### Summary
+
+Only handle the abstract AdaptiveAction type, not concrete subclasses.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveActionSet'></a>
 ## AdaptiveActionSet `type`
@@ -1548,14 +1579,30 @@ AdaptiveCards
 
 ##### Summary
 
-Helper class used by Newtonsoft.Json to convert the backgroundImage property to/from JSON.
+Helper class used to convert the backgroundImage property to/from JSON.
+Handles both string URLs and full BackgroundImage objects.
 
-<a name='P-AdaptiveCards-AdaptiveBackgroundImageConverter-CanWrite'></a>
-### CanWrite `property`
+<a name='M-AdaptiveCards-AdaptiveBackgroundImageConverter-#ctor'></a>
+### #ctor() `constructor`
 
 ##### Summary
 
-Lets Newtonsoft.Json know that this class supports writing.
+Initializes a new instance with an empty warnings list.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveBackgroundImageConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning}-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance with a shared warnings list.
+
+##### Parameters
+
+This constructor has no parameters.
 
 <a name='P-AdaptiveCards-AdaptiveBackgroundImageConverter-Warnings'></a>
 ### Warnings `property`
@@ -1564,57 +1611,27 @@ Lets Newtonsoft.Json know that this class supports writing.
 
 A list of warnings generated by the converter.
 
-<a name='M-AdaptiveCards-AdaptiveBackgroundImageConverter-CanConvert-System-Type-'></a>
-### CanConvert(objectType) `method`
+<a name='M-AdaptiveCards-AdaptiveBackgroundImageConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
-Called by Newtonsoft.Json to determine if this converter knows how to convert an object of type `objectType`.
-
-##### Returns
-
-
+*Inherit from parent.*
 
 ##### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| objectType | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') | The type of object to convert. |
+This method has no parameters.
 
-<a name='M-AdaptiveCards-AdaptiveBackgroundImageConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson(reader,objectType,existingValue,serializer) `method`
+<a name='M-AdaptiveCards-AdaptiveBackgroundImageConverter-Write-System-Text-Json-Utf8JsonWriter,AdaptiveCards-AdaptiveBackgroundImage,System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
-Generates a new [AdaptiveBackgroundImage](#T-AdaptiveCards-AdaptiveBackgroundImage 'AdaptiveCards.AdaptiveBackgroundImage') instance from JSON.
-
-##### Returns
-
-A new [AdaptiveBackgroundImage](#T-AdaptiveCards-AdaptiveBackgroundImage 'AdaptiveCards.AdaptiveBackgroundImage') instance.
+*Inherit from parent.*
 
 ##### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| reader | [Newtonsoft.Json.JsonReader](#T-Newtonsoft-Json-JsonReader 'Newtonsoft.Json.JsonReader') | JsonReader from which to read. |
-| objectType | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') | Not used. |
-| existingValue | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Not used. |
-| serializer | [Newtonsoft.Json.JsonSerializer](#T-Newtonsoft-Json-JsonSerializer 'Newtonsoft.Json.JsonSerializer') | Not used. |
-
-<a name='M-AdaptiveCards-AdaptiveBackgroundImageConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson(writer,backgroundImage,serializer) `method`
-
-##### Summary
-
-Writes the object to JSON. If the supplied `backgroundImage` is all default values and a URL, will write as a simple string. Otherwise, serialize the supplied `backgroundImage` as a JSON object via the `serializer`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| writer | [Newtonsoft.Json.JsonWriter](#T-Newtonsoft-Json-JsonWriter 'Newtonsoft.Json.JsonWriter') | JsonWriter to write to. |
-| backgroundImage | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | The AdaptiveBackgroundImage object to write. |
-| serializer | [Newtonsoft.Json.JsonSerializer](#T-Newtonsoft-Json-JsonSerializer 'Newtonsoft.Json.JsonSerializer') | JsonSerializer to use for serialization. |
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveCaptionSource'></a>
 ## AdaptiveCaptionSource `type`
@@ -1936,66 +1953,6 @@ Resource information for the entire card.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-AdaptiveCard-ShouldSerializeActions'></a>
-### ShouldSerializeActions() `method`
-
-##### Summary
-
-Determines whether the actions portion of an AdaptiveCard should be serialized.
-
-##### Returns
-
-true iff actions should be serialized.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-AdaptiveCard-ShouldSerializeBody'></a>
-### ShouldSerializeBody() `method`
-
-##### Summary
-
-Determines whether the body portion of an AdaptiveCard should be serialized.
-
-##### Returns
-
-true iff the body should be serialized.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-AdaptiveCard-ShouldSerializeHeight'></a>
-### ShouldSerializeHeight() `method`
-
-##### Summary
-
-Determines whether the height property of an AdaptiveCard should be serialized.
-
-##### Returns
-
-true iff the height property should be serialized.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-AdaptiveCard-ShouldSerializeJsonSchema'></a>
-### ShouldSerializeJsonSchema() `method`
-
-##### Summary
-
-Determines whether the schema entry in an AdaptiveCard should be serialized.
-
-##### Returns
-
-false
-
-##### Parameters
-
-This method has no parameters.
-
 <a name='M-AdaptiveCards-AdaptiveCard-ShouldSerializeRtlXml'></a>
 ### ShouldSerializeRtlXml() `method`
 
@@ -2049,14 +2006,36 @@ AdaptiveCards
 
 ##### Summary
 
-Helper class used by Newtonsoft.Json to convert an AdaptiveCard to/from JSON.
+Helper class used to convert an AdaptiveCard to/from JSON.
 
-<a name='P-AdaptiveCards-AdaptiveCardConverter-CanWrite'></a>
-### CanWrite `property`
+<a name='M-AdaptiveCards-AdaptiveCardConverter-#ctor'></a>
+### #ctor() `constructor`
 
 ##### Summary
 
-*Inherit from parent.*
+Initializes a new instance for serialization.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveCardConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-ParseContext-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance for deserialization with shared state.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='P-AdaptiveCards-AdaptiveCardConverter-ParseContext'></a>
+### ParseContext `property`
+
+##### Summary
+
+The [ParseContext](#P-AdaptiveCards-AdaptiveCardConverter-ParseContext 'AdaptiveCards.AdaptiveCardConverter.ParseContext') for element tracking.
 
 <a name='P-AdaptiveCards-AdaptiveCardConverter-Warnings'></a>
 ### Warnings `property`
@@ -2065,8 +2044,8 @@ Helper class used by Newtonsoft.Json to convert an AdaptiveCard to/from JSON.
 
 A list of warnings generated by the converter.
 
-<a name='M-AdaptiveCards-AdaptiveCardConverter-CanConvert-System-Type-'></a>
-### CanConvert() `method`
+<a name='M-AdaptiveCards-AdaptiveCardConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
@@ -2076,28 +2055,8 @@ A list of warnings generated by the converter.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-AdaptiveCardConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson(reader,objectType,existingValue,serializer) `method`
-
-##### Summary
-
-Generates a new [AdaptiveCard](#T-AdaptiveCards-AdaptiveCard 'AdaptiveCards.AdaptiveCard') instance from JSON.
-
-##### Returns
-
-A new AdaptiveCard instance on success.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| reader | [Newtonsoft.Json.JsonReader](#T-Newtonsoft-Json-JsonReader 'Newtonsoft.Json.JsonReader') | JsonReader from which to read. |
-| objectType | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') |  |
-| existingValue | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |  |
-| serializer | [Newtonsoft.Json.JsonSerializer](#T-Newtonsoft-Json-JsonSerializer 'Newtonsoft.Json.JsonSerializer') |  |
-
-<a name='M-AdaptiveCards-AdaptiveCardConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson() `method`
+<a name='M-AdaptiveCards-AdaptiveCardConverter-Write-System-Text-Json-Utf8JsonWriter,AdaptiveCards-AdaptiveCard,System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
@@ -2182,6 +2141,67 @@ Provides the highest schema version that this renderer supports.
 ##### Parameters
 
 This method has no parameters.
+
+<a name='T-AdaptiveCards-AdaptiveCardSerializationContext'></a>
+## AdaptiveCardSerializationContext `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Provides serialization context for AdaptiveCard parsing, including warning collection
+and parse context for element ID tracking. Replaces the Newtonsoft WarningLoggingContractResolver pattern.
+
+<a name='M-AdaptiveCards-AdaptiveCardSerializationContext-#ctor-AdaptiveCards-AdaptiveCardParseResult,AdaptiveCards-ParseContext-'></a>
+### #ctor(parseResult,parseContext) `constructor`
+
+##### Summary
+
+Creates a new serialization context for deserializing an AdaptiveCard.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| parseResult | [AdaptiveCards.AdaptiveCardParseResult](#T-AdaptiveCards-AdaptiveCardParseResult 'AdaptiveCards.AdaptiveCardParseResult') | The parse result to collect warnings into. |
+| parseContext | [AdaptiveCards.ParseContext](#T-AdaptiveCards-ParseContext 'AdaptiveCards.ParseContext') | The parse context for element tracking. |
+
+<a name='P-AdaptiveCards-AdaptiveCardSerializationContext-HostConfigOptions'></a>
+### HostConfigOptions `property`
+
+##### Summary
+
+Gets a static [JsonSerializerOptions](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Text.Json.JsonSerializerOptions 'System.Text.Json.JsonSerializerOptions') for host config deserialization.
+
+<a name='P-AdaptiveCards-AdaptiveCardSerializationContext-Options'></a>
+### Options `property`
+
+##### Summary
+
+The configured [JsonSerializerOptions](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Text.Json.JsonSerializerOptions 'System.Text.Json.JsonSerializerOptions') with all converters pre-injected.
+
+<a name='P-AdaptiveCards-AdaptiveCardSerializationContext-ParseContext'></a>
+### ParseContext `property`
+
+##### Summary
+
+The parse context used for element ID tracking and collision detection.
+
+<a name='P-AdaptiveCards-AdaptiveCardSerializationContext-ParseResult'></a>
+### ParseResult `property`
+
+##### Summary
+
+The parse result that collects warnings during deserialization.
+
+<a name='P-AdaptiveCards-AdaptiveCardSerializationContext-SerializationOptions'></a>
+### SerializationOptions `property`
+
+##### Summary
+
+Gets a static [JsonSerializerOptions](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Text.Json.JsonSerializerOptions 'System.Text.Json.JsonSerializerOptions') for serialization (no per-call state needed).
 
 <a name='T-AdaptiveCards-AdaptiveChoice'></a>
 ## AdaptiveChoice `type`
@@ -2449,6 +2469,37 @@ This method has no parameters.
 ##### Parameters
 
 This method has no parameters.
+
+<a name='T-AdaptiveCards-AdaptiveCollectionElementConverterFactory'></a>
+## AdaptiveCollectionElementConverterFactory `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Converter that forces System.Text.Json to treat AdaptiveCollectionElement subclasses
+as JSON objects rather than collections.
+
+##### Remarks
+
+[AdaptiveCollectionElement](#T-AdaptiveCards-AdaptiveCollectionElement 'AdaptiveCards.AdaptiveCollectionElement') implements
+[IEnumerable\`1](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.IEnumerable`1 'System.Collections.Generic.IEnumerable`1') so that C# developers
+can use `foreach` and collection initializer syntax on containers. However, System.Text.Json
+automatically treats any type implementing `IEnumerable<T>` as a JSON array. The
+Adaptive Card spec defines containers as JSON objects (with an `items` array property),
+not as arrays themselves.
+
+This converter intercepts serialization/deserialization of concrete [AdaptiveCollectionElement](#T-AdaptiveCards-AdaptiveCollectionElement 'AdaptiveCards.AdaptiveCollectionElement')
+subclasses ([AdaptiveContainer](#T-AdaptiveCards-AdaptiveContainer 'AdaptiveCards.AdaptiveContainer'), [AdaptiveColumn](#T-AdaptiveCards-AdaptiveColumn 'AdaptiveCards.AdaptiveColumn'),
+[AdaptiveColumnSet](#T-AdaptiveCards-AdaptiveColumnSet 'AdaptiveCards.AdaptiveColumnSet'), [AdaptiveTable](#T-AdaptiveCards-AdaptiveTable 'AdaptiveCards.AdaptiveTable'), [AdaptiveTableCell](#T-AdaptiveCards-AdaptiveTableCell 'AdaptiveCards.AdaptiveTableCell'),
+[AdaptiveTableRow](#T-AdaptiveCards-AdaptiveTableRow 'AdaptiveCards.AdaptiveTableRow')) and uses reflection to read/write each property individually,
+ensuring they are treated as JSON objects.
+
+In the previous Newtonsoft.Json implementation, this was handled by the `[JsonObject]`
+attribute which explicitly marked these types as objects. System.Text.Json has no equivalent
+attribute, so this converter is required.
 
 <a name='T-AdaptiveCards-AdaptiveCollectionWithContentAlignment'></a>
 ## AdaptiveCollectionWithContentAlignment `type`
@@ -2945,17 +2996,6 @@ The amount of space the element should be separated from the previous element. D
 
 SSML fragment for spoken interaction.
 
-<a name='M-AdaptiveCards-AdaptiveElement-ShouldSerializeHeight'></a>
-### ShouldSerializeHeight() `method`
-
-##### Summary
-
-Determines whether the height property should be serialized or not.
-
-##### Parameters
-
-This method has no parameters.
-
 <a name='T-AdaptiveCards-Rendering-AdaptiveElementRenderers`2'></a>
 ## AdaptiveElementRenderers\`2 `type`
 
@@ -3246,7 +3286,29 @@ AdaptiveCards
 
 ##### Summary
 
-A converter to use with Newtonsoft.Json that handles fallback scenarios.
+A converter that handles fallback scenarios for AdaptiveCards elements.
+
+<a name='M-AdaptiveCards-AdaptiveFallbackConverter-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance for serialization.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveFallbackConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-ParseContext-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance for deserialization with shared state.
+
+##### Parameters
+
+This constructor has no parameters.
 
 <a name='F-AdaptiveCards-AdaptiveFallbackConverter-IsInFallback'></a>
 ### IsInFallback `constants`
@@ -3255,19 +3317,12 @@ A converter to use with Newtonsoft.Json that handles fallback scenarios.
 
 State tracking to determine whether we're currently processing a fallback request.
 
-<a name='P-AdaptiveCards-AdaptiveFallbackConverter-CanRead'></a>
-### CanRead `property`
+<a name='P-AdaptiveCards-AdaptiveFallbackConverter-ParseContext'></a>
+### ParseContext `property`
 
 ##### Summary
 
-Lets Newtonsoft.Json know that this converter knows how to read JSON.
-
-<a name='P-AdaptiveCards-AdaptiveFallbackConverter-CanWrite'></a>
-### CanWrite `property`
-
-##### Summary
-
-Lets Newtonsoft.Json know that this converter knows how to write JSON.
+The [ParseContext](#P-AdaptiveCards-AdaptiveFallbackConverter-ParseContext 'AdaptiveCards.AdaptiveFallbackConverter.ParseContext') for element tracking.
 
 <a name='P-AdaptiveCards-AdaptiveFallbackConverter-Warnings'></a>
 ### Warnings `property`
@@ -3276,55 +3331,27 @@ Lets Newtonsoft.Json know that this converter knows how to write JSON.
 
 A list of warnings generated by this converter.
 
-<a name='M-AdaptiveCards-AdaptiveFallbackConverter-CanConvert-System-Type-'></a>
-### CanConvert(objectType) `method`
+<a name='M-AdaptiveCards-AdaptiveFallbackConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
-Called by Newtonsoft.Json to determine if an object is recognized by this converter.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| objectType | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') | Type of object. |
-
-<a name='M-AdaptiveCards-AdaptiveFallbackConverter-ParseFallback-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-JsonSerializer,System-String,AdaptiveCards-AdaptiveInternalID-'></a>
-### ParseFallback() `method`
-
-##### Summary
-
-Helper to handle instantiating an [AdaptiveFallbackElement](#T-AdaptiveCards-AdaptiveFallbackElement 'AdaptiveCards.AdaptiveFallbackElement') during JSON parsing.
+*Inherit from parent.*
 
 ##### Parameters
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-AdaptiveFallbackConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson() `method`
+<a name='M-AdaptiveCards-AdaptiveFallbackConverter-Write-System-Text-Json-Utf8JsonWriter,AdaptiveCards-AdaptiveFallbackElement,System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
-Called by Newtonsoft.Json to convert the given JSON to an object instance.
+*Inherit from parent.*
 
 ##### Parameters
 
 This method has no parameters.
-
-<a name='M-AdaptiveCards-AdaptiveFallbackConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson(writer,cardElement,serializer) `method`
-
-##### Summary
-
-Called by Newtonsoft.Json to write the given element as JSON.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| writer | [Newtonsoft.Json.JsonWriter](#T-Newtonsoft-Json-JsonWriter 'Newtonsoft.Json.JsonWriter') | Destination for serialized content. |
-| cardElement | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Element to serialize. |
-| serializer | [Newtonsoft.Json.JsonSerializer](#T-Newtonsoft-Json-JsonSerializer 'Newtonsoft.Json.JsonSerializer') | Serializer to use. |
 
 <a name='T-AdaptiveCards-AdaptiveFallbackElement'></a>
 ## AdaptiveFallbackElement `type`
@@ -3723,17 +3750,6 @@ AdaptiveHeight
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | string value |
-
-<a name='M-AdaptiveCards-AdaptiveHeight-ShouldSerializeAdaptiveHeight'></a>
-### ShouldSerializeAdaptiveHeight() `method`
-
-##### Summary
-
-Determines whether this [AdaptiveHeight](#T-AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeight') instance should be serialized.
-
-##### Parameters
-
-This method has no parameters.
 
 <a name='M-AdaptiveCards-AdaptiveHeight-ShouldSerializeUnitXml'></a>
 ### ShouldSerializeUnitXml() `method`
@@ -4686,21 +4702,6 @@ A collection of source from which to retrieve the media.
 ##### Summary
 
 *Inherit from parent.*
-
-<a name='M-AdaptiveCards-AdaptiveMedia-ShouldSerializeCaptionSources'></a>
-### ShouldSerializeCaptionSources() `method`
-
-##### Summary
-
-XmlSerializer method
-
-##### Returns
-
-
-
-##### Parameters
-
-This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveMediaSource'></a>
 ## AdaptiveMediaSource `type`
@@ -6741,25 +6742,6 @@ An identifier for the identity provider with which to attempt a token exchange.
 An application ID or resource identifier with which to exchange a token on behalf of.
     This property is identity provider- and application-specific.
 
-<a name='T-AdaptiveCards-AdaptiveTypedBaseElementConverter'></a>
-## AdaptiveTypedBaseElementConverter `type`
-
-##### Namespace
-
-AdaptiveCards
-
-##### Summary
-
-JsonConverters that deserialize to AdaptiveCards elements and use ParseContext must inherit this class.
-ParseContext provides id generation, id collision detections, and other useful services during deserialization.
-
-<a name='P-AdaptiveCards-AdaptiveTypedBaseElementConverter-ParseContext'></a>
-### ParseContext `property`
-
-##### Summary
-
-The [ParseContext](#P-AdaptiveCards-AdaptiveTypedBaseElementConverter-ParseContext 'AdaptiveCards.AdaptiveTypedBaseElementConverter.ParseContext') to use while parsing in AdaptiveCards.
-
 <a name='T-AdaptiveCards-AdaptiveTypedElement'></a>
 ## AdaptiveTypedElement `type`
 
@@ -6770,13 +6752,6 @@ AdaptiveCards
 ##### Summary
 
 Base for almost all representable elements in AdaptiveCards.
-
-<a name='F-AdaptiveCards-AdaptiveTypedElement-Requires'></a>
-### Requires `constants`
-
-##### Summary
-
-A collection representing features and feature versions that this element requires.
 
 <a name='P-AdaptiveCards-AdaptiveTypedElement-AdditionalProperties'></a>
 ### AdditionalProperties `property`
@@ -6805,6 +6780,13 @@ A unique ID associated with the element. For Inputs, the ID will be used as the 
 ##### Summary
 
 The [AdaptiveInternalID](#T-AdaptiveCards-AdaptiveInternalID 'AdaptiveCards.AdaptiveInternalID') for this element.
+
+<a name='P-AdaptiveCards-AdaptiveTypedElement-Requires'></a>
+### Requires `property`
+
+##### Summary
+
+A collection representing features and feature versions that this element requires.
 
 <a name='P-AdaptiveCards-AdaptiveTypedElement-Type'></a>
 ### Type `property`
@@ -6850,28 +6832,43 @@ AdaptiveCards
 
 ##### Summary
 
-This handles using the type field to instantiate strongly typed objects on deserialization.
+Factory that creates the appropriate converter for AdaptiveTypedElement and its derived abstract types.
+
+<a name='M-AdaptiveCards-AdaptiveTypedElementConverter-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance for serialization (no warnings/context needed).
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveTypedElementConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-ParseContext-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance for deserialization with warnings and parse context.
+
+##### Parameters
+
+This constructor has no parameters.
 
 <a name='F-AdaptiveCards-AdaptiveTypedElementConverter-TypedElementTypes'></a>
 ### TypedElementTypes `constants`
 
 ##### Summary
 
-Default types to support, register any new types to this list
+Default types to support, register any new types to this list.
 
-<a name='P-AdaptiveCards-AdaptiveTypedElementConverter-CanRead'></a>
-### CanRead `property`
-
-##### Summary
-
-*Inherit from parent.*
-
-<a name='P-AdaptiveCards-AdaptiveTypedElementConverter-CanWrite'></a>
-### CanWrite `property`
+<a name='P-AdaptiveCards-AdaptiveTypedElementConverter-ParseContext'></a>
+### ParseContext `property`
 
 ##### Summary
 
-*Inherit from parent.*
+The [ParseContext](#P-AdaptiveCards-AdaptiveTypedElementConverter-ParseContext 'AdaptiveCards.AdaptiveTypedElementConverter.ParseContext') for element tracking.
 
 <a name='P-AdaptiveCards-AdaptiveTypedElementConverter-Warnings'></a>
 ### Warnings `property`
@@ -6882,6 +6879,23 @@ The list of warnings generated while converting.
 
 <a name='M-AdaptiveCards-AdaptiveTypedElementConverter-CanConvert-System-Type-'></a>
 ### CanConvert() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+##### Remarks
+
+Returns true for all types derived from [AdaptiveTypedElement](#T-AdaptiveCards-AdaptiveTypedElement 'AdaptiveCards.AdaptiveTypedElement'),
+except [AdaptiveCard](#T-AdaptiveCards-AdaptiveCard 'AdaptiveCards.AdaptiveCard') which is handled by [AdaptiveCardConverter](#T-AdaptiveCards-AdaptiveCardConverter 'AdaptiveCards.AdaptiveCardConverter')
+to ensure version validation occurs.
+
+<a name='M-AdaptiveCards-AdaptiveTypedElementConverter-CreateConverter-System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### CreateConverter() `method`
 
 ##### Summary
 
@@ -6902,23 +6916,16 @@ Instantiates a new strongly-typed element of the given type.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-AdaptiveTypedElementConverter-GetElementTypeName-System-Type,Newtonsoft-Json-Linq-JObject-'></a>
+<a name='M-AdaptiveCards-AdaptiveTypedElementConverter-GetElementTypeName-System-Type,System-Text-Json-Nodes-JsonObject-'></a>
 ### GetElementTypeName() `method`
 
 ##### Summary
 
-Retrieves the type name of an AdaptiveCards object.
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-AdaptiveTypedElementConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson() `method`
+*Inherit from parent.*
 
 ##### Summary
 
-*Inherit from parent.*
+Retrieves the type name of an AdaptiveCards object.
 
 ##### Parameters
 
@@ -6937,12 +6944,25 @@ Registers a new element with the element converter.
 | ---- | ---- | ----------- |
 | typeName | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The [Type](#P-AdaptiveCards-AdaptiveTypedElement-Type 'AdaptiveCards.AdaptiveTypedElement.Type') of the element to register. |
 
-<a name='M-AdaptiveCards-AdaptiveTypedElementConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson() `method`
+<a name='T-AdaptiveCards-AdaptiveTypedElementInnerConverter'></a>
+## AdaptiveTypedElementInnerConverter `type`
+
+##### Namespace
+
+AdaptiveCards
 
 ##### Summary
 
-*Inherit from parent.*
+Internal converter that handles the actual read/write of AdaptiveTypedElement instances.
+Uses object base type so it can handle any derived type of AdaptiveTypedElement.
+
+<a name='M-AdaptiveCards-AdaptiveTypedElementInnerConverter-CanConvert-System-Type-'></a>
+### CanConvert() `method`
+
+##### Summary
+
+Returns true for all types derived from AdaptiveTypedElement,
+except AdaptiveCard which is handled by AdaptiveCardConverter.
 
 ##### Parameters
 
@@ -7693,17 +7713,6 @@ AdaptiveWidth
 | ---- | ---- | ----------- |
 | value | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | string |
 
-<a name='M-AdaptiveCards-AdaptiveWidth-ShouldSerializeAdaptiveWidth'></a>
-### ShouldSerializeAdaptiveWidth() `method`
-
-##### Summary
-
-Determines whether this [AdaptiveWidth](#T-AdaptiveCards-AdaptiveWidth 'AdaptiveCards.AdaptiveWidth') instance should be serialized.
-
-##### Parameters
-
-This method has no parameters.
-
 <a name='M-AdaptiveCards-AdaptiveWidth-ShouldSerializeUnitXml'></a>
 ### ShouldSerializeUnitXml() `method`
 
@@ -8323,6 +8332,17 @@ AdaptiveCards.Rendering
 
 Font Color config
 
+<a name='M-AdaptiveCards-Rendering-FontColorConfig-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Default constructor for deserialization.
+
+##### Parameters
+
+This constructor has no parameters.
+
 <a name='M-AdaptiveCards-Rendering-FontColorConfig-#ctor-System-String,System-String-'></a>
 ### #ctor(defaultColor,subtle) `constructor`
 
@@ -8671,12 +8691,27 @@ AdaptiveCards
 
 Helper class to validate and convert color strings.
 
-<a name='P-AdaptiveCards-HashColorConverter-CanWrite'></a>
-### CanWrite `property`
+<a name='M-AdaptiveCards-HashColorConverter-#ctor'></a>
+### #ctor() `constructor`
 
 ##### Summary
 
-*Inherit from parent.*
+Initializes a new instance with an empty warnings list.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-HashColorConverter-#ctor-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning}-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance with a shared warnings list.
+
+##### Parameters
+
+This constructor has no parameters.
 
 <a name='P-AdaptiveCards-HashColorConverter-Warnings'></a>
 ### Warnings `property`
@@ -8685,8 +8720,8 @@ Helper class to validate and convert color strings.
 
 A list of warnings encountered during processing.
 
-<a name='M-AdaptiveCards-HashColorConverter-CanConvert-System-Type-'></a>
-### CanConvert() `method`
+<a name='M-AdaptiveCards-HashColorConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
@@ -8696,19 +8731,8 @@ A list of warnings encountered during processing.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-HashColorConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson() `method`
-
-##### Summary
-
-*Inherit from parent.*
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-HashColorConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson() `method`
+<a name='M-AdaptiveCards-HashColorConverter-Write-System-Text-Json-Utf8JsonWriter,System-String,System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
@@ -8916,15 +8940,48 @@ JSON converter that will drop empty element items.
 | ---- | ----------- |
 | T | Type of the objects to be converted. |
 
-<a name='P-AdaptiveCards-IgnoreEmptyItemsConverter`1-CanWrite'></a>
-### CanWrite `property`
+<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-#ctor'></a>
+### #ctor() `constructor`
 
 ##### Summary
 
-*Inherit from parent.*
+Initializes a new instance with a default ParseContext.
 
-<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-CanConvert-System-Type-'></a>
-### CanConvert() `method`
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-#ctor-AdaptiveCards-ParseContext-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance with the given ParseContext.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-#ctor-AdaptiveCards-ParseContext,System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning}-'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Initializes a new instance with the given ParseContext and warnings list.
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='P-AdaptiveCards-IgnoreEmptyItemsConverter`1-ParseContext'></a>
+### ParseContext `property`
+
+##### Summary
+
+The [ParseContext](#P-AdaptiveCards-IgnoreEmptyItemsConverter`1-ParseContext 'AdaptiveCards.IgnoreEmptyItemsConverter`1.ParseContext') for element tracking.
+
+<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
@@ -8934,19 +8991,8 @@ JSON converter that will drop empty element items.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson() `method`
-
-##### Summary
-
-*Inherit from parent.*
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson() `method`
+<a name='M-AdaptiveCards-IgnoreEmptyItemsConverter`1-Write-System-Text-Json-Utf8JsonWriter,System-Collections-Generic-List{`0},System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
@@ -8965,7 +9011,7 @@ AdaptiveCards
 
 ##### Summary
 
-JSON converter that will ignore enum values that can't be parsed correctly.
+JSON converter that will ignore enum values that can't be parsed correctly, returning null.
 
 <a name='M-AdaptiveCards-IgnoreNullEnumConverter`1-#ctor'></a>
 ### #ctor() `constructor`
@@ -8996,8 +9042,8 @@ This constructor has no parameters.
 
 *Inherit from parent.*
 
-<a name='M-AdaptiveCards-IgnoreNullEnumConverter`1-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson() `method`
+<a name='M-AdaptiveCards-IgnoreNullEnumConverter`1-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
@@ -9007,8 +9053,8 @@ This constructor has no parameters.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-IgnoreNullEnumConverter`1-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson() `method`
+<a name='M-AdaptiveCards-IgnoreNullEnumConverter`1-Write-System-Text-Json-Utf8JsonWriter,System-Nullable{`0},System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
@@ -9214,18 +9260,29 @@ AdaptiveCards
 
 ##### Summary
 
-Format datetime as Iso8601 instant format "yyyy-MM-ddTHH:mm:ssZ";
+Format datetime as Iso8601 instant format "yyyy-MM-ddTHH:mm:ssZ".
 
-<a name='M-AdaptiveCards-Iso8601DateTimeConverter-#ctor'></a>
-### #ctor() `constructor`
+<a name='M-AdaptiveCards-Iso8601DateTimeConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
-Constructor
+*Inherit from parent.*
 
 ##### Parameters
 
-This constructor has no parameters.
+This method has no parameters.
+
+<a name='M-AdaptiveCards-Iso8601DateTimeConverter-Write-System-Text-Json-Utf8JsonWriter,System-DateTime,System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-JsonExtensions'></a>
 ## JsonExtensions `type`
@@ -9256,21 +9313,15 @@ true iff c is a valid hex digit.
 | c | [System.Char](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Char 'System.Char') | Character to check. |
 
 <a name='M-AdaptiveCards-JsonExtensions-IsIntegerType-System-Type-'></a>
-### IsIntegerType(type) `method`
+### IsIntegerType() `method`
 
 ##### Summary
 
-Helper function to determine if type is a integer type.
-
-##### Returns
-
-
+Helper function to determine if type is an integer type.
 
 ##### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| type | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') |  |
+This method has no parameters.
 
 <a name='T-AdaptiveCards-Rendering-LabelConfig'></a>
 ## LabelConfig `type`
@@ -9843,6 +9894,37 @@ Typed value lookup for anonymous dictionary.
 | ---- | ----------- |
 | T |  |
 
+<a name='T-AdaptiveCards-SafeJsonHelper'></a>
+## SafeJsonHelper `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Helper for creating JsonObject instances from JsonElements that may contain
+duplicate keys (which is valid JSON per RFC 8259 but not handled by JsonObject.Create).
+
+##### Remarks
+
+System.Text.Json's [](#!-JsonObject-Create-JsonElement- 'JsonObject.Create(JsonElement)') throws
+[ArgumentException](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.ArgumentException 'System.ArgumentException') when duplicate keys are present.
+This helper uses indexer assignment so duplicates silently keep the last value,
+matching the previous Newtonsoft.Json behavior. A debug warning is emitted
+when duplicates are detected to help identify malformed payloads.
+
+<a name='M-AdaptiveCards-SafeJsonHelper-SafeCreateJsonObject-System-Text-Json-JsonElement-'></a>
+### SafeCreateJsonObject() `method`
+
+##### Summary
+
+Creates a JsonObject from a JsonElement, handling duplicate keys by keeping the last value.
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-AdaptiveCards-Rendering-SeparatorConfig'></a>
 ## SeparatorConfig `type`
 
@@ -9998,14 +10080,7 @@ AdaptiveCards
 
 ##### Summary
 
-Converter for integers only.
-
-<a name='P-AdaptiveCards-StrictIntConverter-CanWrite'></a>
-### CanWrite `property`
-
-##### Summary
-
-*Inherit from parent.*
+Converter for integers only. Rejects floating-point values.
 
 <a name='M-AdaptiveCards-StrictIntConverter-CanConvert-System-Type-'></a>
 ### CanConvert() `method`
@@ -10018,8 +10093,8 @@ Converter for integers only.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-StrictIntConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson() `method`
+<a name='M-AdaptiveCards-StrictIntConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
@@ -10029,8 +10104,8 @@ This method has no parameters.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-StrictIntConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson() `method`
+<a name='M-AdaptiveCards-StrictIntConverter-Write-System-Text-Json-Utf8JsonWriter,System-Object,System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
@@ -10124,21 +10199,10 @@ AdaptiveCards
 
 ##### Summary
 
-Converter for AdaptiveTargetElement
+Converter for AdaptiveTargetElement lists. Handles both string and object entries.
 
-<a name='M-AdaptiveCards-ToggleElementsConverter-CanConvert-System-Type-'></a>
-### CanConvert() `method`
-
-##### Summary
-
-*Inherit from parent.*
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-ToggleElementsConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### ReadJson() `method`
+<a name='M-AdaptiveCards-ToggleElementsConverter-Read-System-Text-Json-Utf8JsonReader@,System-Type,System-Text-Json-JsonSerializerOptions-'></a>
+### Read() `method`
 
 ##### Summary
 
@@ -10148,8 +10212,8 @@ This method has no parameters.
 
 This method has no parameters.
 
-<a name='M-AdaptiveCards-ToggleElementsConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer-'></a>
-### WriteJson() `method`
+<a name='M-AdaptiveCards-ToggleElementsConverter-Write-System-Text-Json-Utf8JsonWriter,System-Collections-Generic-List{AdaptiveCards-AdaptiveTargetElement},System-Text-Json-JsonSerializerOptions-'></a>
+### Write() `method`
 
 ##### Summary
 
@@ -10183,8 +10247,8 @@ Delegate for typed events
 | TSender |  |
 | TEventArgs |  |
 
-<a name='T-AdaptiveCards-WarningLoggingContractResolver'></a>
-## WarningLoggingContractResolver `type`
+<a name='T-AdaptiveCards-WarningContext'></a>
+## WarningContext `type`
 
 ##### Namespace
 
@@ -10192,26 +10256,28 @@ AdaptiveCards
 
 ##### Summary
 
-This JSON contract resolver checks if the JsonConverter can log warnings, and if so sets the Warnings property
+Provides an ambient context for sharing warnings during deserialization.
+Converters instantiated via [JsonConverter] attributes create their own
+warning lists. This context allows them to contribute warnings back to
+the shared parse result warnings list.
 
-<a name='M-AdaptiveCards-WarningLoggingContractResolver-CreateProperty-System-Reflection-MemberInfo,Newtonsoft-Json-MemberSerialization-'></a>
-### CreateProperty(member,memberSerialization) `method`
+<a name='P-AdaptiveCards-WarningContext-Current'></a>
+### Current `property`
 
 ##### Summary
 
-Override when a member property is being instantiated. At this point we know what converter
-    is being used for the property. If the converter can log warnings, then give it our collection
+Gets or sets the shared warnings list for the current deserialization operation.
 
-##### Returns
+<a name='M-AdaptiveCards-WarningContext-AddWarning-System-Collections-Generic-List{AdaptiveCards-AdaptiveWarning},AdaptiveCards-AdaptiveWarning-'></a>
+### AddWarning() `method`
 
+##### Summary
 
+Adds a warning to the shared context (if active) or to the provided fallback list.
 
 ##### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| member | [System.Reflection.MemberInfo](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Reflection.MemberInfo 'System.Reflection.MemberInfo') |  |
-| memberSerialization | [Newtonsoft.Json.MemberSerialization](#T-Newtonsoft-Json-MemberSerialization 'Newtonsoft.Json.MemberSerialization') |  |
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveWarning-WarningStatusCode'></a>
 ## WarningStatusCode `type`

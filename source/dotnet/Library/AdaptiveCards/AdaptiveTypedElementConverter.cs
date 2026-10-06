@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    /// This handles using the type field to instantiate strongly typed objects on deserialization.
+    /// Factory that creates the appropriate converter for AdaptiveTypedElement and its derived abstract types.
     /// </summary>
-    public class AdaptiveTypedElementConverter : AdaptiveTypedBaseElementConverter, ILogWarnings
+    public class AdaptiveTypedElementConverter : JsonConverterFactory, ILogWarnings
     {
         /// <summary>
         /// The list of warnings generated while converting.
@@ -20,7 +21,44 @@ namespace AdaptiveCards
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         /// <summary>
-        /// Default types to support, register any new types to this list
+        /// The <see cref="ParseContext"/> for element tracking.
+        /// </summary>
+        public ParseContext ParseContext { get; set; } = new ParseContext();
+
+        /// <summary>
+        /// Initializes a new instance for serialization (no warnings/context needed).
+        /// </summary>
+        public AdaptiveTypedElementConverter() { }
+
+        /// <summary>
+        /// Initializes a new instance for deserialization with warnings and parse context.
+        /// </summary>
+        public AdaptiveTypedElementConverter(List<AdaptiveWarning> warnings, ParseContext parseContext)
+        {
+            Warnings = warnings ?? new List<AdaptiveWarning>();
+            ParseContext = parseContext ?? new ParseContext();
+        }
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// Returns true for all types derived from <see cref="AdaptiveTypedElement"/>,
+        /// except <see cref="AdaptiveCard"/> which is handled by <see cref="AdaptiveCardConverter"/>
+        /// to ensure version validation occurs.
+        /// </remarks>
+        public override bool CanConvert(Type typeToConvert)
+        {
+            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(typeToConvert.GetTypeInfo())
+                && typeToConvert != typeof(AdaptiveCard);
+        }
+
+        /// <inheritdoc />
+        public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
+        {
+            return new AdaptiveTypedElementInnerConverter(Warnings, ParseContext);
+        }
+
+        /// <summary>
+        /// Default types to support, register any new types to this list.
         /// </summary>
         public static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {
@@ -70,112 +108,29 @@ namespace AdaptiveCards
         }
 
         /// <inheritdoc />
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-        }
-
-        /// <inheritdoc />
-        public override bool CanWrite => false;
-
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public override bool CanRead => true;
-
-        /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            var jObject = JObject.Load(reader);
-
-            string typeName = GetElementTypeName(objectType, jObject);
-
-            if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
-            {
-                string objectId = jObject.Value<string>("id");
-                if (objectId == null)
-                {
-                    if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
-                    {
-                        throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
-                    }
-                }
-
-                // add id of element to ParseContext
-                AdaptiveInternalID internalID = AdaptiveInternalID.Current();
-                if (type != typeof(AdaptiveCard))
-                {
-                    internalID = AdaptiveInternalID.Next();
-                    ParseContext.PushElement(objectId, internalID);
-                }
-
-                var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
-                try
-                {
-                    serializer.Populate(jObject.CreateReader(), result);
-                    result.InternalID = internalID;
-                }
-                catch (JsonSerializationException) { }
-
-                // remove id of element from ParseContext
-                if (type != typeof(AdaptiveCard))
-                {
-                    ParseContext.PopElement();
-                }
-
-                return result;
-            }
-            else // We're looking at an unknown element
-            {
-                string objectId = jObject.Value<string>("id");
-                AdaptiveInternalID internalID = AdaptiveInternalID.Next();
-
-                // Handle deserializing unknown element
-                ParseContext.PushElement(objectId, internalID);
-                AdaptiveTypedElement result = null;
-                if (ParseContext.Type == ParseContext.ContextType.Element)
-                {
-                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownElement));
-                    serializer.Populate(jObject.CreateReader(), result);
-                }
-                else // ParseContext.Type == ParseContext.ContextType.Action
-                {
-                    result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownAction));
-                    serializer.Populate(jObject.CreateReader(), result);
-                }
-                ParseContext.PopElement();
-
-                Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
-                return result;
-            }
-        }
 
         /// <summary>
         /// Retrieves the type name of an AdaptiveCards object.
         /// </summary>
-        public static string GetElementTypeName(Type objectType, JObject jObject)
+        public static string GetElementTypeName(Type objectType, JsonObject jObject)
         {
-            string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
+            string typeName = jObject["type"]?.GetValue<string>() ?? jObject["@type"]?.GetValue<string>();
             if (typeName == null)
             {
                 // Get value of this objectType's "Type" JsonProperty(Required)
-                string typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
-                    .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
-                    .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
-                    .TypedValue.Value.ToString();
+                var typeProperty = objectType.GetRuntimeProperty("Type");
+                var jsonRequiredAttr = typeProperty?.CustomAttributes
+                    .FirstOrDefault(a => a.AttributeType == typeof(JsonRequiredAttribute));
 
-                // If this objectType does not require "Type" attribute, use the objectType's XML "TypeName" attribute
-                if (typeJsonPropertyRequiredValue == "0")
+                // If the Type property is not required, use the TypeName static field
+                if (jsonRequiredAttr == null)
                 {
                     typeName = objectType
-                        .GetRuntimeFields().Where(x => x.Name == "TypeName").FirstOrDefault()?
-                        .GetValue("TypeName").ToString();
+                        .GetRuntimeFields().FirstOrDefault(x => x.Name == "TypeName")?
+                        .GetValue("TypeName")?.ToString();
                 }
-                else
+
+                if (typeName == null)
                 {
                     throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
                 }
@@ -203,5 +158,133 @@ namespace AdaptiveCards
         }
 
         private enum WarningStatusCode { UnknownElementType = 0 };
+    }
+
+    /// <summary>
+    /// Internal converter that handles the actual read/write of AdaptiveTypedElement instances.
+    /// Uses object base type so it can handle any derived type of AdaptiveTypedElement.
+    /// </summary>
+    internal class AdaptiveTypedElementInnerConverter : JsonConverter<object>
+    {
+        public List<AdaptiveWarning> Warnings { get; set; }
+        public ParseContext ParseContext { get; set; }
+
+        public AdaptiveTypedElementInnerConverter(List<AdaptiveWarning> warnings, ParseContext parseContext)
+        {
+            Warnings = warnings ?? new List<AdaptiveWarning>();
+            ParseContext = parseContext ?? new ParseContext();
+        }
+
+        /// <summary>
+        /// Returns true for all types derived from AdaptiveTypedElement,
+        /// except AdaptiveCard which is handled by AdaptiveCardConverter.
+        /// </summary>
+        public override bool CanConvert(Type typeToConvert)
+        {
+            return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(typeToConvert.GetTypeInfo())
+                && typeToConvert != typeof(AdaptiveCard);
+        }
+
+        public override object Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var doc = JsonDocument.ParseValue(ref reader);
+            var jObject = SafeJsonHelper.SafeCreateJsonObject(doc.RootElement);
+            if (jObject == null)
+            {
+                return null;
+            }
+
+            string typeName = AdaptiveTypedElementConverter.GetElementTypeName(typeToConvert, jObject);
+
+            if (AdaptiveTypedElementConverter.TypedElementTypes.Value.TryGetValue(typeName, out var type))
+            {
+                string objectId = jObject["id"]?.GetValue<string>();
+                if (objectId == null)
+                {
+                    if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                    {
+                        throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+                    }
+                }
+
+                AdaptiveInternalID internalID = AdaptiveInternalID.Current();
+                if (type != typeof(AdaptiveCard))
+                {
+                    internalID = AdaptiveInternalID.Next();
+                    ParseContext.PushElement(objectId, internalID);
+                }
+
+                AdaptiveTypedElement result;
+                try
+                {
+                    result = (AdaptiveTypedElement)jObject.Deserialize(type, GetOptionsWithoutThisConverter(options));
+                    result.InternalID = internalID;
+                }
+                catch (JsonException)
+                {
+                    result = (AdaptiveTypedElement)Activator.CreateInstance(type);
+                    result.InternalID = internalID;
+                }
+
+                if (type != typeof(AdaptiveCard))
+                {
+                    ParseContext.PopElement();
+                }
+
+                return result;
+            }
+            else
+            {
+                string objectId = jObject["id"]?.GetValue<string>();
+                AdaptiveInternalID internalID = AdaptiveInternalID.Next();
+
+                ParseContext.PushElement(objectId, internalID);
+                AdaptiveTypedElement result;
+
+                if (ParseContext.Type == ParseContext.ContextType.Element)
+                {
+                    result = jObject.Deserialize<AdaptiveUnknownElement>(GetOptionsWithoutThisConverter(options))
+                             ?? new AdaptiveUnknownElement();
+                }
+                else
+                {
+                    result = jObject.Deserialize<AdaptiveUnknownAction>(GetOptionsWithoutThisConverter(options))
+                             ?? new AdaptiveUnknownAction();
+                }
+
+                ParseContext.PopElement();
+
+                Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
+                return result;
+            }
+        }
+
+        public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
+        {
+            JsonSerializer.Serialize(writer, value, value.GetType(), GetOptionsWithoutThisConverter(options));
+        }
+
+        private JsonSerializerOptions GetOptionsWithoutThisConverter(JsonSerializerOptions options)
+        {
+            var newOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = options.PropertyNamingPolicy,
+                PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive,
+                DefaultIgnoreCondition = options.DefaultIgnoreCondition,
+                WriteIndented = options.WriteIndented,
+                AllowTrailingCommas = options.AllowTrailingCommas,
+                ReadCommentHandling = options.ReadCommentHandling
+            };
+
+            foreach (var c in options.Converters)
+            {
+                if (!(c is AdaptiveTypedElementConverter) && !(c is AdaptiveTypedElementInnerConverter))
+                {
+                    newOptions.Converters.Add(c);
+                }
+            }
+
+            return newOptions;
+        }
     }
 }
