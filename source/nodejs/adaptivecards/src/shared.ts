@@ -84,9 +84,13 @@ export class StringWithSubstitutions {
 
         if (this._original) {
             for (const input of inputs) {
-                const matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(
-                    this._original
-                );
+                const escapedId = input.id
+                    ? input.id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+                    : "";
+                const matches = new RegExp(
+                    "\\{{2}(" + escapedId + ").value\\}{2}",
+                    "gi"
+                ).exec(this._original);
 
                 if (matches != null && input.id) {
                     referencedInputs[input.id] = input;
