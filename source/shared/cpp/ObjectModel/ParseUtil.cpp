@@ -455,10 +455,20 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
         return elements;
     }
 
-    elements.reserve(elementArray.size());
+    const size_t maxElements = static_cast<size_t>(ParseContext::c_maxElementsPerCollection);
+    elements.reserve(std::min(static_cast<size_t>(elementArray.size()), maxElements));
 
     for (const auto& curJsonValue : elementArray)
     {
+        // Cap the number of actions to prevent resource exhaustion
+        if (elements.size() >= maxElements)
+        {
+            context.warnings.emplace_back(
+                std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::CustomWarning,
+                    "Maximum number of actions in a collection exceeded; remaining items were dropped"));
+            break;
+        }
+
         auto action = ParseUtil::GetActionFromJsonValue(context, curJsonValue);
         if (action != nullptr)
         {

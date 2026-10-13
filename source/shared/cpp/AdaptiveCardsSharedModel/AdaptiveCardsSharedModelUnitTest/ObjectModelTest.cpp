@@ -739,5 +739,90 @@ namespace AdaptiveCardsSharedModelUnitTest
             const auto serializedCard = card->SerializeToJsonValue();
             Assert::IsTrue(serializedCard["body"][0]["isMultiline"].asBool());
         }
+
+        // Helper: build a card JSON with N TextBlocks in the body
+        static std::string MakeCardWithNElements(unsigned int count)
+        {
+            std::string json = R"({"type":"AdaptiveCard","version":"1.5","body":[)";
+            for (unsigned int i = 0; i < count; i++)
+            {
+                if (i > 0) json += ",";
+                json += R"({"type":"TextBlock","text":"Item )" + std::to_string(i) + R"("})";
+            }
+            json += "]}";
+            return json;
+        }
+
+        // Helper: build a card JSON with N OpenUrl actions
+        static std::string MakeCardWithNActions(unsigned int count)
+        {
+            std::string json = R"({"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"hi"}],"actions":[)";
+            for (unsigned int i = 0; i < count; i++)
+            {
+                if (i > 0) json += ",";
+                json += R"({"type":"Action.OpenUrl","title":"L)" + std::to_string(i) + R"(","url":"https://x.com"})";
+            }
+            json += "]}";
+            return json;
+        }
+
+        TEST_METHOD(ElementCollection_WithinLimit_ParsesFully)
+        {
+            const auto json = MakeCardWithNElements(10);
+            const auto result = AdaptiveCard::DeserializeFromString(json, "1.5");
+            Assert::AreEqual(10ui64, result->GetAdaptiveCard()->GetBody().size());
+        }
+
+        TEST_METHOD(ElementCollection_AtLimit_ParsesFully)
+        {
+            const unsigned int limit = ParseContext::c_maxElementsPerCollection;
+            const auto json = MakeCardWithNElements(limit);
+            const auto result = AdaptiveCard::DeserializeFromString(json, "1.5");
+            Assert::AreEqual(static_cast<size_t>(limit), result->GetAdaptiveCard()->GetBody().size());
+        }
+
+        TEST_METHOD(ElementCollection_ExceedsLimit_CappedWithWarning)
+        {
+            const unsigned int limit = ParseContext::c_maxElementsPerCollection;
+            const auto json = MakeCardWithNElements(limit + 50);
+            const auto result = AdaptiveCard::DeserializeFromString(json, "1.5");
+
+            // Body should be capped at the limit
+            Assert::AreEqual(static_cast<size_t>(limit), result->GetAdaptiveCard()->GetBody().size());
+
+            // Should have a warning about it
+            bool foundWarning = false;
+            for (const auto& w : result->GetWarnings())
+            {
+                if (w->GetReason().find("Maximum number of elements") != std::string::npos)
+                {
+                    foundWarning = true;
+                    break;
+                }
+            }
+            Assert::IsTrue(foundWarning, L"Expected warning about element collection limit");
+        }
+
+        TEST_METHOD(ActionCollection_ExceedsLimit_CappedWithWarning)
+        {
+            const unsigned int limit = ParseContext::c_maxElementsPerCollection;
+            const auto json = MakeCardWithNActions(limit + 50);
+            const auto result = AdaptiveCard::DeserializeFromString(json, "1.5");
+
+            // Actions should be capped
+            Assert::IsTrue(result->GetAdaptiveCard()->GetActions().size() <= static_cast<size_t>(limit));
+
+            // Should have a warning
+            bool foundWarning = false;
+            for (const auto& w : result->GetWarnings())
+            {
+                if (w->GetReason().find("Maximum number of actions") != std::string::npos)
+                {
+                    foundWarning = true;
+                    break;
+                }
+            }
+            Assert::IsTrue(foundWarning, L"Expected warning about action collection limit");
+        }
     };
 }

@@ -52,6 +52,9 @@ public:
     void RemoveProhibitedElementType(const std::vector<std::string>& list);
     void ShouldParse(const std::string& type);
 
+    // Max items allowed in a single collection (body, actions, columns, etc.)
+    static constexpr unsigned int c_maxElementsPerCollection = 200;
+
 private:
     const AdaptiveCards::InternalId GetNearestFallbackId(const AdaptiveCards::InternalId& skipId) const;
     // This enum is just a helper to keep track of the position of contents within the std::tuple used in
