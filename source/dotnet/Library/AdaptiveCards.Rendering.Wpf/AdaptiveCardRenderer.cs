@@ -92,10 +92,16 @@ namespace AdaptiveCards.Rendering.Wpf
                 // Wrap this to avoid Console applications to crash because of this : https://github.com/Microsoft/AdaptiveCards/issues/2121
                 try
                 {
+#if NET6_0_OR_GREATER
+                    const string assembly = "AdaptiveCards.Rendering.Wpf.Net6";
+#else
+                    const string assembly = "AdaptiveCards.Rendering.Wpf";
+#endif
+                    var source = new Uri($"/{assembly};component/Themes/generic.xaml",
+                        UriKind.RelativeOrAbsolute);
                     var resource = new ResourceDictionary
                     {
-                        Source = new Uri("/AdaptiveCards.Rendering.Wpf;component/Themes/generic.xaml",
-                       UriKind.RelativeOrAbsolute)
+                        Source = source
                     };
                     _resources.MergedDictionaries.Add(resource);
                 }
