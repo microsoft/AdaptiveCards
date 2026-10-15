@@ -55,10 +55,10 @@ class TimeFormatter extends AbstractTextFormatter {
 export function formatText(lang: string | undefined, text: string | undefined): string | undefined {
     const formatters: AbstractTextFormatter[] = [
         new DateFormatter(
-            /\{{2}DATE\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2})))(?:, ?(COMPACT|LONG|SHORT))?\)\}{2}/g
+            /\{{2}DATE\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2}))?)(?:, ?(COMPACT|LONG|SHORT))?\)\}{2}/g
         ),
         new TimeFormatter(
-            /\{{2}TIME\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2})))\)\}{2}/g
+            /\{{2}TIME\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2}))?)\)\}{2}/g
         )
     ];
 
