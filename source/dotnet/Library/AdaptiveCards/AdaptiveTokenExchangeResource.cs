@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -8,6 +9,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Class for TokenExchangeResource
     /// </summary>
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveTokenExchangeResource
     {
         /// <summary>
