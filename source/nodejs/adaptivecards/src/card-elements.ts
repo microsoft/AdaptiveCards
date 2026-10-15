@@ -3067,19 +3067,19 @@ export class Media extends CardElement {
     static customMediaPlayers: ICustomMediaPlayer[] = [
         {
             urlPatterns: [
-                /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+))?).*/gi,
-                /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/gi
+                /^(?:https?:\/\/)?(?:www.)?youtube.com\/watch\?(?=.*v=([\w\d-_]+))(?=(?:.*t=(\d+))?).*/i,
+                /^(?:https?:\/\/)?youtu.be\/([\w\d-_]+)(?:\?t=(\d+))?/i
             ],
             createMediaPlayer: (matches) =>
                 new YouTubePlayer(matches, Strings.defaults.youTubeVideoPlayer())
         },
         {
-            urlPatterns: [/^(?:https?:\/\/)?vimeo.com\/([\w\d-_]+).*/gi],
+            urlPatterns: [/^(?:https?:\/\/)?vimeo.com\/([\w\d-_]+).*/i],
             createMediaPlayer: (matches) =>
                 new VimeoPlayer(matches, Strings.defaults.vimeoVideoPlayer())
         },
         {
-            urlPatterns: [/^(?:https?:\/\/)?(?:www.)?dailymotion.com\/video\/([\w\d-_]+).*/gi],
+            urlPatterns: [/^(?:https?:\/\/)?(?:www.)?dailymotion.com\/video\/([\w\d-_]+).*/i],
             createMediaPlayer: (matches) =>
                 new DailymotionPlayer(matches, Strings.defaults.dailymotionVideoPlayer())
         }
