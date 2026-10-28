@@ -708,6 +708,10 @@ export class AdaptiveApplet {
                             if (this.onShowSigninPrompt) {
                                 // Bypass the built-in auth prompt if the host app handles it
                                 this.onShowSigninPrompt(this, request, response.signinButton);
+                            } else if (!Utils.isHttpUrl(response.signinButton.value)) {
+                                throw new Error(
+                                    "internalSendExecuteRequestAsync: the login request doesn't contain a valid signin URL."
+                                );
                             } else {
                                 this.showAuthCodeInputDialog(request);
 
@@ -821,10 +825,18 @@ export class AdaptiveApplet {
 
     onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
     onCardChanged?: (sender: AdaptiveApplet) => void;
+    /**
+     * The token exchange resource comes from the card payload and is not validated by the applet.
+     * Hosts must verify it (e.g. against the resource registered for the bot) before acquiring a token.
+     */
     onPrefetchSSOToken?: (
         sender: AdaptiveApplet,
         tokenExchangeResource: TokenExchangeResource
     ) => void;
+    /**
+     * The token exchange resource comes from the channel response and is not validated by the applet.
+     * Hosts must verify it (e.g. against the resource registered for the bot) before acquiring a token.
+     */
     onSSOTokenNeeded?: (
         sender: AdaptiveApplet,
         request: IActivityRequest,

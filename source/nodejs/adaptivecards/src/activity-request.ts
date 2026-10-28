@@ -6,6 +6,7 @@ import {
     UniversalAction,
     TokenExchangeResource
 } from "./card-elements";
+import { isHttpUrl } from "./utils";
 
 export enum ActivityRequestTrigger {
     Automatic = "automatic",
@@ -53,16 +54,11 @@ export class LoginRequestResponse extends ActivityResponse {
         this._auth = auth;
 
         for (const button of this._auth.buttons) {
-            if (button.type === "signin" && button.value !== undefined) {
-                try {
-                    new URL(button.value);
+            // Only http(s) signin URLs are accepted; other schemes (javascript:, data:, etc.) are ignored
+            if (button.type === "signin" && isHttpUrl(button.value)) {
+                this.signinButton = button;
 
-                    this.signinButton = button;
-
-                    break;
-                } catch (e) {
-                    // Ignore parsing error
-                }
+                break;
             }
         }
     }

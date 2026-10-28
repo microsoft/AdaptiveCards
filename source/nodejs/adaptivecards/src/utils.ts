@@ -285,3 +285,20 @@ export function debounce(fn: (...args: unknown[]) => unknown, delay: number) {
     }
     return debouncedFn;
 }
+
+/**
+ * Returns true if the specified value is an absolute http or https URL.
+ */
+export function isHttpUrl(value: string | undefined): boolean {
+    if (value === undefined) {
+        return false;
+    }
+
+    try {
+        const protocol = new URL(value).protocol;
+
+        return protocol === "https:" || protocol === "http:";
+    } catch {
+        return false;
+    }
+}
