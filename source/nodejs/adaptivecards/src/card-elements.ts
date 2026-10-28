@@ -4861,6 +4861,7 @@ export class FilteredChoiceSet {
     private _choiceSetId: number;
     private _choices: Choice[];
     private _dynamicChoices: FetchedChoice[];
+    private _choiceElements: HTMLSpanElement[] = [];
     private _visibleChoiceCount: number;
     private _highlightedChoiceId: number;
     private _textInput?: HTMLInputElement;
@@ -4901,9 +4902,7 @@ export class FilteredChoiceSet {
                 event.preventDefault();
                 this.highlightChoice(this._highlightedChoiceId - 1);
             } else if (event.key === "Enter") {
-                const choice = document.getElementById(
-                    `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
-                );
+                const choice = this._choiceElements[this._highlightedChoiceId];
                 choice?.click();
             }
         };
@@ -4982,12 +4981,10 @@ export class FilteredChoiceSet {
 
     private highlightChoice(id: number, scrollIntoView: boolean = true) {
         if (this._visibleChoiceCount > 0) {
-            const currentHighlightedChoice = document.getElementById(
-                `ac-choiceSetInput-${this._choiceSetId}-choice-${this._highlightedChoiceId}`
-            );
-            const nextHighlightedChoice = document.getElementById(
-                `ac-choiceSetInput-${this._choiceSetId}-choice-${id}`
-            );
+            // Resolve choices through instance references rather than document-wide id lookups,
+            // so other elements with the same id (or shadow DOM hosting) cannot interfere.
+            const currentHighlightedChoice = this._choiceElements[this._highlightedChoiceId];
+            const nextHighlightedChoice = this._choiceElements[id];
             if (nextHighlightedChoice) {
                 currentHighlightedChoice?.classList.remove(
                     this.hostConfig.makeCssClassName("ac-choiceSetInput-choice-highlighted")
@@ -5023,6 +5020,7 @@ export class FilteredChoiceSet {
                         matchedText,
                         this._visibleChoiceCount++
                     );
+                    this._choiceElements.push(choiceContainer);
                     this._dropdown?.appendChild(choiceContainer);
                 }
             }
@@ -5060,6 +5058,7 @@ export class FilteredChoiceSet {
     private resetDropdown() {
         if (this._dropdown) {
             Utils.clearElementChildren(this._dropdown);
+            this._choiceElements = [];
             this._visibleChoiceCount = 0;
             this._highlightedChoiceId = -1;
         }
