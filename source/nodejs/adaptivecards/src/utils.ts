@@ -273,6 +273,26 @@ export function addCancelSelectActionEventHandler(element: HTMLElement) {
     };
 }
 
+// Replaces the text highlighting markers ("===" and "/==/") in an HTML string with the given opening and
+// closing tags. Markers that appear inside HTML tags (e.g. within attribute values such as href, src or title)
+// are left untouched so that the generated tags cannot alter the structure of existing elements.
+export function replaceTextHighlightMarkers(
+    html: string,
+    openingTag: string,
+    closingTag: string
+): string {
+    return html.replace(
+        /(<[^<>"']*(?:(?:"[^"]*"|'[^']*')[^<>"']*)*>)|===|\/==\//g,
+        (match: string, tag: string | undefined) => {
+            if (tag) {
+                return tag;
+            }
+
+            return match === "===" ? openingTag : closingTag;
+        }
+    );
+}
+
 export function debounce(fn: (...args: unknown[]) => unknown, delay: number) {
     let timer: ReturnType<typeof setTimeout>;
     function debouncedFn(...args: unknown[]) {

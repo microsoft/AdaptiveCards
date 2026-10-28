@@ -1244,9 +1244,11 @@ export class TextBlock extends BaseTextBlock {
                                 markStyle = 'style="' + markStyle + '"';
                             }
 
-                            this._processedText = this._processedText
-                                .replace(/===/g, "<mark " + markStyle + ">")
-                                .replace(/\/==\//g, "</mark>");
+                            this._processedText = Utils.replaceTextHighlightMarkers(
+                                this._processedText,
+                                "<mark " + markStyle + ">",
+                                "</mark>"
+                            );
                         }
                     } else {
                         this._processedText = formattedText;
