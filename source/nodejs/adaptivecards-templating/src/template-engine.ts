@@ -93,7 +93,7 @@ class TemplateObjectMemory implements AEL.MemoryInterface {
         return this._memory.getValue(actualPath);
     }
 
-    setValue(path: string, input: any) {
+    setValue(_path: string, _input: any) {
         // Template expansion is read-only with respect to the caller's data ($root, $host, $data):
         // expressions such as setPathToValue() must not write back into the objects supplied by the host.
     }
@@ -157,7 +157,7 @@ export interface IEvaluationContext {
 export class Template {
 
     // Standard AEL functions that modify the object or array passed as their first argument in place.
-    private static readonly inPlaceMutatingFunctions = ["setProperty", "addProperty", "removeProperty", "reverse"];
+    private static readonly _inPlaceMutatingFunctions = ["setProperty", "addProperty", "removeProperty", "reverse"];
 
     private static shallowCopy(value: any): any {
         if (Array.isArray(value)) {
@@ -169,9 +169,9 @@ export class Template {
         }
 
         if (typeof value === "object" && value !== null) {
-            let copy = Object.create(Object.getPrototypeOf(value));
+            const copy = Object.create(Object.getPrototypeOf(value));
 
-            for (let key of Object.keys(value)) {
+            for (const key of Object.keys(value)) {
                 Object.defineProperty(copy, key, { value: value[key], writable: true, enumerable: true, configurable: true });
             }
 
@@ -187,13 +187,13 @@ export class Template {
         return new AEL.ExpressionEvaluator(
             standardFunction.type,
             (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => {
-                let firstArgument = expression.children[0].tryEvaluate(state, options);
+                const firstArgument = expression.children[0].tryEvaluate(state, options);
 
                 if (firstArgument.error) {
                     return { value: undefined, error: firstArgument.error };
                 }
 
-                let copiedExpression = new AEL.Expression(
+                const copiedExpression = new AEL.Expression(
                     expression.type,
                     standardFunction,
                     new AEL.Constant(Template.shallowCopy(firstArgument.value)),
@@ -305,7 +305,7 @@ export class Template {
             let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
 
             if (standardFunction) {
-                return Template.inPlaceMutatingFunctions.indexOf(type) >= 0 ? Template.getCopyingEvaluator(standardFunction) : standardFunction;
+                return Template._inPlaceMutatingFunctions.indexOf(type) >= 0 ? Template.getCopyingEvaluator(standardFunction) : standardFunction;
             }
             else {
                 return new AEL.ExpressionEvaluator(

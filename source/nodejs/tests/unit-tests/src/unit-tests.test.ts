@@ -350,7 +350,7 @@ describe("Test Templating Library", () => {
         const rootSnapshot = JSON.parse(JSON.stringify(root));
         const hostSnapshot = JSON.parse(JSON.stringify(host));
 
-        let card = new ACData.Template(templatePayload).expand({ $root: root, $host: host });
+        const card = new ACData.Template(templatePayload).expand({ $root: root, $host: host });
 
         expect(root).toStrictEqual(rootSnapshot);
         expect(host).toStrictEqual(hostSnapshot);
