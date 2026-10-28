@@ -9298,6 +9298,22 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private _fallbackCard?: AdaptiveCard;
 
+    // The fallback card is rendered as its own root, so it must use the same
+    // host configuration and event handlers as this card
+    private applyHostSettingsToFallbackCard(fallbackCard: AdaptiveCard) {
+        fallbackCard.hostConfig = this.hostConfig;
+        fallbackCard.designMode = this.designMode;
+        fallbackCard.onAnchorClicked = this.onAnchorClicked;
+        fallbackCard.onExecuteAction = this.onExecuteAction;
+        fallbackCard.onElementVisibilityChanged = this.onElementVisibilityChanged;
+        fallbackCard.onImageLoaded = this.onImageLoaded;
+        fallbackCard.onInlineCardExpanded = this.onInlineCardExpanded;
+        fallbackCard.onInputValueChanged = this.onInputValueChanged;
+        fallbackCard.onCarouselEvent = this.onCarouselEvent;
+        fallbackCard.onDisplayOverflowActionMenu = this.onDisplayOverflowActionMenu;
+        fallbackCard.onRenderOverflowActions = this.onRenderOverflowActions;
+    }
+
     private isVersionSupported(): boolean {
         if (this.bypassVersionCheck) {
             return true;
@@ -9440,7 +9456,7 @@ export class AdaptiveCard extends ContainerWithActions {
         let renderedCard: HTMLElement | undefined;
 
         if (this.shouldFallback() && this._fallbackCard) {
-            this._fallbackCard.hostConfig = this.hostConfig;
+            this.applyHostSettingsToFallbackCard(this._fallbackCard);
 
             renderedCard = this._fallbackCard.render();
         } else {
