@@ -94,7 +94,8 @@ class TemplateObjectMemory implements AEL.MemoryInterface {
     }
 
     setValue(path: string, input: any) {
-        this._memory.setValue(path, input);
+        // Template expansion is read-only with respect to the caller's data ($root, $host, $data):
+        // expressions such as setPathToValue() must not write back into the objects supplied by the host.
     }
 
     version(): string {
@@ -154,6 +155,55 @@ export interface IEvaluationContext {
  * Represents a template that can be bound to data.
  */
 export class Template {
+
+    // Standard AEL functions that modify the object or array passed as their first argument in place.
+    private static readonly inPlaceMutatingFunctions = ["setProperty", "addProperty", "removeProperty", "reverse"];
+
+    private static shallowCopy(value: any): any {
+        if (Array.isArray(value)) {
+            return value.slice();
+        }
+
+        if (value instanceof Map) {
+            return new Map(value);
+        }
+
+        if (typeof value === "object" && value !== null) {
+            let copy = Object.create(Object.getPrototypeOf(value));
+
+            for (let key of Object.keys(value)) {
+                Object.defineProperty(copy, key, { value: value[key], writable: true, enumerable: true, configurable: true });
+            }
+
+            return copy;
+        }
+
+        return value;
+    }
+
+    // Wraps a standard function so that it operates on a shallow copy of its first argument,
+    // which prevents template expressions from modifying the caller's data during expansion.
+    private static getCopyingEvaluator(standardFunction: AEL.ExpressionEvaluator): AEL.ExpressionEvaluator {
+        return new AEL.ExpressionEvaluator(
+            standardFunction.type,
+            (expression: AEL.Expression, state: AEL.MemoryInterface, options: AEL.Options) => {
+                let firstArgument = expression.children[0].tryEvaluate(state, options);
+
+                if (firstArgument.error) {
+                    return { value: undefined, error: firstArgument.error };
+                }
+
+                let copiedExpression = new AEL.Expression(
+                    expression.type,
+                    standardFunction,
+                    new AEL.Constant(Template.shallowCopy(firstArgument.value)),
+                    ...expression.children.slice(1));
+
+                return standardFunction.tryEvaluate(copiedExpression, state, options);
+            },
+            standardFunction.returnType,
+            (expression: AEL.Expression) => standardFunction.validateExpression(expression));
+    }
 
     private templateExpansionWarnings;
 
@@ -255,7 +305,7 @@ export class Template {
             let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
 
             if (standardFunction) {
-                return standardFunction;
+                return Template.inPlaceMutatingFunctions.indexOf(type) >= 0 ? Template.getCopyingEvaluator(standardFunction) : standardFunction;
             }
             else {
                 return new AEL.ExpressionEvaluator(

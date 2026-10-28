@@ -330,6 +330,35 @@ describe("Test Templating Library", () => {
         let errorLog = template.getLastTemplateExpansionWarnings();
         expect(errorLog.length).toStrictEqual(0);
     });
+
+    it("TemplateExpansionDoesNotModifyData", () => {
+        const templatePayload = {
+            "type": "AdaptiveCard",
+            "version": "1.5",
+            "body": [
+                { "type": "TextBlock", "text": "${setPathToValue($root.secret, 'changed')}" },
+                { "type": "TextBlock", "text": "${setPathToValue($host.flag, true)}" },
+                { "type": "TextBlock", "text": "${string(setProperty($root.user, 'role', 'admin'))}" },
+                { "type": "TextBlock", "text": "${string(addProperty($root, 'added', 1))}" },
+                { "type": "TextBlock", "text": "${string(removeProperty($root, 'secret'))}" },
+                { "type": "TextBlock", "text": "${join(reverse($root.list), ',')}" }
+            ]
+        };
+
+        const root = { "secret": "original", "user": { "role": "user" }, "list": [1, 2, 3] };
+        const host = { "flag": false };
+        const rootSnapshot = JSON.parse(JSON.stringify(root));
+        const hostSnapshot = JSON.parse(JSON.stringify(host));
+
+        let card = new ACData.Template(templatePayload).expand({ $root: root, $host: host });
+
+        expect(root).toStrictEqual(rootSnapshot);
+        expect(host).toStrictEqual(hostSnapshot);
+        expect(card.body[2].text).toStrictEqual('{"role":"admin"}');
+        expect(card.body[3].text).toStrictEqual('{"secret":"original","user":{"role":"user"},"list":[1,2,3],"added":1}');
+        expect(card.body[4].text).toStrictEqual('{"user":{"role":"user"},"list":[1,2,3]}');
+        expect(card.body[5].text).toStrictEqual("3,2,1");
+    });
 });
 
 function runTemplateTest(templatePayload: any, expectedOutput: any, data?: any, host?: any) {
