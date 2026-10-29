@@ -273,24 +273,93 @@ export function addCancelSelectActionEventHandler(element: HTMLElement) {
     };
 }
 
+const xhtmlNamespace = "http://www.w3.org/1999/xhtml";
+
+// Text inside these elements is raw text/RCDATA (or isn't rendered as markup), so highlight tags must not be
+// injected there.
+const nonHighlightableElements = new Set([
+    "script",
+    "style",
+    "textarea",
+    "title",
+    "xmp",
+    "iframe",
+    "noembed",
+    "noframes",
+    "noscript",
+    "plaintext",
+    "template"
+]);
+
+function isHighlightableTextNode(node: Node): boolean {
+    for (
+        let parent = node.parentNode;
+        parent && parent.nodeType === Node.ELEMENT_NODE;
+        parent = parent.parentNode
+    ) {
+        const element = parent as Element;
+
+        // Skip foreign content (svg/math) and raw-text/RCDATA elements
+        if (
+            element.namespaceURI !== xhtmlNamespace ||
+            nonHighlightableElements.has(element.localName)
+        ) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function createUniqueToken(existing: string): string {
+    let token: string;
+
+    do {
+        token = "\uE000" + Math.random().toString(36).slice(2) + "\uE001";
+    } while (existing.indexOf(token) >= 0);
+
+    return token;
+}
+
 // Replaces the text highlighting markers ("===" and "/==/") in an HTML string with the given opening and
-// closing tags. Markers that appear inside HTML tags (e.g. within attribute values such as href, src or title)
-// are left untouched so that the generated tags cannot alter the structure of existing elements.
+// closing tags. The string is parsed with the browser's HTML parser and markers are only replaced in text
+// content, so markers in attributes, comments, raw-text/RCDATA elements and foreign (svg/math) content are left
+// untouched and the generated tags cannot alter the structure of existing elements.
 export function replaceTextHighlightMarkers(
     html: string,
     openingTag: string,
-    closingTag: string
+    closingTag: string,
+    toTrustedHtml: (value: string) => string | TrustedHTML = (value) => value
 ): string {
-    return html.replace(
-        /(<[^<>"']*(?:(?:"[^"]*"|'[^']*')[^<>"']*)*>)|===|\/==\//g,
-        (match: string, tag: string | undefined) => {
-            if (tag) {
-                return tag;
-            }
+    if (html.indexOf("===") < 0 && html.indexOf("/==/") < 0) {
+        return html;
+    }
 
-            return match === "===" ? openingTag : closingTag;
+    // <template> content is inert: parsing it doesn't run scripts or load resources.
+    const template = document.createElement("template");
+    template.innerHTML = toTrustedHtml(html) as string;
+
+    // Markers are first swapped for tokens that can't occur anywhere else in the serialized HTML, then the tokens
+    // are turned into tags. This keeps highlights that span inline elements working.
+    const serialized = template.innerHTML;
+    const openingToken = createUniqueToken(serialized);
+    const closingToken = createUniqueToken(serialized + openingToken);
+
+    const walker = document.createTreeWalker(template.content, NodeFilter.SHOW_TEXT);
+
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        if (node.nodeValue && isHighlightableTextNode(node)) {
+            node.nodeValue = node.nodeValue
+                .replace(/===/g, openingToken)
+                .replace(/\/==\//g, closingToken);
         }
-    );
+    }
+
+    return template.innerHTML
+        .split(openingToken)
+        .join(openingTag)
+        .split(closingToken)
+        .join(closingTag);
 }
 
 export function debounce(fn: (...args: unknown[]) => unknown, delay: number) {

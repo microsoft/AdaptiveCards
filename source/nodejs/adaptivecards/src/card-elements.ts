@@ -1247,7 +1247,8 @@ export class TextBlock extends BaseTextBlock {
                             this._processedText = Utils.replaceTextHighlightMarkers(
                                 this._processedText,
                                 "<mark " + markStyle + ">",
-                                "</mark>"
+                                "</mark>",
+                                (value) => TextBlock._ttMarkdownPolicy?.createHTML(value) ?? value
                             );
                         }
                     } else {
