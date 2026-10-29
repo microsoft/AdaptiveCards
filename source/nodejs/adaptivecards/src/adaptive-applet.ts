@@ -483,6 +483,27 @@ export class AdaptiveApplet {
             : GlobalSettings.applets.defaultTimeBetweenRetryAttempts;
     }
 
+    // Opens the built-in sign-in window. Only http(s) URLs are opened: other schemes (javascript:, data:, etc.)
+    // would run in the context of the host page.
+    private static openSigninWindow(signinButton: AuthCardButton): boolean {
+        if (!Utils.isHttpUrl(signinButton.value)) {
+            return false;
+        }
+
+        const left =
+            window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
+        const top =
+            window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
+
+        window.open(
+            signinButton.value,
+            signinButton.title ? signinButton.title : "Sign in",
+            `width=${GlobalSettings.applets.authPromptWidth},height=${GlobalSettings.applets.authPromptHeight},left=${left},top=${top}`
+        );
+
+        return true;
+    }
+
     private showAuthCodeInputDialog(request: ActivityRequest) {
         const showBuiltInAuthCodeInputCard = this.onShowAuthCodeInputDialog
             ? this.onShowAuthCodeInputDialog(this, request)
@@ -715,22 +736,7 @@ export class AdaptiveApplet {
                             } else {
                                 this.showAuthCodeInputDialog(request);
 
-                                const left =
-                                    window.screenX +
-                                    (window.outerWidth - GlobalSettings.applets.authPromptWidth) /
-                                        2;
-                                const top =
-                                    window.screenY +
-                                    (window.outerHeight - GlobalSettings.applets.authPromptHeight) /
-                                        2;
-
-                                window.open(
-                                    response.signinButton.value,
-                                    response.signinButton.title
-                                        ? response.signinButton.title
-                                        : "Sign in",
-                                    `width=${GlobalSettings.applets.authPromptWidth},height=${GlobalSettings.applets.authPromptHeight},left=${left},top=${top}`
-                                );
+                                AdaptiveApplet.openSigninWindow(response.signinButton);
                             }
                         }
                     } else {
@@ -863,6 +869,10 @@ export class AdaptiveApplet {
     onAction?: (sender: AdaptiveApplet, action: Action) => void;
     onShowManualRefreshButton?: (sender: AdaptiveApplet) => boolean;
     onShowAuthCodeInputDialog?: (sender: AdaptiveApplet, request: IActivityRequest) => boolean;
+    /**
+     * The signin button comes from the channel response and its URL is not validated by the applet when this
+     * handler is set. Hosts must verify the URL (e.g. only open http(s) URLs) before navigating to it.
+     */
     onShowSigninPrompt?: (
         sender: AdaptiveApplet,
         request: IActivityRequest,
