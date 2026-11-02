@@ -1405,8 +1405,8 @@ export class TextBlock extends BaseTextBlock {
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
             this._computedLineHeight =
-                this.getFontSize(this.hostConfig.getFontTypeDefinition(this.effectiveFontType)) *
-                1.33;
+                Math.ceil(this.getFontSize(this.hostConfig.getFontTypeDefinition(this.effectiveFontType)) *
+                1.33);
         }
 
         targetElement.style.lineHeight = this._computedLineHeight + "px";
