@@ -20,6 +20,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     return uiElement;
                 }
 
+                if (selectAction is AdaptiveSubmitAction || selectAction is AdaptiveExecuteAction)
+                {
+                    context.SubmitActionCardId[selectAction] = context.RenderArgs.ContainerCardId;
+                }
+
                 context.IsRenderingSelectAction = true;
                 var uiButton = (Button) context.Render(selectAction);
                 context.IsRenderingSelectAction = false;
