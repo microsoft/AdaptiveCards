@@ -1,0 +1,48 @@
+# Component Governance onboarding pipeline
+#
+# Purpose: Keep this repository (microsoft/AdaptiveCards) compliant with Component
+# Governance by running ComponentGovernanceComponentDetection@0 against its own
+# sources on the default branch.
+#
+# This pipeline is intentionally build-free: Component Governance compliance is
+# decoupled from the health of the product build/test pipelines, so a build or
+# test regression can never stop the governance scan from running.
+#
+# Because the pipeline is hosted in this repository and uses `checkout: self`,
+# the scan is attributed to microsoft/AdaptiveCards (the pipeline's own source
+# repository), which is what Component Governance uses as the governed repository.
+
+# Run when this pipeline definition changes on the default branch.
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .pipelines/component-governance.yml
+
+# No PR validation needed for a governance-only pipeline.
+pr: none
+
+# Run regularly so the default branch stays continuously governed.
+schedules:
+- cron: "0 6 * * 1"                 # 06:00 UTC every Monday
+  displayName: Weekly Component Governance scan
+  branches:
+    include:
+    - main
+  always: true                      # run even when there are no source changes
+
+# Evergreen hosted image. Component Detection is cross-platform (it scans
+# dependency manifests), and ubuntu-latest avoids the retired-image failures
+# that break pinned Windows images.
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+  displayName: Check out microsoft/AdaptiveCards
+
+- task: ComponentGovernanceComponentDetection@0
+  displayName: Component Detection
+  condition: succeeded()
