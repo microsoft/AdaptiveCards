@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { CarouselEvent } from "./carousel";
@@ -1132,7 +1132,7 @@ export class TextBlock extends BaseTextBlock {
     // Markdown processing is handled outside of Adaptive Cards. It's up to the host to ensure that markdown is safely
     // processed.
     private static readonly _ttMarkdownPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy(
-        "adaptivecards#markdownPassthroughPolicy",
+        "adaptivecards#markdownPassthroughTrustedTypesPolicy",
         { createHTML: (value) => value }
     );
 
@@ -1141,7 +1141,7 @@ export class TextBlock extends BaseTextBlock {
     // _originalInnerHtml so that we can restore/recalculate truncation later if space availability has changed (see
     // TextBlock.restoreOriginalContent())
     private static readonly _ttRoundtripPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy(
-        "adaptivecards#restoreContentsPolicy",
+        "adaptivecards#restoreContentsTrustedTypesPolicy",
         { createHTML: (value) => value }
     );
 
