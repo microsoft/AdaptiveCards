@@ -21,7 +21,7 @@
 		"src"
 	],
 	"scripts": {
-		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit --runInBand --detectOpenHandles",
+		"test": "TZ=UTC cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit --runInBand --detectOpenHandles",
 		"clean": "rimraf build lib dist",
 		"generate-css": "concurrently \"sass -I ../node_modules src/scss/adaptivecards-default.scss lib/adaptivecards.css\" \"sass -I ../node_modules src/scss/adaptivecards-carousel.scss lib/adaptivecards-carousel.css\"",
 		"build-source": "concurrently \"tsc\" \"npm:generate-css\"",
