@@ -361,4 +361,22 @@ const std::string& ParseContext::GetLanguage() const
 {
     return m_language;
 }
+
+bool ParseContext::CanIncrementShowCardDepth() const
+{
+    return m_currentShowCardDepth < c_maxShowCardDepth;
+}
+
+void ParseContext::IncrementShowCardDepth()
+{
+    m_currentShowCardDepth++;
+}
+
+void ParseContext::DecrementShowCardDepth()
+{
+    if (m_currentShowCardDepth > 0)
+    {
+        m_currentShowCardDepth--;
+    }
+}
 } // namespace AdaptiveCards
