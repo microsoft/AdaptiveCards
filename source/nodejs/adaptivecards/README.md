@@ -93,11 +93,11 @@ The latest release will keep you up to date with features and fixes, but may hav
 * `adaptivecards.min.js` - minified version, best for production
 
 ```html
-<!-- Option 1: always load the latest release -->
+<!-- Option 1: always load the latest release. It's discouraged to use it in production because latest release may have breaking changes -->
 <script src="https://unpkg.com/adaptivecards/dist/adaptivecards.min.js"></script>
 
-<!-- Option 2: load a specific version (e.g, 1.1.1) -->
-<script src="https://unpkg.com/adaptivecards@1.1.1/dist/adaptivecards.min.js"></script>
+<!-- Option 2: load a specific version (e.g, 2.11.1) -->
+<script src="https://unpkg.com/adaptivecards@2.11.1/dist/adaptivecards.min.js"></script>
 ```
 
 ## Usage
