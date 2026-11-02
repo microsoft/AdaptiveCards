@@ -1729,6 +1729,43 @@ export class CardDesigner extends Designer.DesignContext {
         this.setCardPayload(card, true);
     }
 
+    public configHostContainer(hostApp: number, theme: string, size: string, deviceEmulation: number){
+        if (hostApp && 0 <= hostApp && hostApp < this._hostContainers.length
+            && this._hostContainerChoicePicker.selectedIndex !== hostApp) {
+           this._hostContainerChoicePicker.selectedIndex = hostApp;
+        }
+
+        if (!!this.hostContainer.supportsMultipleThemes) {
+            if (!this.sampleHostData) {
+                this.sampleHostData = {};
+            }
+            if (theme && HostContainer.supportedContainerThemes.includes(theme)) {
+                this._containerThemeChoicePicker.selectedIndex = HostContainer.supportedContainerThemes.indexOf(theme);
+            }
+            this.updateHostDataThemeProperty();
+        }
+
+        if (!!this.hostContainer.supportsMultipleSizes) {
+            if (!this.sampleHostData) {
+                 this.sampleHostData = {};
+            }
+            if (size && WidgetContainer.supportedContainerSizes.includes(size)) {
+                this._containerSizeChoicePicker.selectedIndex = WidgetContainer.supportedContainerSizes.indexOf(size);
+            }
+            this.updateHostDataSizeProperty();
+        }
+
+        if (deviceEmulation && !!this._hostContainer.enableDeviceEmulation && 0 <= deviceEmulation && deviceEmulation < this._deviceEmulations.length &&
+             this._deviceEmulationChoicePicker.selectedIndex !== deviceEmulation) {
+            this._deviceEmulationChoicePicker.selectedIndex = deviceEmulation;
+        }
+    }
+
+    public togglePreviewButton() {
+        this._togglePreviewButton.isToggled = true;
+        this.togglePreview();
+    }
+
     onCardPayloadChanged: (designer: CardDesigner) => void;
     onCardValidated: (designer: CardDesigner, validationLogEntries: Adaptive.IValidationEvent[]) => void;
     onActiveHostContainerChanged: (designer: CardDesigner) => void;
