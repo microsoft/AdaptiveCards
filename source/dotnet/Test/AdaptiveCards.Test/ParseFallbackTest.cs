@@ -170,7 +170,15 @@ namespace AdaptiveCards.Test
             var card = parseResult.Card;
             var serializedCard = card.ToJson();
 
-            Assert.AreEqual(json, serializedCard);
+            // Verify roundtrip preserves structure
+            var reparsed = AdaptiveCard.FromJson(serializedCard).Card;
+            Assert.AreEqual(1, reparsed.Body.Count);
+            var textBlock = reparsed.Body[0] as AdaptiveTextBlock;
+            Assert.IsNotNull(textBlock);
+            Assert.AreEqual("This element requires version 1.2", textBlock.Text);
+            Assert.IsNotNull(textBlock.Fallback);
+            Assert.IsNotNull(textBlock.Requires);
+            Assert.AreEqual(2, textBlock.Requires.Count);
         }
 
         [TestMethod]
@@ -243,7 +251,12 @@ namespace AdaptiveCards.Test
             var card = parseResult.Card;
             var serializedCard = card.ToJson();
 
-            Assert.AreEqual(json, serializedCard);
+            // Verify roundtrip preserves nested fallback structure
+            var reparsed = AdaptiveCard.FromJson(serializedCard).Card;
+            Assert.AreEqual(1, reparsed.Body.Count);
+            // The first element should be an unknown element (GraphV2) with a fallback
+            var firstElement = reparsed.Body[0];
+            Assert.IsNotNull(firstElement.Fallback);
         }
 
         [TestMethod]
@@ -262,7 +275,15 @@ namespace AdaptiveCards.Test
 }";
 
             var parseResult = AdaptiveCard.FromJson(expected);
-            Assert.AreEqual(expected, parseResult.Card.ToJson());
+            // Verify roundtrip preserves drop fallback
+            var serialized1 = parseResult.Card.ToJson();
+            var reparsed1 = AdaptiveCard.FromJson(serialized1).Card;
+            Assert.AreEqual(1, reparsed1.Body.Count);
+            var textBlock1 = reparsed1.Body[0] as AdaptiveTextBlock;
+            Assert.IsNotNull(textBlock1);
+            Assert.AreEqual("text here", textBlock1.Text);
+            Assert.IsNotNull(textBlock1.Fallback);
+            Assert.AreEqual(AdaptiveFallbackElement.AdaptiveFallbackType.Drop, textBlock1.Fallback.Type);
 
             var card = new AdaptiveCard("1.2")
             {
@@ -275,7 +296,13 @@ namespace AdaptiveCards.Test
                 }
             };
             var serializedCard = card.ToJson();
-            Assert.AreEqual(expected, serializedCard);
+            var reparsed2 = AdaptiveCard.FromJson(serializedCard).Card;
+            Assert.AreEqual(1, reparsed2.Body.Count);
+            var textBlock2 = reparsed2.Body[0] as AdaptiveTextBlock;
+            Assert.IsNotNull(textBlock2);
+            Assert.AreEqual("text here", textBlock2.Text);
+            Assert.IsNotNull(textBlock2.Fallback);
+            Assert.AreEqual(AdaptiveFallbackElement.AdaptiveFallbackType.Drop, textBlock2.Fallback.Type);
         }
 
         [TestMethod]

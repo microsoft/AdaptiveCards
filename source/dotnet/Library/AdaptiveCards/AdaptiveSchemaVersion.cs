@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using System.ComponentModel;
 
@@ -13,7 +12,6 @@ namespace AdaptiveCards
     /// <summary>
     /// Represents the AdaptiveCards schema version.
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [JsonConverter(typeof(AdaptiveSchemaJsonConverter))]
     public class AdaptiveSchemaVersion : IComparable<AdaptiveSchemaVersion>
     {
@@ -183,23 +181,20 @@ namespace AdaptiveCards
             return Comparer<AdaptiveSchemaVersion>.Default.Compare(left, right) >= 0;
         }
 
-        internal class AdaptiveSchemaJsonConverter : JsonConverter
+        internal class AdaptiveSchemaJsonConverter : JsonConverter<AdaptiveSchemaVersion>
         {
-            public override bool CanConvert(Type objectType)
+            public override AdaptiveSchemaVersion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                return objectType == typeof(AdaptiveSchemaVersion);
+                if (reader.TokenType == JsonTokenType.Null)
+                {
+                    return null;
+                }
+                return new AdaptiveSchemaVersion(reader.GetString());
             }
 
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            public override void Write(Utf8JsonWriter writer, AdaptiveSchemaVersion value, JsonSerializerOptions options)
             {
-                writer.WriteValue(value.ToString());
-            }
-
-            public override bool CanRead => true;
-
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-            {
-                return new AdaptiveSchemaVersion((string)reader.Value);
+                writer.WriteStringValue(value.ToString());
             }
         }
     }

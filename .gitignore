@@ -321,3 +321,4 @@ _deps
 *-prefix/
 
 **/.nx/*
+.nuget/

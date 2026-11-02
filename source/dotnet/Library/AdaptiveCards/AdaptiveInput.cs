@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -15,7 +15,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Sets the input as required for triggering Submit actions.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool IsRequired { get; set; }
@@ -23,7 +23,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Label to be shown next to input.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Label { get; set; }
@@ -31,7 +31,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Error message to be shown when validation fails.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string ErrorMessage { get; set; }

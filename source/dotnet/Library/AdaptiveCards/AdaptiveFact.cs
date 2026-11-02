@@ -3,15 +3,13 @@
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     /// Represents a "fact" in a FactSet element.
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [XmlType(TypeName = "Fact")]
     public class AdaptiveFact
     {
@@ -49,7 +47,7 @@ namespace AdaptiveCards
         /// <summary>
         /// (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [Obsolete("FactSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
     }

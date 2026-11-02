@@ -1,59 +1,63 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
-    class AdaptiveInlinesConverter : AdaptiveTypedBaseElementConverter 
+    class AdaptiveInlinesConverter : JsonConverter<List<AdaptiveInline>>
     {
-        public override bool CanRead => true;
+        public ParseContext ParseContext { get; set; } = new ParseContext();
 
-        public override bool CanWrite => false;
+        public AdaptiveInlinesConverter() { }
 
-        public override bool CanConvert(Type objectType)
+        public AdaptiveInlinesConverter(ParseContext parseContext)
         {
-            return typeof(List<AdaptiveInline>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            ParseContext = parseContext ?? new ParseContext();
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override List<AdaptiveInline> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var array = JArray.Load(reader);
-            List<object> list = array.ToObject<List<object>>();
-            List<AdaptiveInline> arrayList = new List<AdaptiveInline>();
-            var serializerSettigns = new JsonSerializerSettings
-            {
-                ContractResolver = new WarningLoggingContractResolver(new AdaptiveCardParseResult(), ParseContext),
-                Converters = { new StrictIntConverter() }
-            };
+            var array = JsonNode.Parse(ref reader)?.AsArray();
+            var arrayList = new List<AdaptiveInline>();
 
-            // We only support text runs for now, which can be specified as either a string or an object
-            foreach (object obj in list)
+            if (array == null) return arrayList;
+
+            foreach (var node in array)
             {
-                if (obj is string s)
+                if (node is JsonValue val && val.TryGetValue<string>(out var s))
                 {
                     arrayList.Add(new AdaptiveTextRun(s));
                 }
-                else
+                else if (node is JsonObject jobj)
                 {
-                    JObject jobj = (JObject)obj;
-                    if (jobj.Value<string>("type") != AdaptiveTextRun.TypeName)
+                    var typeValue = jobj["type"]?.GetValue<string>();
+                    if (typeValue != AdaptiveTextRun.TypeName)
                     {
                         throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveTextRun.TypeName}'");
                     }
 
-                    arrayList.Add(JsonConvert.DeserializeObject<AdaptiveTextRun>(jobj.ToString(), serializerSettigns));
+                    var textRun = node.Deserialize<AdaptiveTextRun>(options);
+                    if (textRun != null)
+                    {
+                        arrayList.Add(textRun);
+                    }
                 }
             }
             return arrayList;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, List<AdaptiveInline> value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            writer.WriteStartArray();
+            foreach (var item in value)
+            {
+                JsonSerializer.Serialize(writer, item, item.GetType(), options);
+            }
+            writer.WriteEndArray();
         }
     }
 }

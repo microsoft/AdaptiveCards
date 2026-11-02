@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     /// Represents a "media source" for a Media element.
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [XmlType(TypeName = "CaptionSource")]
     public class AdaptiveCaptionSource
     {
@@ -34,21 +32,18 @@ namespace AdaptiveCards
         /// <summary>
         /// The mime type of this media source.
         /// </summary>
-        [JsonProperty]
         [XmlAttribute]
         public string MimeType { get; set; }
 
         /// <summary>
         /// The URL of this media source.
         /// </summary>
-        [JsonProperty]
         [XmlAttribute]
         public string Url { get; set; }
 
         /// <summary>
         /// The caption label for the caption
         /// </summary>
-        [JsonProperty]
         [XmlAttribute]
         public string Label { get; set; }
     }

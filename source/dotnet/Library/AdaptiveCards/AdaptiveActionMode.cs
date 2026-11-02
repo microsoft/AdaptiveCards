@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     /// Determines whether the action should be displayed as a button or in the overflow menu.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveActionMode>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveActionMode>))]
     public enum AdaptiveActionMode
     {
         /// <summary>

@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
 using AdaptiveCards.Rendering;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 
 namespace AdaptiveCards
@@ -28,7 +28,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Comma separated string of selected Choice values.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Value { get; set; }
@@ -36,7 +36,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The style to use when displaying this Input.ChoiceSet.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveChoiceInputStyle), "compact")]
         public AdaptiveChoiceInputStyle Style { get; set; }
@@ -44,7 +44,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Determines whether multiple selections are allowed.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool IsMultiSelect { get; set; }
@@ -58,7 +58,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Controls text wrapping behavior.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool Wrap { get; set; }
@@ -66,7 +66,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Text to display as a placeholder.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Placeholder { get; set; }
@@ -74,8 +74,8 @@ namespace AdaptiveCards
         /// <summary>
         /// A dataQuery 
         /// </summary>
-        [JsonProperty("choices.data", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-
+        [JsonPropertyName("choices.data")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlElement(typeof(AdaptiveDataQuery), ElementName = "Data.Query")]
         [DefaultValue(null)]
         public AdaptiveDataQuery DataQuery { get; set; }

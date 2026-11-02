@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls how elements are horizontally positioned within their container.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AdaptiveHorizontalAlignment
     {
         /// <summary>

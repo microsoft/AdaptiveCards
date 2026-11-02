@@ -160,14 +160,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
 
                 bool isMinValid = true, isMaxValid = true;
-                if (!Double.IsNaN(numberInput.Min))
+                if (!Double.IsNaN(numberInput.Min ?? double.NaN))
                 {
-                    isMinValid = (inputValue >= numberInput.Min);
+                    isMinValid = (inputValue >= numberInput.Min.Value);
                 }
 
-                if (!Double.IsNaN(numberInput.Max))
+                if (!Double.IsNaN(numberInput.Max ?? double.NaN))
                 {
-                    isMaxValid = (inputValue <= numberInput.Max);
+                    isMaxValid = (inputValue <= numberInput.Max.Value);
                 }
 
                 isValid = isValid && isMinValid && isMaxValid;

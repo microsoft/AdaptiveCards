@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -43,13 +43,12 @@ namespace AdaptiveCards
 
         /// <inheritdoc />
         [XmlIgnore]
-        [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
         /// Controls the sizing (<see cref="AdaptiveImageSize"/>) of the displayed image.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveImageSize), "auto")]
         public AdaptiveImageSize Size { get; set; }
@@ -57,7 +56,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The style (<see cref="AdaptiveImageStyle"/>) in which the image is displayed.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveImageStyle), "default")]
         public AdaptiveImageStyle Style { get; set; }
@@ -85,7 +84,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Horizontal alignment (<see cref="AdaptiveHorizontalAlignment"/>) to use.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
@@ -94,7 +93,7 @@ namespace AdaptiveCards
         /// A background color for the image specified as #AARRGGBB or #RRGGBB.
         /// </summary>
         [JsonConverter(typeof(HashColorConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string BackgroundColor { get; set; }
@@ -102,7 +101,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Action to execute when image is invoked.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlElement]
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
@@ -110,7 +109,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Alternate text (alttext) to display for this image.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string AltText { get; set; }
@@ -119,7 +118,8 @@ namespace AdaptiveCards
         /// Explicit image width.
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter))]
-        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonPropertyName("width")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(0)]
         public uint PixelWidth { get; set; }
@@ -133,7 +133,7 @@ namespace AdaptiveCards
         {
             get
             {
-                if (Height.Unit != null)
+                if (Height?.Unit != null)
                 {
                     return Height.Unit.Value;
                 }

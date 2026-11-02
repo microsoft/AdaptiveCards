@@ -1,26 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
 {
     /// <summary>
     /// ContainerStylesConfig
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class ContainerStylesConfig
     {
         /// <summary>
         /// Default Style config
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContainerStyleConfig Default { get; set; } = new ContainerStyleConfig();
 
         /// <summary> 
         /// Emphasis style config
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContainerStyleConfig Emphasis { get; set; } = new ContainerStyleConfig()
         {
             BackgroundColor = "#08000000"
@@ -29,7 +27,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Good style confing
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContainerStyleConfig Good { get; set; } = new ContainerStyleConfig()
         {
             BackgroundColor = "#ffd5f0dd",
@@ -40,7 +38,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Warning style config
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContainerStyleConfig Warning { get; set; } = new ContainerStyleConfig()
         {
             BackgroundColor = "#f7f7df",
@@ -50,7 +48,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Attention style config
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContainerStyleConfig Attention { get; set; } = new ContainerStyleConfig()
         {
             BackgroundColor = "#f7e9e9",
@@ -60,7 +58,7 @@ namespace AdaptiveCards.Rendering
         /// <summary>
         /// Accent style config
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContainerStyleConfig Accent { get; set; } = new ContainerStyleConfig()
         {
             BackgroundColor = "#dce5f7",

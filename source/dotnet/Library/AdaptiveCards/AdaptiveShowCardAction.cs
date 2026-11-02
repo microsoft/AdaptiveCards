@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -21,7 +21,7 @@ namespace AdaptiveCards
         /// <summary>
         /// <see cref="AdaptiveCard"/> to show when the action is invoked.
         /// </summary>
-        [JsonProperty(Required = Required.Always)]
+        [JsonRequired]
         [XmlElement(typeof(AdaptiveCard), ElementName = AdaptiveCard.TypeName)]
         public AdaptiveCard Card { get; set; }
     }

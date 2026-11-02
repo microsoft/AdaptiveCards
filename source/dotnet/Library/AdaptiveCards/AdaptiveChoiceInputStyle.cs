@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     /// The style of ChoiceInput to display.
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter), true)]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AdaptiveChoiceInputStyle
     {
         /// <summary>

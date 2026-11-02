@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     /// Controls the spacing of an element.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveSpacing>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveSpacing>))]
     public enum AdaptiveSpacing
     {
         /// <summary>
