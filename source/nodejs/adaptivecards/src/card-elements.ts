@@ -1776,13 +1776,14 @@ export class FactSet extends CardElement {
             for (let i = 0; i < this.facts.length; i++) {
                 const trElement = document.createElement("tr");
 
-                if (i > 0) {
-                    trElement.style.marginTop = hostConfig.factSet.spacing + "px";
-                }
-
                 // Title column
                 let tdElement = document.createElement("td");
                 tdElement.style.padding = "0";
+
+                if (i > 0) {
+                    tdElement.style.paddingTop = hostConfig.factSet.spacing + "px";
+                }
+
                 tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-title"));
 
                 if (hostConfig.factSet.title.maxWidth) {
@@ -1809,11 +1810,20 @@ export class FactSet extends CardElement {
                 tdElement = document.createElement("td");
                 tdElement.style.width = "10px";
 
+                if (i > 0) {
+                    tdElement.style.paddingTop = hostConfig.factSet.spacing + "px";
+                }
+
                 Utils.appendChild(trElement, tdElement);
 
                 // Value column
                 tdElement = document.createElement("td");
                 tdElement.style.padding = "0";
+
+                if (i > 0) {
+                    tdElement.style.paddingTop = hostConfig.factSet.spacing + "px";
+                }
+
                 tdElement.style.verticalAlign = "top";
                 tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-value"));
 
