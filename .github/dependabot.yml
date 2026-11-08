@@ -1,0 +1,62 @@
+version: 2
+updates:
+  # ---- JavaScript / TypeScript (npm) ----
+  # /source/nodejs is a lerna + npm-workspaces monorepo; its single top-level
+  # package.json + lockfile covers every workspace package (adaptivecards,
+  # -templating, -react, etc.). The repo-root and /schemas lockfiles are empty
+  # stubs with no package.json, so they are intentionally not listed.
+  - package-ecosystem: "npm"
+    directory: "/source/nodejs"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 1
+    labels:
+      - "dependencies"
+      - "javascript"
+
+  # ---- .NET (NuGet) ----
+  # Target the concrete solution roots (each has its own .sln that references
+  # its projects) rather than broad "**" globs, which the Dependabot guidance
+  # warns can be slow / time out for NuGet.
+  - package-ecosystem: "nuget"
+    directories:
+      - "/source/dotnet"
+      - "/source/uwp"
+      - "/source/uwp/winui3"
+      - "/source/ios/tools/IOSFeed"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 1
+    labels:
+      - "dependencies"
+      - "dotnet"
+
+  # ---- Android (Gradle) ----
+  - package-ecosystem: "gradle"
+    directory: "/source/android"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 1
+    labels:
+      - "dependencies"
+      - "android"
+
+  # ---- Swift Package Manager (Package.swift at repo root) ----
+  - package-ecosystem: "swift"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 1
+    labels:
+      - "dependencies"
+      - "swift"
+
+  # ---- GitHub Actions workflows ----
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 1
+    labels:
+      - "dependencies"
+      - "github-actions"

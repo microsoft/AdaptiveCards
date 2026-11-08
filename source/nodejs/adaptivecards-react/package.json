@@ -40,7 +40,7 @@
 	},
 	"dependencies": {
 		"adaptivecards": "^3.0.2",
-		"markdown-it": "^14.0.0",
+		"markdown-it": "^14.3.2",
 		"prop-types": "^15.8.1"
 	}
 }
