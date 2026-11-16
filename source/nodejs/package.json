@@ -44,7 +44,7 @@
 		"json-loader": "^0.5.7",
 		"lerna": "^8.1.2",
 		"lint-staged": "^12.1.2",
-		"markdown-it": "^14.3.2",
+		"markdown-it": "^14.3.3",
 		"mini-css-extract-plugin": "^2.4.3",
 		"nx": "^18.0.7",
 		"prettier": "^2.4.1",
