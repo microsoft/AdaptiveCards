@@ -4,10 +4,6 @@ import { getTestCasesList } from "./file-retriever-utils";
 import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, PropertyBag, SerializationContext, SubmitAction, Version, Versions } from "adaptivecards";
 import * as Remarkable from "remarkable";
 
-const ttPolicy = (typeof window === 'undefined') ? undefined : window.trustedTypes?.createPolicy('adaptivecards-ui-testapp', {
-    createHTML: value => value,
-});
-
 export function listAllFiles(): HTMLLIElement[] {
     const testCasesList: HTMLLIElement[] = [];
 
@@ -105,13 +101,13 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
         }
         else if (actionType === OpenUrlAction.JsonTypeName) {
             const actionAsOpenUrl: OpenUrlAction = action;
-            inputsAsJson = inputsAsJson.concat("{\"url\": \"", actionAsOpenUrl.url, "\"}");
+            inputsAsJson = JSON.stringify({ url: actionAsOpenUrl.url });
         }
 
         const retrievedInputsDiv: HTMLElement = document.getElementById("retrievedInputsDiv");
 
-        const trustedHtml = ttPolicy?.createHTML(inputsAsJson) ?? inputsAsJson;
-        retrievedInputsDiv.innerHTML = trustedHtml as string;
+        // Card-provided values must be displayed as text, never parsed as HTML
+        retrievedInputsDiv.textContent = inputsAsJson;
         retrievedInputsDiv.style.visibility = "visible";
     };
 
