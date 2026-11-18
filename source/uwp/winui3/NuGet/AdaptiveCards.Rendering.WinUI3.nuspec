@@ -34,9 +34,6 @@
         <!-- .NET 10.0 projection -->
         <file src="..\AnyCPU\RendererCsProjection\$Configuration$\net10.0-windows10.0.17763.0\RendererCsProjection.dll" target="lib\net10.0-windows10.0.17763.0\RendererCsProjection.dll" />
 
-        <!-- .NET 8.0 projection -->
-        <file src="..\AnyCPU\RendererCsProjection\$Configuration$\net8.0-windows10.0.17763.0\RendererCsProjection.dll" target="lib\net8.0-windows10.0.17763.0\RendererCsProjection.dll" />
-
         <file src="EULA-Windows.txt" target="\"/>
         <file src="AdaptiveCards.Rendering.WinUI3.native.targets" target="build\native\AdaptiveCards.Rendering.WinUI3.targets"/>
     </files>
