@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Net;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -9,6 +11,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Class to for authentication data.
     /// </summary>
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveAuthentication
     {
         /// <summary>
@@ -16,14 +19,14 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlAttribute]
-        public string Text { get; set; }
+        public string Text { get; set; } = "Please sign in";
 
         /// <summary>
         ///     The identifier for registered OAuth connection setting information.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [XmlAttribute]
-        public string ConnectionName { get; set; }
+        public string ConnectionName { get; set; } = "Default";
 
         /// <summary>
         ///     Provides information required to enable on-behalf-of single sign-on user authentication.
