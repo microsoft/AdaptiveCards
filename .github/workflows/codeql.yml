@@ -72,7 +72,7 @@ jobs:
       uses: microsoft/setup-msbuild@fc16ae6170877cd889e5d735ea9d41c2362078b2 # v1.0.0
 
     - name: Nuget setup
-      uses: nuget/setup-nuget@296fd3ccf8528660c91106efefe2364482f86d6f # v1.2.0
+      uses: nuget/setup-nuget@b26b823c478ee115be5c9403e62c90b0bf943843 # v3.1.0
       with:
         nuget-version: '5.x'
 
