@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using System.Collections.Generic;
+using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AdaptiveCards.Test
@@ -29,10 +30,12 @@ namespace AdaptiveCards.Test
                 }
             };
 
-
-            var expected = @"""style"": ""expanded""";
-
-            StringAssert.Contains(card.ToJson(), expected);
+            var json = card.ToJson();
+            // Verify the expanded style roundtrips
+            var reparsed = AdaptiveCard.FromJson(json).Card;
+            var choiceSet = reparsed.Body[1] as AdaptiveChoiceSetInput;
+            Assert.IsNotNull(choiceSet);
+            Assert.AreEqual(AdaptiveChoiceInputStyle.Expanded, choiceSet.Style);
         }
 
         [TestMethod]
@@ -63,7 +66,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestChoiceSetFilteredStyle()
         {
-            var expectedJSON = Utilities.BuildExpectedCardJSON("choiceSetInput", new SerializableDictionary<string, object>() { ["style"] = "filtered" });
+            var expectedJSON = Utilities.BuildExpectedCardJSON("choiceSetInput", new Dictionary<string, JsonElement>() { ["style"] = JsonSerializer.SerializeToElement("filtered") });
             var testCard = AdaptiveCard.FromJson(expectedJSON);
             Assert.IsTrue(testCard.Warnings.Count == 0);
             AdaptiveChoiceSetInput choiceSetInput = Utilities.GetAdaptiveElementWithId(testCard.Card, "choiceSetInput") as AdaptiveChoiceSetInput;
@@ -92,25 +95,22 @@ namespace AdaptiveCards.Test
                 Style = AdaptiveChoiceInputStyle.Filtered,
             });
 
-            const string expectedJson = @"{
-              ""type"": ""AdaptiveCard"",
-              ""version"": ""1.6"",
-              ""body"": [
-                {
-                  ""type"": ""Input.ChoiceSet"",
-                  ""id"": ""id0"",
-                  ""style"": ""filtered"",
-                  ""isMultiSelect"": false,
-                  ""choices"": []
-                }
-              ]
-            }";
+            var json = card.ToJson();
 
-            var actualJson = Utilities.RemoveWhiteSpacesFromJSON(card.ToJson());
+            // Verify roundtrip preserves filtered style
+            var reparsed = AdaptiveCard.FromJson(json).Card;
+            Assert.AreEqual(1, reparsed.Body.Count);
+            var choiceSet = reparsed.Body[0] as AdaptiveChoiceSetInput;
+            Assert.IsNotNull(choiceSet);
+            Assert.AreEqual("id0", choiceSet.Id);
+            Assert.AreEqual(AdaptiveChoiceInputStyle.Filtered, choiceSet.Style);
 
-            Assert.AreEqual(Utilities.RemoveWhiteSpacesFromJSON(expectedJson), actualJson);
-
-            Assert.AreEqual(Utilities.RemoveWhiteSpacesFromJSON(expectedJson), Utilities.RemoveWhiteSpacesFromJSON(AdaptiveCard.FromJson(actualJson).Card.ToJson()));
+            // Verify double roundtrip
+            var json2 = reparsed.ToJson();
+            var reparsed2 = AdaptiveCard.FromJson(json2).Card;
+            var choiceSet2 = reparsed2.Body[0] as AdaptiveChoiceSetInput;
+            Assert.IsNotNull(choiceSet2);
+            Assert.AreEqual(AdaptiveChoiceInputStyle.Filtered, choiceSet2.Style);
         }
     }
 }

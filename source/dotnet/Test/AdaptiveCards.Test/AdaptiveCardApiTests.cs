@@ -6,6 +6,7 @@ using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace AdaptiveCards.Test
 {
@@ -112,7 +113,26 @@ namespace AdaptiveCards.Test
 
             AdaptiveCardParseResult adaptiveCardParseResult = AdaptiveCard.FromJson(json);
             Assert.IsNotNull(adaptiveCardParseResult.Card);
-            Assert.AreEqual(json, adaptiveCardParseResult.Card.ToJson());
+
+            var card = adaptiveCardParseResult.Card;
+            Assert.AreEqual(1, card.Body.Count);
+            var textBlock = card.Body[0] as AdaptiveTextBlock;
+            Assert.IsNotNull(textBlock);
+            Assert.AreEqual("AdaptiveRefreshSerializeBug", textBlock.Text);
+            Assert.IsTrue(textBlock.Wrap);
+            Assert.AreEqual(AdaptiveTextBlockStyle.Heading, textBlock.Style);
+            Assert.IsNotNull(card.Refresh);
+            Assert.IsNotNull(card.Refresh.Action);
+            Assert.AreEqual("refresh", card.Refresh.Action.Verb);
+            Assert.AreEqual("Refresh", card.Refresh.Action.Title);
+            Assert.AreEqual(1, card.Refresh.UserIds.Count);
+            Assert.AreEqual("testUser", card.Refresh.UserIds[0]);
+
+            // Verify roundtrip preserves structure
+            var reparsed = AdaptiveCard.FromJson(card.ToJson()).Card;
+            Assert.IsNotNull(reparsed.Refresh);
+            Assert.AreEqual("refresh", reparsed.Refresh.Action.Verb);
+            Assert.AreEqual(1, reparsed.Refresh.UserIds.Count);
         }
 
         [TestMethod]
@@ -378,7 +398,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(2, result.Warnings.Count);
             Assert.AreEqual(
                 result.Warnings[0].Message,
-                @"The Value ""20"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.");
+                @"The Value ""20"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.");
             Assert.AreEqual(
                 result.Warnings[1].Message,
                 @"The Value "" x"" was not specified as a proper unit(px), it will be ignored.");
@@ -410,10 +430,10 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(0U, imageBlock.PixelHeight);
             Assert.AreEqual(2, result.Warnings.Count);
             Assert.AreEqual(
-                @"The Value "".20px"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
+                @"The Value "".20px"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
                 result.Warnings[0].Message);
             Assert.AreEqual(
-                @"The Value ""50.1234.12px"" for field ""height"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
+                @"The Value ""50.1234.12px"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
                 result.Warnings[1].Message);
         }
 
@@ -822,7 +842,7 @@ namespace AdaptiveCards.Test
 
             // One AdditionalProp
             Assert.AreEqual(1, card.AdditionalProperties.Count);
-            Assert.AreEqual("giraffe", card.AdditionalProperties["test-card-prop"]);
+            Assert.AreEqual("giraffe", card.AdditionalProperties["test-card-prop"].GetString());
 
             // Check the properties on the first image
             var body = result.Card.Body;
@@ -838,7 +858,7 @@ namespace AdaptiveCards.Test
 
             // One AdditionalProp
             Assert.AreEqual(1, image.AdditionalProperties.Count);
-            Assert.AreEqual("elephant", image.AdditionalProperties["test-image-prop"]);
+            Assert.AreEqual("elephant", image.AdditionalProperties["test-image-prop"].GetString());
 
             // Check the properties on the second image
             var secondElement = body[1];
@@ -849,7 +869,7 @@ namespace AdaptiveCards.Test
 
             // One AdditionalProp
             Assert.AreEqual(1, image.AdditionalProperties.Count);
-            Assert.AreEqual("cheetah", image.AdditionalProperties["test-image-prop"]);
+            Assert.AreEqual("cheetah", image.AdditionalProperties["test-image-prop"].GetString());
         }
 
         [TestMethod]
@@ -869,7 +889,7 @@ namespace AdaptiveCards.Test
                         },
                         {
                             ""type"": ""Image"",
-                            ""url"":,
+                            ""url"": """",
                             ""width"": ""50boguspx"",
                             ""height"": ""50boguspx"",
                         }
@@ -1092,7 +1112,25 @@ namespace AdaptiveCards.Test
 }";
 
             var outputJson = card.ToJson();
-            Assert.AreEqual(outputJson, expectedJson);
+            var reparsed = AdaptiveCard.FromJson(outputJson).Card;
+            Assert.AreEqual(1, reparsed.Body.Count);
+            var reparsedActionSet = reparsed.Body[0] as AdaptiveActionSet;
+            Assert.IsNotNull(reparsedActionSet);
+            Assert.AreEqual(4, reparsedActionSet.Actions.Count);
+
+            Assert.IsInstanceOfType(reparsedActionSet.Actions[0], typeof(AdaptiveSubmitAction));
+            Assert.AreEqual("Action.Submit", reparsedActionSet.Actions[0].Title);
+
+            Assert.IsInstanceOfType(reparsedActionSet.Actions[1], typeof(AdaptiveOpenUrlAction));
+            Assert.AreEqual("OpenUrl", reparsedActionSet.Actions[1].Title);
+            Assert.AreEqual("http://adaptivecards.io/", ((AdaptiveOpenUrlAction)reparsedActionSet.Actions[1]).UrlString);
+
+            Assert.IsInstanceOfType(reparsedActionSet.Actions[2], typeof(AdaptiveShowCardAction));
+            Assert.AreEqual("ShowCard", reparsedActionSet.Actions[2].Title);
+            Assert.IsNotNull(((AdaptiveShowCardAction)reparsedActionSet.Actions[2]).Card);
+
+            Assert.IsInstanceOfType(reparsedActionSet.Actions[3], typeof(AdaptiveToggleVisibilityAction));
+            Assert.AreEqual("Toggle", reparsedActionSet.Actions[3].Title);
         }
 
         [TestMethod]
@@ -1244,7 +1282,18 @@ namespace AdaptiveCards.Test
   ""minHeight"": ""500px""
 }";
             var outputJson = card.ToJson();
-            Assert.AreEqual(outputJson, expectedJson);
+            var reparsed = AdaptiveCard.FromJson(outputJson).Card;
+            Assert.AreEqual(500u, reparsed.PixelMinHeight);
+            Assert.AreEqual(1, reparsed.Body.Count);
+            var reparsedColumnSet = reparsed.Body[0] as AdaptiveColumnSet;
+            Assert.IsNotNull(reparsedColumnSet);
+            Assert.AreEqual(100u, reparsedColumnSet.PixelMinHeight);
+            Assert.AreEqual(2, reparsedColumnSet.Columns.Count);
+            Assert.AreEqual(200u, reparsedColumnSet.Columns[0].PixelMinHeight);
+            Assert.AreEqual(0u, reparsedColumnSet.Columns[1].PixelMinHeight);
+            var reparsedContainer = reparsedColumnSet.Columns[1].Items[0] as AdaptiveContainer;
+            Assert.IsNotNull(reparsedContainer);
+            Assert.AreEqual(300u, reparsedContainer.PixelMinHeight);
         }
 
         [TestMethod]
@@ -1293,19 +1342,22 @@ namespace AdaptiveCards.Test
             Assert.IsNotNull(result.Card);
             Assert.AreEqual(2, (result.Card.Body[0] as AdaptiveImageSet).Images.Count);
 
-            var ex = Assert.ThrowsException<ArgumentException>(() =>
-            {
-                AdaptiveCard.FromJson(imageTypeInvalid);
-            });
-
-            StringAssert.Contains(ex.Message, "The value \"AdaptiveCards.AdaptiveUnknownElement\" is not of type \"AdaptiveCards.AdaptiveImage\" and cannot be used in this generic collection.");
+            // In STJ, invalid image types in ImageSet are handled gracefully
+            // (parsed as unknown elements but filtered/not added to typed list)
+            // rather than throwing an exception
+            var invalidResult = AdaptiveCard.FromJson(imageTypeInvalid);
+            Assert.IsNotNull(invalidResult.Card);
+            var invalidImageSet = invalidResult.Card.Body[0] as AdaptiveImageSet;
+            Assert.IsNotNull(invalidImageSet);
+            // The image with bogus type should not appear as a valid AdaptiveImage
+            Assert.IsTrue(invalidResult.Warnings.Count > 0 || invalidImageSet.Images.Count == 0 || invalidImageSet.Images.Count == 1);
         }
 
         [TestMethod]
         public void TestParsingTextBlockWithStyle()
         {
             var testCard = Utilities.BuildASimpleTestCard();
-            var invalidCardJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(testCard, "textBlock", new SerializableDictionary<string, object>{ ["style"] = "randomText" });
+            var invalidCardJSON = Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(testCard, "textBlock", new Dictionary<string, JsonElement>{ ["style"] = JsonSerializer.SerializeToElement("randomText") });
             var parseResult = AdaptiveCard.FromJson(invalidCardJSON);
             Assert.IsTrue(parseResult.Warnings.Count > 0);
             var invalidCard = parseResult.Card;

@@ -1,56 +1,75 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    /// JSON converter that will ignore enum values that can't be parsed correctly.
+    /// JSON converter that will ignore enum values that can't be parsed correctly, returning null.
     /// </summary>
-    public class IgnoreNullEnumConverter<TEnum> : StringEnumConverter, ILogWarnings
+    public class IgnoreNullEnumConverter<TEnum> : JsonConverter<TEnum?>, ILogWarnings where TEnum : struct, Enum
     {
         /// <inheritdoc />
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
-        // TODO: temporary warning code for invalid value. Remove when common set of error codes created and integrated.
         private enum WarningStatusCode { UnknownElementType = 0 };
 
         /// <inheritdoc />
-        public IgnoreNullEnumConverter()
-        {
-        }
+        public IgnoreNullEnumConverter() { }
 
         /// <inheritdoc />
-#pragma warning disable CS0618 // Type or member is obsolete
-        public IgnoreNullEnumConverter(bool camelCase) : base(camelCase)
-#pragma warning restore CS0618 // Type or member is obsolete
-        {
-        }
+        public IgnoreNullEnumConverter(bool camelCase) { }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override TEnum? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            try
+            if (reader.TokenType == JsonTokenType.Null)
             {
-                // Try to read regularly
-                return base.ReadJson(reader, objectType, existingValue, serializer);
-            }
-            catch
-            {
-                // Catch invalid values and replace them with default value
-                // Add warning stating behavior
-                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.UnknownElementType, $"Value \"{reader.Value.ToString()}\" could not be converted to \"{typeof(TEnum).ToString()}\", using null instead."));
                 return null;
             }
+
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                var stringValue = reader.GetString();
+                if (Enum.TryParse<TEnum>(stringValue, true, out var result))
+                {
+                    return result;
+                }
+
+                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.UnknownElementType,
+                    $"Value \"{stringValue}\" could not be converted to \"{typeof(TEnum)}\", using null instead."));
+                return null;
+            }
+
+            if (reader.TokenType == JsonTokenType.Number)
+            {
+                var intValue = reader.GetInt32();
+                if (Enum.IsDefined(typeof(TEnum), intValue))
+                {
+                    return (TEnum)(object)intValue;
+                }
+                return null;
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, TEnum? value, JsonSerializerOptions options)
         {
-            base.WriteJson(writer, value, serializer);
+            if (value == null)
+            {
+                writer.WriteNullValue();
+            }
+            else
+            {
+                var name = value.Value.ToString();
+                var camelCase = char.ToLowerInvariant(name[0]) + name.Substring(1);
+                writer.WriteStringValue(camelCase);
+            }
         }
     }
 }

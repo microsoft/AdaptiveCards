@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 
 namespace AdaptiveCards.Test
 {
@@ -51,7 +52,7 @@ namespace AdaptiveCards.Test
         /// <param name="id"></param>
         /// <param name="testProperty"></param>
         /// <returns></returns>
-        internal static string SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(AdaptiveCard card, string id, SerializableDictionary<string, object> testProperty = null)
+        internal static string SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(AdaptiveCard card, string id, Dictionary<string, JsonElement> testProperty = null)
         {
             AdaptiveTypedElement element = GetAdaptiveElementWithId(card, id);
 
@@ -127,7 +128,7 @@ namespace AdaptiveCards.Test
             return card;
         }
 
-        internal static string BuildExpectedCardJSON(String id, SerializableDictionary<string, object> testProperty = null)
+        internal static string BuildExpectedCardJSON(String id, Dictionary<string, JsonElement> testProperty = null)
         {
             return Utilities.SerializeAfterManuallyWritingTestValueToAdaptiveElementWithTheGivenId(BuildASimpleTestCard(), id, testProperty);
         }

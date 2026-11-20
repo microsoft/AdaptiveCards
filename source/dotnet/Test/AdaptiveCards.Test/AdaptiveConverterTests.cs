@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 
 namespace AdaptiveCards.Test
@@ -19,9 +19,9 @@ namespace AdaptiveCards.Test
             {
                 Expires = date
             };
-            var json = JsonConvert.SerializeObject(refresh);
+            var json = JsonSerializer.Serialize(refresh);
             Assert.IsTrue(json.Contains(datestr));
-            var refresh2 = JsonConvert.DeserializeObject<AdaptiveRefresh>(json);
+            var refresh2 = JsonSerializer.Deserialize<AdaptiveRefresh>(json);
             Assert.AreEqual(date, refresh2.Expires);
         }
     }

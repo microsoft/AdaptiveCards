@@ -5,7 +5,7 @@ using AdaptiveCards.Templating;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using Microsoft.Win32;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -242,24 +242,44 @@ namespace WpfVisualizer
                 var inputs = sender.UserInputs.AsJson();
 
                 // Merge the Action.Submit Data property with the inputs
-                inputs.Merge(submitAction.Data);
+                if (submitAction.Data != null)
+                {
+                    var dataNode = System.Text.Json.Nodes.JsonNode.Parse(JsonSerializer.Serialize(submitAction.Data));
+                    if (dataNode is System.Text.Json.Nodes.JsonObject dataObj && inputs is System.Text.Json.Nodes.JsonObject inputsObj)
+                    {
+                        foreach (var prop in dataObj)
+                        {
+                            inputsObj[prop.Key] = prop.Value?.DeepClone();
+                        }
+                    }
+                }
 
-                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
+                MessageBox.Show(this, JsonSerializer.Serialize(inputs, new JsonSerializerOptions { WriteIndented = true }), "SubmitAction");
             }
             else if (e.Action is AdaptiveExecuteAction executeAction)
             {
                 var inputs = sender.UserInputs.AsJson();
 
                 // Merge the Action.Execute Data property with the inputs
-                inputs.Merge(executeAction.Data);
+                if (executeAction.Data != null)
+                {
+                    var dataNode = System.Text.Json.Nodes.JsonNode.Parse(JsonSerializer.Serialize(executeAction.Data));
+                    if (dataNode is System.Text.Json.Nodes.JsonObject dataObj && inputs is System.Text.Json.Nodes.JsonObject inputsObj)
+                    {
+                        foreach (var prop in dataObj)
+                        {
+                            inputsObj[prop.Key] = prop.Value?.DeepClone();
+                        }
+                    }
+                }
 
-                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented) + "\nverb: " + executeAction.Verb, "ExecuteAction");
+                MessageBox.Show(this, JsonSerializer.Serialize(inputs, new JsonSerializerOptions { WriteIndented = true }) + "\nverb: " + executeAction.Verb, "ExecuteAction");
             }
         }
 
         private void OnMediaClick(RenderedAdaptiveCard sender, AdaptiveMediaEventArgs e)
         {
-            MessageBox.Show(this, JsonConvert.SerializeObject(e.Media), "Host received a Media");
+            MessageBox.Show(this, JsonSerializer.Serialize(e.Media), "Host received a Media");
         }
 
         private void ShowWarning(string message)
@@ -276,15 +296,21 @@ namespace WpfVisualizer
 
         private void ShowError(Exception err)
         {
-            var textBlock = new TextBlock
+            var fullError = err.ToString();
+
+            // Use a TextBox instead of TextBlock so users can select and copy the error text
+            var errorTextBox = new TextBox
             {
-                Text = err.Message + "\nSource : " + err.Source,
+                Text = fullError,
                 TextWrapping = TextWrapping.Wrap,
-                Style = Resources["Error"] as Style
+                IsReadOnly = true,
+                BorderThickness = new Thickness(0),
+                Background = System.Windows.Media.Brushes.Transparent,
+                Foreground = System.Windows.Media.Brushes.DarkRed,
+                MaxHeight = 200,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
             };
-            var button = new Button { Content = textBlock };
-            button.Click += Button_Click;
-            cardError.Children.Add(button);
+            cardError.Children.Add(errorTextBox);
 
             var iPos = err.Message.IndexOf("line ");
             if (iPos > 0)
@@ -466,7 +492,7 @@ namespace WpfVisualizer
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var json = JsonConvert.SerializeObject(Renderer.HostConfig, Formatting.Indented);
+                var json = JsonSerializer.Serialize(Renderer.HostConfig, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(dlg.FileName, json);
             }
         }

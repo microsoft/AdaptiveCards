@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls the horizontal size (width) of element.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveImageSize>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveImageSize>))]
     public enum AdaptiveImageSize
     {
         /// <summary>

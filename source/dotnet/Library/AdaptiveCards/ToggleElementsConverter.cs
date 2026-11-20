@@ -1,71 +1,66 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Converter for AdaptiveTargetElement
+    /// Converter for AdaptiveTargetElement lists. Handles both string and object entries.
     /// </summary>
-    public class ToggleElementsConverter : JsonConverter
+    public class ToggleElementsConverter : JsonConverter<List<AdaptiveTargetElement>>
     {
-
         /// <inheritdoc/>
-        public override bool CanConvert(Type objectType)
+        public override List<AdaptiveTargetElement> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return typeof(List<AdaptiveTargetElement>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-        }
+            var arrayList = new List<AdaptiveTargetElement>();
 
-        /// <inheritdoc/>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            var array = JArray.Load(reader);
-            List<object> list = array.ToObject<List<object>>();
-            List<AdaptiveTargetElement> arrayList = new List<AdaptiveTargetElement>();
-
-            foreach(object obj in list)
+            if (reader.TokenType != JsonTokenType.StartArray)
             {
-                if(obj is string s)
+                return arrayList;
+            }
+
+            var array = JsonNode.Parse(ref reader)?.AsArray();
+            if (array == null) return arrayList;
+
+            foreach (var node in array)
+            {
+                if (node is JsonValue val && val.TryGetValue<string>(out var s))
                 {
                     arrayList.Add(new AdaptiveTargetElement(s));
                 }
-                else
+                else if (node is JsonObject obj)
                 {
-                    JObject jobj = (JObject)obj;
-                    arrayList.Add((AdaptiveTargetElement)jobj.ToObject(typeof(AdaptiveTargetElement)));
+                    var targetElement = obj.Deserialize<AdaptiveTargetElement>(options);
+                    if (targetElement != null)
+                    {
+                        arrayList.Add(targetElement);
+                    }
                 }
             }
+
             return arrayList;
         }
 
         /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, List<AdaptiveTargetElement> value, JsonSerializerOptions options)
         {
-            List<AdaptiveTargetElement> targetElements = (List<AdaptiveTargetElement>)value;
-
-            JArray jArray = new JArray();
-
-            foreach (var el in targetElements)
+            writer.WriteStartArray();
+            foreach (var el in value)
             {
                 if (el.IsVisible == null)
                 {
-                    jArray.Add(JToken.FromObject(el.ElementId));
+                    writer.WriteStringValue(el.ElementId);
                 }
                 else
                 {
-                    jArray.Add(JToken.FromObject(el));
+                    JsonSerializer.Serialize(writer, el, options);
                 }
             }
-
-            jArray.WriteTo(writer);
+            writer.WriteEndArray();
         }
-
     }
 }

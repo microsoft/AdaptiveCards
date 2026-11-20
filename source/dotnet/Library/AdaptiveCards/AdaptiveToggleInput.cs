@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -30,7 +30,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Value to use when toggle is on.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string ValueOn { get; set; } = bool.TrueString;
@@ -38,7 +38,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Value to use when toggle is off.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string ValueOff { get; set; } = bool.FalseString;
@@ -46,7 +46,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Controls text wrapping behavior.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(false)]
         public bool Wrap { get; set; }
@@ -54,7 +54,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The value for the field.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Value { get; set; }

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -24,14 +25,14 @@ namespace AdaptiveCards
         ///     initial data that input fields will be combined with. This is essentially 'hidden' properties, Example:
         ///     {"id":"123123123"}
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlIgnore]
         public object Data { get; set; }
 
         /// <summary>
         ///     Controls which inputs are associated with the execute action
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveAssociatedInputs), "auto")]
         public AdaptiveAssociatedInputs AssociatedInputs { get; set; }
@@ -40,7 +41,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The card author-defined verb associated with this action.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         public string Verb { get; set; } = "";
 
@@ -55,7 +56,7 @@ namespace AdaptiveCards
             {
                 if (Data != null)
                 {
-                    return JsonConvert.SerializeObject(Data, Formatting.Indented);
+                    return JsonSerializer.Serialize(Data, new JsonSerializerOptions { WriteIndented = true });
                 }
                 else
                 {
@@ -70,7 +71,7 @@ namespace AdaptiveCards
                 }
                 else
                 {
-                    Data = JsonConvert.DeserializeObject(value, new JsonSerializerSettings
+                    Data = JsonSerializer.Deserialize<object>(value, new JsonSerializerOptions
                     {
                         Converters = { new StrictIntConverter() }
                     });

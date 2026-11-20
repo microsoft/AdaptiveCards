@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.ComponentModel;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -20,7 +20,6 @@ namespace AdaptiveCards
 
         /// <inheritdoc />
         [XmlIgnore]
-        [JsonProperty(Required = Required.Default)]
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Sets the content flow direction
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlIgnore]
         [DefaultValue(null)]
         public bool? Rtl { get; set; } = null;

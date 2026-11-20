@@ -3,7 +3,7 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -23,7 +23,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Text to display as a placeholder.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
         [DefaultValue(null)]
         public string Placeholder { get; set; }
@@ -31,32 +31,29 @@ namespace AdaptiveCards
         /// <summary>
         /// The initial value for the field.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
-        [DefaultValue(double.NaN)]
-        public double Value { get; set; } = double.NaN;
+        public double? Value { get; set; }
 
         /// <summary>
         /// Hint of minimum value (may be ignored by some clients).
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
-        [DefaultValue(double.NaN)]
-        public double Min { get; set; } = double.NaN;
+        public double? Min { get; set; }
 
         /// <summary>
         /// Hint of maximum value (may be ignored by some clients).
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlAttribute]
-        [DefaultValue(double.NaN)]
-        public double Max { get; set; } = double.NaN;
+        public double? Max { get; set; }
 
         /// <inheritdoc />
         public override string GetNonInteractiveValue()
         {
-            return double.IsNaN(Value)
-                ? Value.ToString(CultureInfo.InvariantCulture)
+            return Value.HasValue
+                ? Value.Value.ToString(CultureInfo.InvariantCulture)
                 : $"*[{Placeholder}]*";
         }
     }

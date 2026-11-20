@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 using System;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
@@ -12,7 +11,6 @@ namespace AdaptiveCards
     /// Represents the backgroundImage property
     /// </summary>
     [XmlType(TypeName = AdaptiveBackgroundImage.TypeName)]
-    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveBackgroundImage
     {
         /// <summary>
@@ -96,7 +94,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Controls how the image is tiled or stretched.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveImageFillMode), "cover")]
         public AdaptiveImageFillMode FillMode { get; set; }
@@ -104,7 +102,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Determines how to align the background image horizontally.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
@@ -112,7 +110,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Determines how to align the background image vertically.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(typeof(AdaptiveVerticalAlignment), "top")]
         public AdaptiveVerticalAlignment VerticalAlignment { get; set; }

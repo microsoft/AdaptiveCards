@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using System;
 using System.Xml.Serialization;
 
@@ -9,7 +9,7 @@ namespace AdaptiveCards
     /// <summary>
     /// Controls the vertical size (Width) of element.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveWidthType>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveWidthType>))]
 
     public enum AdaptiveWidthType
     {
@@ -122,14 +122,14 @@ namespace AdaptiveCards
         /// <summary>
         /// The <see cref="AdaptiveWidthType"/> this instance represents.
         /// </summary>
-        [JsonProperty("WidthType")]
+        [JsonPropertyName("WidthType")]
         [XmlAttribute]
         public AdaptiveWidthType WidthType { get; set; }
 
         /// <summary>
         /// The specific Width to use (only valid for the <see cref="AdaptiveWidthType.Pixel"/> type).
         /// </summary>
-        [JsonProperty("unit")]
+        [JsonPropertyName("unit")]
         [XmlIgnore]
         public uint? Unit { get; set; }
 
@@ -152,30 +152,6 @@ namespace AdaptiveCards
         public bool IsPixel()
         {
             return WidthType == AdaptiveWidthType.Pixel;
-        }
-
-        /// <summary>
-        /// Determines whether this <see cref="AdaptiveWidth"/> instance should be serialized.
-        /// </summary>
-        public bool ShouldSerializeAdaptiveWidth()
-        {
-            if (WidthType == AdaptiveWidthType.Auto)
-            {
-                return false;
-            }
-
-            if (WidthType == AdaptiveWidthType.Pixel)
-            {
-                if (!Unit.HasValue)
-                {
-                    return false;
-                }
-                else if (Unit.Value == 0)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         /// <summary>

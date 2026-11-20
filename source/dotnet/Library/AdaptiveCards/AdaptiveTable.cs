@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -59,8 +59,8 @@ namespace AdaptiveCards
         /// <summary>
         /// Defines the style of the grid. This property currently only controls the grid’s color 
         /// </summary>
-        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>))]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [XmlIgnore]
         [DefaultValue(null)]
         public AdaptiveContainerStyle? GridStyle { get; set; }
@@ -82,7 +82,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Specifies whether grid lines should be displayed.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(true)]
         public bool ShowGridLines { get; set; } = true;
@@ -90,7 +90,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [XmlAttribute]
         [DefaultValue(true)]
         public bool FirstRowAsHeaders { get; set; } = true;

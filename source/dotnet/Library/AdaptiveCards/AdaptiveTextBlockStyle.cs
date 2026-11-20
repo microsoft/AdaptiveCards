@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
     ///     Indicates TextBlock element's content type.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextBlockStyle>), true)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveTextBlockStyle>))]
     public enum AdaptiveTextBlockStyle
     {
         /// <summary>

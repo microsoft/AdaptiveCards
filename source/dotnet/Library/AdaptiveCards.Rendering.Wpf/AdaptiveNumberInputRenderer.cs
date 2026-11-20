@@ -13,15 +13,15 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var textBox = new TextBox();
 
-            if (!Double.IsNaN(input.Value))
+            if (input.Value.HasValue)
             {
-                textBox.Text = input.Value.ToString();
+                textBox.Text = input.Value.Value.ToString();
             }
             textBox.SetPlaceholder(input.Placeholder);
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.Number");
             textBox.SetContext(input);
 
-            if ((!Double.IsNaN(input.Max) || !Double.IsNaN(input.Min) || input.IsRequired)
+            if ((input.Max.HasValue || input.Min.HasValue || input.IsRequired)
                 && string.IsNullOrEmpty(input.ErrorMessage))
             {
                 context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
