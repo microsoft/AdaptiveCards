@@ -5217,7 +5217,7 @@ export class NumberInput extends Input {
     }
 
     isValid(): boolean {
-        if (this.value === undefined) {
+        if (this.value === undefined || isNaN(this.value)) {
             return !this.isRequired;
         }
 
