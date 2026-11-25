@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards",
-	"version": "4.0.0",
+	"version": "3.0.6",
 	"description": "Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -40,7 +40,7 @@
 		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
 	},
 	"devDependencies": {
-		"concurrently": "^5.2.0",
+		"concurrently": "^5.3.0",
 		"cross-env": "^7.0.3",
 		"rimraf": "^3.0.2",
 		"typedoc": "^0.24.0",
