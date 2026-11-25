@@ -739,5 +739,115 @@ namespace AdaptiveCardsSharedModelUnitTest
             const auto serializedCard = card->SerializeToJsonValue();
             Assert::IsTrue(serializedCard["body"][0]["isMultiline"].asBool());
         }
+
+        // Helper: Generate nested ShowCard JSON to the specified depth
+        static std::string MakeNestedShowCardJson(int depth)
+        {
+            std::string innermost = R"({"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"bottom"}]})";
+            std::string current = innermost;
+            for (int i = 0; i < depth; i++)
+            {
+                current = R"({"type":"AdaptiveCard","version":"1.5","body":[{"type":"TextBlock","text":"Level )" +
+                           std::to_string(depth - i) +
+                           R"("}],"actions":[{"type":"Action.ShowCard","title":"More","card":)" +
+                           current + R"(}]})";
+            }
+            return current;
+        }
+
+        // Helper: Walk the parsed ShowCard tree and count actual nesting depth
+        static int MeasureParsedDepth(std::shared_ptr<AdaptiveCard> card)
+        {
+            if (!card) return 0;
+            auto& actions = card->GetActions();
+            for (auto& action : actions)
+            {
+                if (action->GetElementType() == ActionType::ShowCard)
+                {
+                    auto showCard = std::static_pointer_cast<ShowCardAction>(action);
+                    auto inner = showCard->GetCard();
+                    if (inner && (!inner->GetBody().empty() || !inner->GetActions().empty()))
+                    {
+                        return 1 + MeasureParsedDepth(inner);
+                    }
+                }
+            }
+            return 0;
+        }
+
+        TEST_METHOD(ShowCardNesting_WithinLimit_ParsesFully)
+        {
+            // Depth 3 is well within the limit of 5
+            const auto json = MakeNestedShowCardJson(3);
+            const auto parseResult = AdaptiveCard::DeserializeFromString(json, "1.5");
+            const auto card = parseResult->GetAdaptiveCard();
+
+            Assert::AreEqual(3, MeasureParsedDepth(card));
+
+            // No warnings about depth
+            const auto warnings = parseResult->GetWarnings();
+            for (const auto& w : warnings)
+            {
+                Assert::AreNotEqual("Maximum ShowCard nesting depth exceeded"s, w->GetReason());
+            }
+        }
+
+        TEST_METHOD(ShowCardNesting_AtExactLimit_ParsesFully)
+        {
+            // Depth 5 is exactly the limit — should parse fully
+            const auto json = MakeNestedShowCardJson(5);
+            const auto parseResult = AdaptiveCard::DeserializeFromString(json, "1.5");
+            const auto card = parseResult->GetAdaptiveCard();
+
+            Assert::AreEqual(5, MeasureParsedDepth(card));
+
+            // No warnings about depth
+            const auto warnings = parseResult->GetWarnings();
+            for (const auto& w : warnings)
+            {
+                Assert::AreNotEqual("Maximum ShowCard nesting depth exceeded"s, w->GetReason());
+            }
+        }
+
+        TEST_METHOD(ShowCardNesting_ExceedsLimit_CappedWithWarning)
+        {
+            // Depth 10 exceeds the limit of 5 — should be capped
+            const auto json = MakeNestedShowCardJson(10);
+            const auto parseResult = AdaptiveCard::DeserializeFromString(json, "1.5");
+            const auto card = parseResult->GetAdaptiveCard();
+
+            // Should be capped at the max depth, not 10
+            const int parsedDepth = MeasureParsedDepth(card);
+            Assert::IsTrue(parsedDepth <= static_cast<int>(ParseContext::c_maxShowCardDepth));
+
+            // Should have emitted a warning
+            const auto warnings = parseResult->GetWarnings();
+            bool foundWarning = false;
+            for (const auto& w : warnings)
+            {
+                if (w->GetReason() == "Maximum ShowCard nesting depth exceeded")
+                {
+                    foundWarning = true;
+                    break;
+                }
+            }
+            Assert::IsTrue(foundWarning, L"Expected warning about ShowCard nesting depth");
+        }
+
+        TEST_METHOD(ShowCardNesting_DeepNesting_NoException)
+        {
+            // Depth 200 previously parsed successfully and could crash the renderer.
+            // Now it should be capped without throwing an exception.
+            const auto json = MakeNestedShowCardJson(200);
+            const auto parseResult = AdaptiveCard::DeserializeFromString(json, "1.5");
+            const auto card = parseResult->GetAdaptiveCard();
+
+            // Must not crash or throw — card should be valid
+            Assert::IsNotNull(card.get());
+
+            // Depth must be capped
+            const int parsedDepth = MeasureParsedDepth(card);
+            Assert::IsTrue(parsedDepth <= static_cast<int>(ParseContext::c_maxShowCardDepth));
+        }
     };
 }
