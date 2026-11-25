@@ -97,11 +97,12 @@ export const AdaptiveCard = ({
                     }
                     break;
                 }
-            }
-            // TODO: Why is there a global action handler when we have specific
-            // handlers for the above cases? Can we simplify to one approach?
-            if (onExecuteAction) {
-                onExecuteAction(a);
+                case AdaptiveCards.ExecuteAction.JsonTypeName: {
+                    if (onExecuteAction) {
+                        onExecuteAction(a);
+                    }
+                    break;
+                }
             }
         },
         [onActionOpenUrl, onActionShowCard, onActionSubmit, onExecuteAction]
